@@ -25,8 +25,4 @@ License
 Contact
 -------
 
-		David Millar
-		4309 Forestway Dr. SE #14
-		Kentwood, MI 49512
-
-I can also be reached at dave@davegoesthedistance.com or dave@davesmapper.com
+I can be reached at dave@davegoesthedistance.com or dave@davesmapper.com

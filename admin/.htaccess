@@ -1,0 +1,6 @@
+#AuthUserFile /home/dmillar/public_html/cgi-bin/.htpasswd
+#AuthGroupFile /dev/null
+#AuthName "Mapper Secret Area"
+#AuthType Basic
+
+#require valid-user

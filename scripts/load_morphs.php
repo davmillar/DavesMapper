@@ -1,5 +1,5 @@
 <?php
-  include "/home/dmillar/public_html/cgi-bin/db_start.php";
+  include "../cgi-bin/db_start.php";
   $tile_amt = intval($_POST['amount']);
     $tile_amt = ($tile_amt > 0) ? $tile_amt : 15;
   $tile_type = intval($_POST['tile_kind']);
@@ -23,5 +23,5 @@
     }
   }
   echo json_encode($rarr);
-  include "/home/dmillar/public_html/cgi-bin/db_end.php";
+  include "../cgi-bin/db_end.php";
 ?>

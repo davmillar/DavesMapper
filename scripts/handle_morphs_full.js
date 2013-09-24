@@ -1,8 +1,3 @@
-// Dave's Mapper
-// http://davesmapper.com
-// (c) 2010-2013 David Millar
-// This code may be freely distributed or modified under the GNU General Public License v3 (http://www.gnu.org/licenses/).
-
 var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight, endcaps, corners, endstag, map_kind,
 	$tp, $curves, $tbars, $twide, $owide,
 	imgho = new Image(), scaled = false, swap = false, inrotate = false,
@@ -15,9 +10,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 	$mobilemode = ((/iphone|ipod|ipad|android/gi).test(navigator.platform)),
 	$issafari = ((/Safari/i).test(navigator.appVersion)),
 	ua = navigator.userAgent,
-	
-	// Tile decks to handle shuffling and randomization and whatnot
-	
 	TileDeck = function () {
 		this.deck = [];
 		this.cursor = 0;
@@ -39,7 +31,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			this.shuffle();
 		};
 	},
-	
 	mainTiles = new TileDeck(),
 	edgeTiles = new TileDeck(),
 	cornerTiles = new TileDeck(),
@@ -47,9 +38,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 	tcoTiles = new TileDeck(),
 	btmTiles = new TileDeck(),
 	bcoTiles = new TileDeck(),
-	
-	// Cookie handling functions
-	
 	createCookie = function (name, value, days) {
 		"use strict";
 		var date, expires;
@@ -62,7 +50,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		}
 		document.cookie = name + "=" + value + expires + "; path=/";
 	},
-	
 	readCookie = function (name) {
 		"use strict";
 		var nameEQ = name + "=",
@@ -76,19 +63,14 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		}
 		return null;
 	},
-	
 	eraseCookie = function (name) {
 		"use strict";
 		createCookie(name, "", -1);
 	},
-	
-	// Tile and tab appending functions
-	
 	appendTab = function (rotation) {
 		"use strict";
 		$("#tiles").append("<img class='tab rot" + rotation + "' data-rot='" + rotation + "' data-type='tab' src='../images/tab.png'/>");
 	},
-	
 	appendTile = function (type, rotation) {
 		"use strict";
 		var tileimg;
@@ -117,9 +99,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		}
 		$("#tiles").append("<img draggable='true' class='" + type + " rot" + rotation + "' data-rot='" + rotation + "' data-type='" + type + "' data-imgid='" + tileimg.id + "' data-artist='" + tileimg.artist_id + "' src='../tiles/" + tileimg.image + "'/>");
 	},
-	
-	// Map composition
-	
 	composeMap = function (mapWidth, mapHeight) {
 		"use strict";
 		var tops, btms,
@@ -214,9 +193,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		}
 		tilecount = $("#tiles img").length;
 	},
-	
-	// Draw map
-	
 	drawMap = function () {
 		"use strict";
 		iMenuTarget = null;
@@ -271,9 +247,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			});
 		}
 	},
-	
-	// Tile set selection
-	
 	selectTileSets = function () {
 		"use strict";
 		tileSetOptions = "";
@@ -281,9 +254,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		tileSetOptions = tileSetOptions.substr(0, tileSetOptions.length - 1);
 		drawMap();
 	},
-	
-	// Export to PNG via canvas
-	
 	courtney = function () {
 		"use strict";
 		var dataURL;
@@ -344,9 +314,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			createCookie("buggedyet", 1, 365);
 		}
 	},
-	
-	// Swap tile for a new one
-	
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		"use strict";
 		$.post("scripts/load_morphs.php",
@@ -361,9 +328,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 				}
 			});
 	},
-	
-	// Go to the next grid type
-	
 	nextGrid = function () {
 		"use strict";
 		switch (parseInt(gridsize, 10) + 1) {
@@ -381,9 +345,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			break;
 		}
 	},
-	
-	// Stocks rooms using a simple generator in the sidebar
-	
 	roomStock = function () {
 		"use strict";
 		var clear, a, b, c, i;
@@ -404,9 +365,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		} while (clear === 0);
 		_gaq.push(['_trackEvent', 'Room Stocker', 'Stock']);
 	},
-	
-	// Resize the sidebar and change some of the layout based on the size
-	
 	sidebarResize = function () {
 		"use strict";
 		createCookie("panelWidth", $twide, 365);
@@ -421,9 +379,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			$tp.addClass("wide").removeClass("mini");
 		}
 	},
-	
-	// Export to PNG via PHP
-	
 	jsonStringMap = function () {
 		"use strict";
 		var fullMapURL, mapData;
@@ -449,11 +404,7 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			}
 		}
 	},
-	
-	// Set the panel width based on the user's previous edits
-	
 	$setWidth = readCookie("panelWidth");
-	
 $(document)
 	.ready(function () {
 		"use strict";

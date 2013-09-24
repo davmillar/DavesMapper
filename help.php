@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="mapper.appcache">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="nevermind.appcache">
 	<head>
 		<title>About | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Information, help, and tips about the Dave's Mapper web app for role-playing enthusiasts."/>

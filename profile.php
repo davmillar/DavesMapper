@@ -1,5 +1,5 @@
 <?
-	include "/home/dmillar/public_html/cgi-bin/db_start.php";
+	include "cgi-bin/db_start.php";
 	if ($_REQUEST['artist']) {
 		$thisartist = $_REQUEST['artist'];
 		$artistdata = mysql_fetch_assoc(mysql_query("SELECT * FROM artists WHERE url_slug = '".$thisartist."'"));
@@ -76,4 +76,4 @@
 		<? include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<? include "cgi-bin/db_end.php"; ?>

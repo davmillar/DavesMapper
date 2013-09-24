@@ -1,5 +1,5 @@
 <?
-	include "/home/dmillar/public_html/cgi-bin/db_start.php";
+	include "cgi-bin/db_start.php";
 	$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
 	$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
@@ -7,7 +7,7 @@
 	$webOS= stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
 ?>
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="mapper.appcache">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="nevermind.appcache">
 	<head>
 		<title>Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>
@@ -182,4 +182,4 @@
 		<? include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<? include "cgi-bin/db_end.php"; ?>

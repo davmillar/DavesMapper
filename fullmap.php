@@ -1,5 +1,5 @@
 <?
-  include "/home/dmillar/public_html/cgi-bin/db_start.php";
+  include "cgi-bin/db_start.php";
   
   $data = base64_decode($_REQUEST['mapData']);
   $dataObj = json_decode($data);
@@ -98,5 +98,5 @@
   imagepng($canvas);
   imagedestroy($canvas);
   
-  include "/home/dmillar/public_html/cgi-bin/db_end.php";
+  include "cgi-bin/db_end.php";
 ?>

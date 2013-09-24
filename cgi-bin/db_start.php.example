@@ -1,0 +1,7 @@
+<?
+  $user="---your-db-username-here";
+  $password="---your-pass-here---";
+  $database="---your-db-name-here---";
+  $dbestablished = mysql_connect(localhost,$user,$password);
+  @mysql_select_db($database) or die( "Unable to select database");
+?>

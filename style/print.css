@@ -1,0 +1,24 @@
+body { margin:0; padding:0; }
+header, footer, #tilepanel, #notification, #imgMenu, .ui-tooltip, .qtip { display:none; }
+#map { display:block; position:relative; margin:0 auto; padding:0; line-height:1px; text-align:center; z-index:0; }
+#about { display:none; }
+#grid { position:absolute; display:none; top:0; left:0; right:0; bottom:0; z-index:1;
+  background: transparent url(../grid_15.png) top left; }
+  #grid.g30 { background: transparent url(../grid_30.png); }
+  
+#map img { display:inline; vertical-align:middle; }
+.tile, .sv .top, .tab { width:300px; height:300px; }
+.nm .edge { width:300px; height:150px; }
+.sv .edge,.sv .tco { width:150px; height:300px; }
+.nm .edge.rot1, .nm .edge.rot3 { margin-left:-75px !important; margin-right:-75px !important; }
+.corner { width:150px; height:150px; }
+  
+.nm .rot1 { -moz-transform: rotate(90deg); -webkit-transform: rotate(90deg); -o-transform:rotate(90deg); -ms-transform: rotate(90deg); transform: rotate(90deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1); }
+.nm .rot2 { -moz-transform: rotate(180deg); -webkit-transform: rotate(180deg); -o-transform:rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2); }
+.nm .rot3 { -moz-transform: rotate(270deg); -webkit-transform: rotate(270deg); -o-transform:rotate(270deg); -ms-transform: rotate(270deg); transform: rotate(270deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }
+	
+.sv .rot1,.sv.rot3{-webkit-transform:scaleX(-1);-moz-transform:scaleX(-1);-ms-transform:scaleX(-1);-o-transform:scaleX(-1);transform:scaleX(-1);filter:fliph;}
+.sv .rot0,.sv.rot2{-webkit-transform:none;-moz-transform:none;-ms-transform:none;-o-transform:none;transform:none;filter:none;}

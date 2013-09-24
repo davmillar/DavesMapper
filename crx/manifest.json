@@ -1,0 +1,18 @@
+{
+  "name": "Dave's Mapper",
+  "version": "3.0",
+  "manifest_version": 2,
+  "description": "Generates Geomorphic Role-Playing Maps",
+  "icons": {
+    "128": "128.png",
+    "300": "300.png"
+  },
+  "app": {
+    "urls": [
+      "http://davesmapper.com/"
+    ],
+    "launch": {
+      "web_url": "http://davesmapper.com/"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+html { overflow:auto; margin:0 0 40px; padding:0; }
+#map { display:block; position:relative; margin:0 auto; padding:0; line-height:1px; text-align:center; z-index:0; }
+#grid { position:absolute; top:0; left:0; right:0; bottom:0; z-index:1;
+  background: transparent url(http://www.thegriddle.net/mapper/grid_15.png) top left; }
+  #grid.g30 { background: transparent url(http://www.thegriddle.net/mapper/grid_30.png); }
+  
+#map img { display:inline; vertical-align:middle; }
+#map img.tile { width:300px; height:300px; }
+#map img.edge { width:300px; height:150px; }
+#map img.corner { width:150px; height:150px; }
+#map img.edge.rot1, #map img.edge.rot3 { margin-left:-75px; margin-right:-75px; }
+  
+#map img.rot1 { -moz-transform: rotate(90deg); -webkit-transform: rotate(90deg); -o-transform:rotate(90deg); transform: rotate(90deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1); }
+#map img.rot2 { -moz-transform: rotate(180deg); -webkit-transform: rotate(180deg); -o-transform:rotate(180deg); transform: rotate(180deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2); }
+#map img.rot3 { -moz-transform: rotate(270deg); -webkit-transform: rotate(270deg); -o-transform:rotate(270deg); transform: rotate(270deg);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3); }

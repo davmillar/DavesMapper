@@ -39,11 +39,17 @@
 					<label for="mt_city" class="shitblock">
 						<input type="radio" name="maptype" value="4" id="mt_city" /><br/>City
 					</label>
+					<label for="mt_vil" class="shitblock">
+						<input type="radio" name="maptype" value="5" id="mt_vil" /><br/>Village
+					</label>
 					<label for="mt_side" class="shitblock" title="Doesn't work in IE 8 or older.">
 						<input type="radio" name="maptype" value="6" id="mt_side" disabled /><br/>Side View
 					</label>
 					<label for="mt_ship" class="shitblock">
 						<input type="radio" name="maptype" value="7" id="mt_ship" /><br/>SciFi Ship
+					</label>
+					<label for="mt_jet" class="shitblock">
+						<input type="radio" name="maptype" value="8" id="mt_jet" /><br/>Boardwalk
 					</label>
 					<![endif]-->		
 				<!--[if (gt IE 8)|!(IE)]><!-->
@@ -56,10 +62,14 @@
 						<label for="mt_mix" class="dropped">Dun/Cav Mix</label>
 					<input type="radio" class="btnDrp mtBtn" name="maptype" value="4" id="mt_city" />
 						<label for="mt_city" class="dropped">City</label>
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil" />
+						<label for="mt_vil" class="dropped">Village</label>
 					<input type="radio" class="btnDrp mtBtn" name="maptype" value="6" id="mt_side" />
 						<label for="mt_side" class="dropped">Side View</label>
-					<input type="radio" class="btnDrp mtBtn last" name="maptype" value="7" id="mt_ship" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="7" id="mt_ship" />
 						<label for="mt_ship" class="dropped">SciFi Ship</label>
+					<input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet" />
+						<label for="mt_jet" class="dropped">Boardwalk</label>
 				</div></div>
 				<!--<![endif]-->
 			</div><div class="fieldset">

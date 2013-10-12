@@ -31,7 +31,7 @@
           <p>Shortly thereafter, I came up with my own set of tiles and thought it would be fun to make my own mapper for my tiles; one that would fix some of the issues and add the features not present in Rob's mappers. I soon asked a few other tile artists if they would be interested in having their tiles featured, and off I went building this mapper you see here. The support from the community has been awesome and I can't thank everyone enough!</p>
 				<h2 id="alltiles">Tiles Contributed</h2>
 					<?
-						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Side View'=>6, 'SciFi Ship'=>7);
+						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
 						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
 						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
 						$totals = Array();

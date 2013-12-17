@@ -254,6 +254,37 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		tileSetOptions = tileSetOptions.substr(0, tileSetOptions.length - 1);
 		drawMap();
 	},
+	exportMap = function () {
+		"use strict";
+		if ((currentmode === 1) || (currentmode === 3) || (currentmode === 4) || (maptype === 6)) {
+			courtney();
+		} else {
+			var fullMapURL, mapData;
+			if ((mapWidth * mapHeight) > 64) {
+				$("#notification span").text("This map looks too big to export to PNG without causing an error. Sorry!");
+				$("#notification").slideDown("fast");
+			} else {
+				$("#notification").slideUp("fast");
+				mapData = {'tiles': [], 'rotation': []};
+				$("#tiles img").each(function (i) {
+					mapData.tiles[i] = $(this).data("imgid");
+					mapData.rotation[i] = $(this).data("rot");
+				});
+				fullMapURL = 'fullmap.php?mapData=' + base64_encode(JSON.stringify(mapData)) + '&w=' + mapWidth + '&h=' + mapHeight;
+				if (endcaps) { fullMapURL += '&e=1'; } else { fullMapURL += '&e=0'; }
+				if (corners) { fullMapURL += '&c=1'; } else { fullMapURL += '&c=0'; }
+				fullMapURL += '&g=' + ((gridsize === 0) ? '0' : gridsize);
+				window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
+			}
+		}
+		if (buggedyet !== 1) {
+			if (confirm("Dave here. Thanks for using my mapper! I hate to ask, but would you be interested in taking me on a virtual Taco Bell run?")) {
+				window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVMXRJ6VVXLMY", 'DonateWindow');
+			}
+			buggedyet = 1;
+			createCookie("buggedyet", 1, 365);
+		}
+	},
 	courtney = function () {
 		"use strict";
 		var dataURL;
@@ -306,13 +337,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		dataURL = artBoard.toDataURL('image/png');
 		window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
 		artBoard.width = artBoard.width * 2 / 2;
-		if (buggedyet !== 1) {
-			if (confirm("Dave here. I worked really hard on this new feature and am currently broke as all get-up, and kinda hungry. I hate to ask, but would you be interested in taking me on a virtual Taco Bell run?")) {
-				window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVMXRJ6VVXLMY", 'DonateWindow');
-			}
-			buggedyet = 1;
-			createCookie("buggedyet", 1, 365);
-		}
 	},
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		"use strict";
@@ -379,31 +403,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			$tp.addClass("wide").removeClass("mini");
 		}
 	},
-	jsonStringMap = function () {
-		"use strict";
-		var fullMapURL, mapData;
-		if ((currentmode === 1) || (currentmode === 3) || (currentmode === 4) || (maptype === 6)) {
-			$("#notification span").text("Export to PNG via PHP does not support this map mode yet. Try Export via HTML5 Canvas instead!");
-			$("#notification").slideDown("fast");
-		} else {
-			if ((mapWidth * mapHeight) > 64) {
-				$("#notification span").text("This map looks too big to export to PNG without causing an error. Sorry!");
-				$("#notification").slideDown("fast");
-			} else {
-				$("#notification").slideUp("fast");
-				mapData = {'tiles': [], 'rotation': []};
-				$("#tiles img").each(function (i) {
-					mapData.tiles[i] = $(this).data("imgid");
-					mapData.rotation[i] = $(this).data("rot");
-				});
-				fullMapURL = 'fullmap.php?mapData=' + base64_encode(JSON.stringify(mapData)) + '&w=' + mapWidth + '&h=' + mapHeight;
-				if (endcaps) { fullMapURL += '&e=1'; } else { fullMapURL += '&e=0'; }
-				if (corners) { fullMapURL += '&c=1'; } else { fullMapURL += '&c=0'; }
-				fullMapURL += '&g=' + ((gridsize === 0) ? '0' : gridsize);
-				window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
-			}
-		}
-	},
 	$setWidth = readCookie("panelWidth");
 $(document)
 	.ready(function () {
@@ -421,8 +420,7 @@ $(document)
 			$twide = parseInt($tp.width(), 10);
 			if ($twide !== $owide) { sidebarResize(); }
 		}, 200);
-		$('#newWindowB').click(jsonStringMap);
-		$('#newWindowC').click(courtney);
+		$('#newWindowB').click(exportMap);
 		artBoard = document.getElementById("drawingboard");
 		artMode = artBoard.getContext("2d");
 		$("#newBtn").click(drawMap);

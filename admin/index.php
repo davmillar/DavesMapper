@@ -2,6 +2,19 @@
 	include "../cgi-bin/db_start.php";
 	session_start();
 	
+	$business = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
+	$folders = Array('dungeon', 'cavern', 'dcmix', 'spaceship', 'city', 'sideview', 'village');
+	while ($nextb = mysql_fetch_assoc($business)){
+		if (!is_dir("../tiles/".$nextb['icon'])) {
+			mkdir("../tiles/".$nextb['icon']);
+		}
+		foreach ($folders as $myfold) {
+			if (!is_dir("../tiles/".$nextb['icon']."/".$myfold)) {
+				mkdir("../tiles/".$nextb['icon']."/".$myfold);
+			}
+		}
+	}
+
 	function bounceOut(){ header("Location: http://davesmapper.com/admin"); exit; }
 	
 	if ($_GET['action'] == 'log_me_out') {
@@ -66,8 +79,8 @@
 		bounceOut();
 	}
 	if ($_POST['action'] == "add_carto") {
-		mysql_query("INSERT INTO artists (name, url_slug, initials, icon, url, bio, email)
-								 VALUES ('".mysql_real_escape_string($_POST['aname'])."', '".mysql_real_escape_string($_POST['aurlslug'])."', '".mysql_real_escape_string($_POST['ainit'])."', '".mysql_real_escape_string($_POST['aicon'])."', '".mysql_real_escape_string($_POST['alink'])."', '".mysql_real_escape_string($_POST['abio'])."', '".mysql_real_escape_string($_POST['aemail'])."')");
+		mysql_query("INSERT INTO artists (name, url_slug, initials, icon, url, bio, email, password)
+								 VALUES ('".mysql_real_escape_string($_POST['aname'])."', '".mysql_real_escape_string($_POST['aurlslug'])."', '".mysql_real_escape_string($_POST['ainit'])."', '".mysql_real_escape_string($_POST['aicon'])."', '".mysql_real_escape_string($_POST['alink'])."', '".mysql_real_escape_string($_POST['abio'])."', '".mysql_real_escape_string($_POST['aemail'])."', '".sha1($_POST['aemail']."bacon"."c00lt1l3sbr0")."')");
 		$result = mysql_insert_id();
 		if ($result) {
 			$_SESSION['message'] = "<p>" .  $_POST['aname'] . " added to list of users.</p>";

@@ -119,7 +119,7 @@ label.labelTxt.bigLabel{width:128px;position:relative;top:-6px;}
 
 .btnChk,.btnGrp,.btnDrp{display:none;}
 .btnChk + label,.btnGrp + label,a.button,.more-link,input[type=submit],.btnDrp + label{
-  display:inline-block;width:auto;height:26px !important;margin:5px 0 0;vertical-align:middle;letter-spacing: 1px !important;
+  display:inline-block;width:auto;height:26px !important;margin:5px 0 0;padding:0 2px;vertical-align:middle;letter-spacing: 1px !important;
   background-color:#aa6e33;color:#fff !important;border:1px solid #642;cursor:pointer;
   font-family:'Philosopher',Arial,sans-serif;font-size:11px;line-height:26px;font-weight:700 !important;text-align:center;text-decoration:none;
   text-shadow:0 1px 0 rgba(0,0,0,0.5);
@@ -129,6 +129,7 @@ label.labelTxt.bigLabel{width:128px;position:relative;top:-6px;}
 	-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}
 	.btnChk + label:hover,.btnGrp + label:hover,a.button:hover,.more-link:hover,input[type=submit]:hover{background-color:#b07133;}
 	a.button{margin-right:5px;}
+	#newWindowB{padding:0 7px 0 2px;}
 .btnChk + label img,.btnGrp + label img,a.button img,.btnDrp:hover + label{vertical-align:middle;}
 .btnChk + label:active,.btnGrp + label:active,.btnGrp.down,a.button:active,.more-link:active,input[type=submit]:active,.btnChk:checked + label,.btnGrp:checked + label,.btnDrp:checked + label,.btnDrp:active + label{background-color:#752;color:#fff;
   -moz-box-shadow:inset 0 1px 1px #000;-webkit-box-shadow:inset 0 1px 1px #000;box-shadow:inset 0 1px 1px #000;}

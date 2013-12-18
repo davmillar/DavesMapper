@@ -123,7 +123,7 @@
 					<label for="removeTileExit" title="Remove Tile and Replace with Entrance/Exit"><em class="sprite spExit">Replace Tile with Exit</em></label>
 			</div><div class="fieldset">
 				<h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">View Options</h4>
-				<a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG">Export to PNG</em></a>
+				<a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
 				<!--[if LTE IE 8]>
 					<label for="nogrid" class="shitblock" title="Don't Use a Grid">
 						<input type="radio" name="grid" value="0" id="nogrid" checked/><br/>

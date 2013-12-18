@@ -32,7 +32,7 @@
 			<section id="about">
 				<h2>Tiles Contributed by <?=$artistdata['name']?></h2>
 					<?
-						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Side View'=>6, 'SciFi Ship'=>7);
+						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
 						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
 						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
 						$totals = Array();

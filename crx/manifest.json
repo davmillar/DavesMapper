@@ -1,18 +1,13 @@
 {
   "name": "Dave's Mapper",
-  "version": "3.0",
-  "manifest_version": 2,
-  "description": "Generates Geomorphic Role-Playing Maps",
-  "icons": {
-    "128": "128.png",
-    "300": "300.png"
-  },
+  "description": "Generate geomorphic dungeon maps",
+  "version": "1.6",
   "app": {
-    "urls": [
-      "http://davesmapper.com/"
-    ],
     "launch": {
-      "web_url": "http://davesmapper.com/"
+      "web_url": "http://www.thegriddle.net/mapper"
     }
+  },
+  "icons": {
+    "128": "128.png"
   }
 }

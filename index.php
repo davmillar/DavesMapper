@@ -19,7 +19,7 @@
 		<script type="text/javascript" src="scripts/json2.js"></script>
 		<script type="text/javascript" src="scripts/b64.js"></script>
 		<script type="text/javascript" src="scripts/jquery.hammer.min.js"></script>
-		<script type="text/javascript" src="scripts/handle_morphs.js?t=<?=filemtime("scripts/handle_morphs.js")?>"></script>
+		<script type="text/javascript" src="scripts/mapping.min.js?t=<?=filemtime("scripts/mapping.min.js")?>"></script>
 	</head>
 	<body>
 		<? include "includes/magic.php"; ?>

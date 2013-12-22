@@ -3,12 +3,21 @@
 	session_start();
 	
 	$business = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
-	$folders = Array('dungeon', 'cavern', 'dcmix', 'spaceship', 'city', 'sideview', 'village');
+	$folders = Array(
+		1 => 'dungeon',
+		2 => 'cavern',
+		3 => 'dcmix',
+		4 => 'city',
+		5 => 'village',
+		6 => 'sideview',
+		7 => 'spaceship',
+		8 => 'boardwalk');
+	
 	while ($nextb = mysql_fetch_assoc($business)){
 		if (!is_dir("../tiles/".$nextb['icon'])) {
 			mkdir("../tiles/".$nextb['icon']);
 		}
-		foreach ($folders as $myfold) {
+		foreach ($folders as $foldnum => $myfold) {
 			if (!is_dir("../tiles/".$nextb['icon']."/".$myfold)) {
 				mkdir("../tiles/".$nextb['icon']."/".$myfold);
 			}
@@ -40,9 +49,10 @@
 	
 	if ($_POST['action'] == "add_tile_full") {
 		if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
+			$foruser = mysql_fetch_array(mysql_query("SELECT * FROM artists WHERE id = '".intval($_POST['artist'])."' LIMIT 1"));
 			if ($_FILES['tileImg']) {
 				$upDirectory = dirname(__FILE__) . '/../tiles/';
-				$upFilename = str_replace(" ","_","uploads/" . time() . $_FILES['tileImg']['name']);
+				$upFilename = str_replace(" ","_",$foruser['icon'] . '/' . $folders[intval($_POST['mtype'])] . "/" . time() . $_FILES['tileImg']['name']);
 				move_uploaded_file($_FILES['tileImg']['tmp_name'], $upDirectory.$upFilename);
 				
 				$hexit = (isset($_POST['hasexit']) && $_POST['hasexit'] == "1") ? 1 : 0;
@@ -192,8 +202,9 @@
 										<option value="3" <?=(($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
 										<option value="4" <?=(($mmtype == 4) ? 'selected' : '')?>>City</option>
 										<option value="5" <?=(($mmtype == 5) ? 'selected' : '')?>>Village</option>
-										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
 										<option value="6" <?=(($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
+										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+										<option value="8" <?=(($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
 									</select>
 									<select name="ttype" id="ttype">
 										<optgroup label="Regular" id="nmbits">
@@ -270,8 +281,9 @@
 										<option value="3" <?=(($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
 										<option value="4" <?=(($mmtype == 4) ? 'selected' : '')?>>City</option>
 										<option value="5" <?=(($mmtype == 5) ? 'selected' : '')?>>Village</option>
-										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
 										<option value="6" <?=(($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
+										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+										<option value="8" <?=(($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
 									</select>
 									<select name="ttype_m" id="ttype_m">
 										<optgroup label="All">

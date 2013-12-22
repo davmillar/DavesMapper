@@ -1,3 +1,24 @@
+var	TileDeck = function () {
+	this.deck = [];
+	this.cursor = 0;
+};
+TileDeck.prototype.shuffle = function () {
+	this.deck.sort(function () {
+		return Math.round(Math.random()) - 0.5;
+	});
+};
+TileDeck.prototype.draw = function () {
+	var cardDrawn = this.deck[this.cursor];
+	this.cursor += 1;
+	if ((this.cursor % this.deck.length) === 0) { this.cursor = 0; this.shuffle(); }
+	return cardDrawn;
+};
+TileDeck.prototype.stock = function (stockpile) {
+	this.deck = [];
+	this.deck = $.parseJSON(stockpile);
+	this.cursor = 0;
+	this.shuffle();
+};
 var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight, endcaps, corners, endstag, map_kind,
 	$tp, $curves, $tbars, $twide, $owide,
 	imgho = new Image(), scaled = false, swap = false, inrotate = false,
@@ -10,27 +31,6 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 	$mobilemode = ((/iphone|ipod|ipad|android/gi).test(navigator.platform)),
 	$issafari = ((/Safari/i).test(navigator.appVersion)),
 	ua = navigator.userAgent,
-	TileDeck = function () {
-		this.deck = [];
-		this.cursor = 0;
-		this.shuffle = function () {
-			this.deck.sort(function () {
-				return Math.round(Math.random()) - 0.5;
-			});
-		};
-		this.draw = function () {
-			var cardDrawn = this.deck[this.cursor];
-			this.cursor += 1;
-			if ((this.cursor % this.deck.length) === 0) { this.cursor = 0; this.shuffle(); }
-			return cardDrawn;
-		};
-		this.stock = function (stockpile) {
-			this.deck = [];
-			this.deck = stockpile;
-			this.cursor = 0;
-			this.shuffle();
-		};
-	},
 	mainTiles = new TileDeck(),
 	edgeTiles = new TileDeck(),
 	cornerTiles = new TileDeck(),
@@ -211,11 +211,11 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * (mapHeight + mapWidth);
 			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-				mainTiles.stock($.parseJSON(data));
+				mainTiles.stock(data);
 				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-					edgeTiles.stock($.parseJSON(data));
+					edgeTiles.stock(data);
 					$.post("scripts/load_morphs.php", { "amount": 4, "tile_kind": 3, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-						cornerTiles.stock($.parseJSON(data));
+						cornerTiles.stock(data);
 						composeMap(mapWidth, mapHeight);
 					});
 				});
@@ -224,19 +224,19 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * mapHeight;
 			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-				mainTiles.stock($.parseJSON(data));
+				mainTiles.stock(data);
 				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-					edgeTiles.stock($.parseJSON(data));
+					edgeTiles.stock(data);
 					$.post("scripts/load_morphs.php", { "amount": 4, "tile_kind": 3, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-						cornerTiles.stock($.parseJSON(data));
+						cornerTiles.stock(data);
 						$.post("scripts/load_morphs.php", { "amount": mapWidth, "tile_kind": 4, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-							topTiles.stock($.parseJSON(data));
+							topTiles.stock(data);
 							$.post("scripts/load_morphs.php", { "amount": 2, "tile_kind": 5, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-								tcoTiles.stock($.parseJSON(data));
+								tcoTiles.stock(data);
 								$.post("scripts/load_morphs.php", { "amount": mapWidth, "tile_kind": 6, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-									btmTiles.stock($.parseJSON(data));
+									btmTiles.stock(data);
 									$.post("scripts/load_morphs.php", { "amount": 2, "tile_kind": 7, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-										bcoTiles.stock($.parseJSON(data));
+										bcoTiles.stock(data);
 										composeMap(mapWidth, mapHeight);
 									});
 								});
@@ -550,23 +550,25 @@ $(document)
 	})
 	.on("rotate", function (event) {
 		"use strict";
-		var oldRot = iMenuTarget.data("rot");
-		inrotate = true;
-		detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
-		iMenuTarget.removeClass("rot" + oldRot).css({
-			'-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-			'-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-			'-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-			'-o-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-			'transform' : 'rotateZ(' + detectedrotate + 'deg)',
-			'-webkit-transition' : 'none',
-			'-moz-transition' : 'none',
-			'-ms-transition' : 'none',
-			'-o-transition' : 'none',
-			'transition' : 'none',
-			'zoom' : 1
-		});
-		event.gesture.preventDefault();
+		if (iMenuTarget.data("type") == 'tile') {
+			var oldRot = iMenuTarget.data("rot");
+			inrotate = true;
+			detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
+			iMenuTarget.removeClass("rot" + oldRot).css({
+				'-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+				'-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+				'-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+				'-o-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+				'transform' : 'rotateZ(' + detectedrotate + 'deg)',
+				'-webkit-transition' : 'none',
+				'-moz-transition' : 'none',
+				'-ms-transition' : 'none',
+				'-o-transition' : 'none',
+				'transition' : 'none',
+				'zoom' : 1
+			});
+			event.gesture.preventDefault();
+		}
 	})
 	.on("release", function (event) {
 		"use strict";

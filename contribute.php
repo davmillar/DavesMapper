@@ -16,7 +16,6 @@
 				<h5>Jump to a Section</h5>
 				<p>
 					<a class="widebuttonlite" href="#contrib">How to Contribute</a>
-					<a class="widebuttonlite" href="#TileThursday">#TileThursday</a>
 				</p>
 			</section>
 		</form></section>
@@ -50,10 +49,6 @@
 								<li><a href="/templates/mapTile_templates.pdf">Basic Template</a> by Marc Gelp&iacute; Mateu, who has graciously released the template under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.</li>
 							</ul>
 					</section>
-				<h2 id="TileThursday">#TileThursday</h2>
-				<p>Every Thursday is #TileThursday! On Thursday, draw a new tile to submit to the mapper and post it on your favorite social network with the hashtag #TileThursday. I'll pick my favorite and the person who drew it gets a prize! Hooray prizes!</p>
-				<h3>Current Prize on Offer</h3>
-				<p>Dave will send you a postcard with something special on it. A map? A D30 table? His mom's brownie recipe? Hmmm&hellip;</p>
 				<hr/>
 				<? include "includes/ad_468x60.php"; ?>
 			</section>

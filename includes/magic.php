@@ -16,10 +16,9 @@
 		?></div>
 	</div>
 	<a class="main" href="/submit">Submit Tiles</a>
-	<a class="main" href="/submit#TileThursday">#TileThursday</a>
 	<a class="main" href="/help">Help</a>
 	<div class="downcontainer">
-	<a class="main" href="mailto:dave@davesmapper.com">Contact</a>
+		<a class="main" href="mailto:dave@davesmapper.com">Contact</a>
 		<div class="downpanel">
 			<a href="http://facebook.com/davesmapper">Facebook</a>
 			<a href="https://plus.google.com/107206980364478824224">Google +</a>

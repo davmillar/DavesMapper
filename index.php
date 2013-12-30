@@ -92,16 +92,18 @@
 						<img src="m_icons/tb_cube.png" alt="Cube" /></label>
 				<![endif]-->		
 				<!--[if (gt IE 8)|!(IE)]><!-->
-					<input type="radio" class="btnGrp first" name="mode" value="0" id="normal" />
-						<label for="normal" title="Normal Map [shift+n]"><em class="sprite spOrig">Classic</em></label>
-					<input type="radio" class="btnGrp" name="mode" value="1" id="stagger" />
-						<label for="stagger" title="Stagger Map Rows [s]"><em class="sprite spStag">Staggered</em></label>
-					<input type="radio" class="btnGrp" name="mode" value="3" id="stagcap" />
-						<label for="stagcap" title="Stagger Map Rows, Short Rows Capped [shift+s]"><em class="sprite spStagCap">Staggered with End Caps</em></label>
-					<input type="radio" class="btnGrp" name="mode" value="2" id="endBtn" checked />
-						<label for="endBtn" title="Close Off Dungeon Edges [c]"><em class="sprite spFull">Full Map</em></label>
-					<input type="radio" class="btnGrp last" name="mode" value="4" id="cubeBtn" />
-						<label for="cubeBtn" title="Foldable Cube"><em class="sprite spCube">Cube</em></label>
+				<div class="dropradio"><div>
+					<input type="radio" class="btnDrp first" name="mode" value="0" id="normal" />
+						<label for="normal" title="Open-Edge Map [shift+n]"><em class="sprite spOrig"></em> Open-Edge</label>
+					<input type="radio" class="btnDrp" name="mode" value="1" id="stagger" />
+						<label for="stagger" title="Staggered Row Open-Edge Map [s]"><em class="sprite spStag"></em> Staggered</label>
+					<input type="radio" class="btnDrp" name="mode" value="3" id="stagcap" />
+						<label for="stagcap" title="Staggered Rows, Short Rows Capped [shift+s]"><em class="sprite spStagCap"></em> Staggered (Capped)</label>
+					<input type="radio" class="btnDrp" name="mode" value="2" id="endBtn" checked />
+						<label for="endBtn" title="Closed-Edge Map [c]"><em class="sprite spFull"></em> Closed-Edge</label>
+					<input type="radio" class="btnDrp last" name="mode" value="4" id="cubeBtn" />
+						<label for="cubeBtn" title="Foldable Cube"><em class="sprite spCube"></em> Cube</label>
+				</div></div>
 				<!--<![endif]-->
 			</div><div class="fieldset">
 				<h4 class="legend" title="Choose your map's height and width.">Map Size</h4>

@@ -19,14 +19,14 @@ a{color:#642;cursor:pointer;text-decoration:underline;}
 	background: -o-linear-gradient(top, #e6dab6 0%,#bfaf78 100%);
 	background: linear-gradient(to bottom, #e6dab6 0%,#bfaf78 100%);}
 
-#site-head{top:30px;height:64px;padding:0;font-size:24px;line-height:24px;z-index:20;overflow:visible;white-space:nowrap;
+#site-head{top:30px;height:64px;padding:0;font-size:24px;line-height:24px;z-index:30;overflow:visible;white-space:nowrap;
 }
   #site-head iframe{background:transparent !important;}
-#site-foot{color:#321;bottom:0;z-index:20;height:15px;padding:1px 15px 8px;font-size:11px;line-height:15px;cursor:default;
+#site-foot{color:#321;bottom:0;z-index:30;height:15px;padding:1px 15px 8px;font-size:11px;line-height:15px;cursor:default;
   -moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;user-select:none;overflow:hidden;}
   #site-foot iframe{display:block;margin:3px 0 0 25px;float:right !important;}
-#sidepanel{left:0;top:30px;bottom:24px;width:200px;z-index:30;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-#tilepanel{left:0;top:94px;bottom:24px;width:200px;z-index:30;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#sidepanel{left:0;top:30px;bottom:24px;width:200px;z-index:20;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#tilepanel{left:0;top:94px;bottom:24px;width:200px;z-index:20;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   #tilepanel section.collapse{width:100%;}
   #tilepanel iframe{margin:5px !important;background:#fff;}
 	#tilepanel form{margin-right:5px;}
@@ -126,8 +126,7 @@ label.labelTxt.bigLabel{width:128px;position:relative;top:-6px;}
   -webkit-transition:all 0.3s;-moz-transition:all 0.3s;-ms-transition:all 0.3s;-o-transition:all 0.3s;transition:all 0.3s;
 	-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}
 	.btnChk + label:hover,.btnGrp + label:hover,a.button:hover,.more-link:hover,input[type=submit]:hover{background-color:#b07133;}
-	a.button{margin-right:5px;}
-	#newWindowB{padding:0 7px 0 2px;}
+	a.button{margin-left:5px;padding:0 7px 0 2px;}
 .btnChk + label img,.btnGrp + label img,a.button img,.btnDrp:hover + label{vertical-align:middle;}
 .btnChk + label:active,.btnGrp + label:active,.btnGrp.down,a.button:active,.more-link:active,input[type=submit]:active,.btnChk:checked + label,.btnGrp:checked + label,.btnDrp:checked + label,.btnDrp:active + label{background-color:#752;color:#fff;
   -moz-box-shadow:inset 0 1px 1px #000;-webkit-box-shadow:inset 0 1px 1px #000;box-shadow:inset 0 1px 1px #000;}
@@ -144,7 +143,7 @@ label.labelTxt.bigLabel{width:128px;position:relative;top:-6px;}
     -webkit-border-top-right-radius:3px;-webkit-border-bottom-right-radius:3px;
     border-top-right-radius:3px;border-bottom-right-radius:3px;}
 		
-.dropradio{position:relative;margin:5px 2px 0 1px;}
+.dropradio{position:relative;margin:5px 2px 0 1px;display:inline-block;vertical-align:top;}
 	#mapTypeDrop{width:105px;}
 	#mapModeDrop{width:155px;}
 .dropradio div{position:absolute;border:1px solid #642;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;width:100%;}

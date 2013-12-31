@@ -126,7 +126,6 @@
 					<label for="removeTileExit" title="Remove Tile and Replace with Entrance/Exit"><em class="sprite spExit">Replace Tile with Exit</em></label>
 			</div><div class="fieldset">
 				<h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">View Options</h4>
-				<a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
 				<!--[if LTE IE 8]>
 					<label for="nogrid" class="shitblock" title="Don't Use a Grid">
 						<input type="radio" name="grid" value="0" id="nogrid" checked/><br/>
@@ -151,6 +150,7 @@
 				<input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex" />
 					<label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
 				<!--<![endif]-->
+				<a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
 			</div>
 		</form></header>
 		<section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
@@ -161,7 +161,7 @@
 				<li><strong>Configure your map</strong> using the toolbar above. Choose size, type, layout, and more.</li>
 				<li><strong>Click tiles</strong> and use the handy selection menu to fine-tune your generated map.</li>
 				<li><strong>Choose your map artist(s)</strong> by toggling them on the left-hand panel. Double-click an artist or hit the heart button with a tile selected to switch to a single artist.</li>
-				<li><strong>On multitouch devices</strong> use two-finger twist to rotate tiles or swipe left/right to resize the left-hand panel.</li>
+				<li><strong>On multitouch devices</strong> use two-finger twist to rotate tiles.</li>
 				<li><em>Learn more about how to submit your own tiles, who made the tiles here, and more about supporting the mapper using the navigation bar at the top of this app.</em></li>
 			</ul>
 			<p><em>Click anywhere to close.</em></p>

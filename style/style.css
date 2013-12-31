@@ -126,14 +126,13 @@ label.labelTxt.bigLabel{width:128px;position:relative;top:-6px;}
   -webkit-transition:all 0.3s;-moz-transition:all 0.3s;-ms-transition:all 0.3s;-o-transition:all 0.3s;transition:all 0.3s;
 	-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}
 	.btnChk + label:hover,.btnGrp + label:hover,a.button:hover,.more-link:hover,input[type=submit]:hover{background-color:#b07133;}
-	a.button{margin-left:5px;padding:0 10px 0 2px;}
 .btnChk + label img,.btnGrp + label img,a.button img,.btnDrp:hover + label{vertical-align:middle;}
 .btnChk + label:active,.btnGrp + label:active,.btnGrp.down,a.button:active,.more-link:active,input[type=submit]:active,.btnChk:checked + label,.btnGrp:checked + label,.btnDrp:checked + label,.btnDrp:active + label{background-color:#752;color:#fff;
   -moz-box-shadow:inset 0 1px 1px #000;-webkit-box-shadow:inset 0 1px 1px #000;box-shadow:inset 0 1px 1px #000;}
 
-  .btnChk + label,a.button,.more-link,input[type=submit]{padding:0 3px;
-    -moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
+  .btnChk + label,.more-link,input[type=submit]{padding:0 3px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
     .btnGrp + label + .btnGrp + label{margin-left:-1px !important;}
+	a.button{margin-left:5px;padding:0 10px 0 2px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
   .btnGrp.first + label{
     -moz-border-radius-topleft:3px;-moz-border-radius-bottomleft:3px;
     -webkit-border-top-left-radius:3px;-webkit-border-bottom-left-radius:3px;

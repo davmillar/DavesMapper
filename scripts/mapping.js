@@ -20,7 +20,6 @@ TileDeck.prototype.stock = function (stockpile) {
 	this.shuffle();
 };
 var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight, endcaps, corners, endstag, map_kind,
-	$tp, $curves, $tbars, $twide, $owide,
 	imgho = new Image(), scaled = false, swap = false, inrotate = false,
 	currentmode = 0, gridsize = 0, buggedyet = 0, maptype = 1, stagcount = 0, tilecount = 0, normalTileCount = 0, edgeTileCount = 0, detectedrotate = 0,
 	tileSetOptions = "", imag = "",
@@ -388,38 +387,11 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 			}
 		} while (clear === 0);
 		_gaq.push(['_trackEvent', 'Room Stocker', 'Stock']);
-	},
-	sidebarResize = function () {
-		"use strict";
-		createCookie("panelWidth", $twide, 365);
-		$owide = $twide;
-		$curves.css({'margin-left': $twide + 'px'});
-		$tbars.css({'left': $twide + 'px'});
-		if ($twide <= 125) {
-			$tp.addClass("mini").removeClass("wide");
-		} else if ($twide <= 300) {
-			$tp.removeClass("mini").removeClass("wide");
-		} else {
-			$tp.addClass("wide").removeClass("mini");
-		}
-	},
-	$setWidth = readCookie("panelWidth");
+	};
 $(document)
 	.ready(function () {
 		"use strict";
-		$tp = $("#tilepanel");
-		$owide = parseInt($tp.width(), 10);
-		if ($setWidth) { $tp.width($setWidth + "px"); }
-		$curves = $("body");
 		imgBoard = $("#tiles");
-		$tbars = $("footer, #site-head, #notification, #popup");
-		if ((/iphone|ipod|ipad/gi).test(navigator.platform)) {
-			$("#tilepanel,#site-head").addClass("mobile");
-		}
-		window.setInterval(function () {
-			$twide = parseInt($tp.width(), 10);
-			if ($twide !== $owide) { sidebarResize(); }
-		}, 200);
 		$('#newWindowB').click(exportMap);
 		artBoard = document.getElementById("drawingboard");
 		artMode = artBoard.getContext("2d");
@@ -530,24 +502,6 @@ $(document)
 	})
 	// Multitouch goodness
 	.hammer()
-	.on("swipeleft", function (event) {
-		"use strict";
-		if ($mobilemode) {
-			$twide = parseInt($tp.width(), 10);
-			$tp.width(Math.max(($twide) - 100, 0));
-			sidebarResize();
-			event.gesture.preventDefault();
-		}
-	})
-	.on("swiperight", function (event) {
-		"use strict";
-		if ($mobilemode) {
-			$twide = parseInt($tp.width(), 10);
-			$tp.width(Math.min(($twide) + 100, 500));
-			sidebarResize();
-			event.gesture.preventDefault();
-		}
-	})
 	.on("rotate", function (event) {
 		"use strict";
 		if (iMenuTarget.data("type") == 'tile') {

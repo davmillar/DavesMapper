@@ -53,7 +53,7 @@
 					</label>
 					<![endif]-->		
 				<!--[if (gt IE 8)|!(IE)]><!-->
-				<div class="dropradio"><div>
+				<div class="dropradio" id="mapTypeDrop"><div>
 					<input type="radio" class="btnDrp mtBtn first" name="maptype" value="1" id="mt_dun" checked/>
 						<label for="mt_dun" class="dropped">Dungeons</label>
 					<input type="radio" class="btnDrp mtBtn" name="maptype" value="2" id="mt_cav" />
@@ -72,6 +72,7 @@
 						<label for="mt_jet" class="dropped">Boardwalk</label>
 				</div></div>
 				<!--<![endif]-->
+				<a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New Map</a>
 			</div><div class="fieldset">
 				<h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Modes</h4>
 				<!--[if IE 8]>
@@ -92,17 +93,17 @@
 						<img src="m_icons/tb_cube.png" alt="Cube" /></label>
 				<![endif]-->		
 				<!--[if (gt IE 8)|!(IE)]><!-->
-				<div class="dropradio"><div>
+				<div class="dropradio" id="mapModeDrop"><div>
 					<input type="radio" class="btnDrp first" name="mode" value="0" id="normal" />
-						<label for="normal" title="Open-Edge Map [shift+n]"><em class="sprite spOrig"></em> Open-Edge</label>
+						<label for="normal"><em class="sprite spOrig"></em> Open-Edge</label>
 					<input type="radio" class="btnDrp" name="mode" value="1" id="stagger" />
-						<label for="stagger" title="Staggered Row Open-Edge Map [s]"><em class="sprite spStag"></em> Staggered</label>
+						<label for="stagger"><em class="sprite spStag"></em> Staggered</label>
 					<input type="radio" class="btnDrp" name="mode" value="3" id="stagcap" />
-						<label for="stagcap" title="Staggered Rows, Short Rows Capped [shift+s]"><em class="sprite spStagCap"></em> Staggered (Capped)</label>
+						<label for="stagcap"><em class="sprite spStagCap"></em> Staggered (Capped)</label>
 					<input type="radio" class="btnDrp" name="mode" value="2" id="endBtn" checked />
-						<label for="endBtn" title="Closed-Edge Map [c]"><em class="sprite spFull"></em> Closed-Edge</label>
+						<label for="endBtn"><em class="sprite spFull"></em> Closed-Edge</label>
 					<input type="radio" class="btnDrp last" name="mode" value="4" id="cubeBtn" />
-						<label for="cubeBtn" title="Foldable Cube"><em class="sprite spCube"></em> Cube</label>
+						<label for="cubeBtn"><em class="sprite spCube"></em> Cube</label>
 				</div></div>
 				<!--<![endif]-->
 			</div><div class="fieldset">
@@ -166,7 +167,6 @@
 			<p><em>Click anywhere to close.</em></p>
 		</div></section>
 		<section id="tilepanel"><form>
-			<a class="widebutton large" id="newBtn" title="Generate a New Map [n]">New Map</a>
 			<h4 class="tilegroup">Artists</h4>
 				<section class="collapse" id="artistsblock">
 				</section>

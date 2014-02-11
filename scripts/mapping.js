@@ -14,8 +14,7 @@ TileDeck.prototype.draw = function () {
 	return cardDrawn;
 };
 TileDeck.prototype.stock = function (stockpile) {
-	this.deck = [];
-	this.deck = $.parseJSON(stockpile);
+	this.deck = stockpile || [];
 	this.cursor = 0;
 	this.shuffle();
 };
@@ -210,20 +209,31 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		if (maptype !== 6) {
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * (mapHeight + mapWidth);
-			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-				mainTiles.stock(data);
-				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-					edgeTiles.stock(data);
-					$.post("scripts/load_morphs.php", { "amount": 4, "tile_kind": 3, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-						cornerTiles.stock(data);
-						composeMap(mapWidth, mapHeight);
-					});
-				});
+			$.post("scripts/load_morphs.php", { "map_kind": maptype, "artists": tileSetOptions }, function (data) {
+				var fulldata = $.parseJSON(data);
+				mainTiles.stock(fulldata[1]);
+				edgeTiles.stock(fulldata[2]);
+				cornerTiles.stock(fulldata[3]);
+				composeMap(mapWidth, mapHeight);
 			});
 		} else {
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * mapHeight;
-			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
+			
+			$.post("scripts/load_morphs.php", { "map_kind": 6, "artists": tileSetOptions }, function (data) {
+				var fulldata = $.parseJSON(data);
+				mainTiles.stock(fulldata[1]);
+				edgeTiles.stock(fulldata[2]);
+				cornerTiles.stock(fulldata[3]);
+				topTiles.stock(fulldata[4]);
+				tcoTiles.stock(fulldata[5]);
+				btmTiles.stock(fulldata[6]);
+				bcoTiles.stock(fulldata[7]);
+				composeMap(mapWidth, mapHeight);
+			});
+			
+			
+			/*$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
 				mainTiles.stock(data);
 				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": 6, "artists": tileSetOptions }, function (data) {
 					edgeTiles.stock(data);
@@ -244,7 +254,7 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 						});
 					});
 				});
-			});
+			});*/
 		}
 	},
 	selectTileSets = function () {
@@ -340,17 +350,36 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 	},
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		"use strict";
-		$.post("scripts/load_morphs.php",
-			{ "amount": 1, "tile_kind": type, "map_kind": maptype, "artists": tileSetOptions, "exit": hasexit, "old_tile": oldtile },
-			function (data) {
-				var newData = $.parseJSON(data);
-				if (newData.length > 0) {
-					$image.attr("src", "../tiles/" + newData[0].image).data("imgid", newData[0].id).data("artist", newData[0].artist_id);
-				} else {
-					$("#notification span").text("The tile sets you selected do not contain any of tiles of this kind with stairs or entrances.");
-					$("#notification").slideDown("fast");
-				}
-			});
+		if (hasexit) {
+			$("#notification span").text("Exit tiles had to be temporarily disabled while optimizations were made to keep the site online. Sorry!");
+			$("#notification").slideDown("fast");
+		}
+		var tileimg;
+		switch (type) {
+		case 2:
+			tileimg = cornerTiles.draw();
+			break;
+		case 3:
+			tileimg = edgeTiles.draw();
+			break;
+		case 4:
+			tileimg = topTiles.draw();
+			break;
+		case 5:
+			tileimg = tcoTiles.draw();
+			break;
+		case 6:
+			tileimg = btmTiles.draw();
+			break;
+		case 7:
+			tileimg = bcoTiles.draw();
+			break;
+		default:
+			tileimg = mainTiles.draw();
+			break;
+		}
+		console.log(type,tileimg);
+		$image.attr("src", "../tiles/" + tileimg.image).data("imgid", tileimg.id).data("artist", tileimg.artist_id);
 	},
 	nextGrid = function () {
 		"use strict";

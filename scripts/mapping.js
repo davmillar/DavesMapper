@@ -262,56 +262,25 @@ var createCookie = function (name, value, days) {
 			mapHeight = 4;
 			mapWidth = 3;
 		}
+		normalTileCount = mapHeight * mapWidth;
 		if (maptype !== 6) {
-			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * (mapHeight + mapWidth);
-			$.post("scripts/load_morphs.php", { "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-				var fulldata = $.parseJSON(data);
-				mainTiles.stock(fulldata[1]);
-				edgeTiles.stock(fulldata[2]);
-				cornerTiles.stock(fulldata[3]);
-				composeMap(mapWidth, mapHeight);
-			});
 		} else {
-			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * mapHeight;
-			
-			$.post("scripts/load_morphs.php", { "map_kind": 6, "artists": tileSetOptions }, function (data) {
-				var fulldata = $.parseJSON(data);
-				mainTiles.stock(fulldata[1]);
-				edgeTiles.stock(fulldata[2]);
-				cornerTiles.stock(fulldata[3]);
+		}
+		$.post("scripts/load_morphs.php", { "map_kind": maptype, "artists": tileSetOptions }, function (data) {
+			var fulldata = $.parseJSON(data);
+			mainTiles.stock(fulldata[1]);
+			edgeTiles.stock(fulldata[2]);
+			cornerTiles.stock(fulldata[3]);
+			if (maptype !== 6) {
 				topTiles.stock(fulldata[4]);
 				tcoTiles.stock(fulldata[5]);
 				btmTiles.stock(fulldata[6]);
 				bcoTiles.stock(fulldata[7]);
-				composeMap(mapWidth, mapHeight);
-			});
-			
-			
-			/*$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-				mainTiles.stock(data);
-				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-					edgeTiles.stock(data);
-					$.post("scripts/load_morphs.php", { "amount": 4, "tile_kind": 3, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-						cornerTiles.stock(data);
-						$.post("scripts/load_morphs.php", { "amount": mapWidth, "tile_kind": 4, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-							topTiles.stock(data);
-							$.post("scripts/load_morphs.php", { "amount": 2, "tile_kind": 5, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-								tcoTiles.stock(data);
-								$.post("scripts/load_morphs.php", { "amount": mapWidth, "tile_kind": 6, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-									btmTiles.stock(data);
-									$.post("scripts/load_morphs.php", { "amount": 2, "tile_kind": 7, "map_kind": 6, "artists": tileSetOptions }, function (data) {
-										bcoTiles.stock(data);
-										composeMap(mapWidth, mapHeight);
-									});
-								});
-							});
-						});
-					});
-				});
-			});*/
-		}
+			}
+			composeMap(mapWidth, mapHeight);
+		});
 	},
 	selectTileSets = function () {
 		"use strict";
@@ -323,7 +292,56 @@ var createCookie = function (name, value, days) {
 	exportMap = function () {
 		"use strict";
 		if ((currentmode === 1) || (currentmode === 3) || (currentmode === 4) || (maptype === 6)) {
-			courtney();
+			var dataURL;
+			$("#notification").slideUp("fast");
+			if ((mapWidth * mapHeight) > 36) {
+				if (!confirm("Whoa there! Your browser might choke on saving a map of this size and crash the tab and/or window. Are you sure you want to let it run?")) { return false; }
+			}
+			//artMode.clearRect(0,0,artBoard.width,artBoard.height);
+			artBoard.width = imgBoard.width() - 2;
+			artBoard.height = imgBoard.height();
+			if (currentmode === 4) {
+				artBoard.width = "900px";
+				artBoard.height = "1235px";
+			}
+			$("#tiles").find("img").each(function () {
+				artMode.save();
+				mypos = $(this).position();
+				myrot = $(this).data("rot");
+				mywid = $(this).width();
+				myhei = $(this).height();
+				imgho.src = $(this).attr("src");
+				mypos.left -= 22;
+				mypos.top -= 22;
+				if (maptype === 6) {
+					artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
+					if ((myrot % 2) === 1) {
+						artMode.scale(-1, 1);
+					}
+				} else {
+					if ((myrot % 2) === 1 && mywid > 150 && myhei < 300) {
+						mypos.left -= 150;
+						mypos.top += 75;
+					}
+					artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
+					artMode.rotate(myrot * Math.PI / 2);
+				}
+				artMode.drawImage(imgho, -(mywid / 2), -(myhei / 2), mywid, myhei);
+				artMode.restore();
+			});
+			$("#grid").find("img").each(function () {
+				artMode.save();
+				mypos = $(this).position();
+				mywid = $(this).width();
+				myhei = $(this).height();
+				imgho.src = $(this).attr("src");
+				artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
+				artMode.drawImage(imgho, -(mywid / 2), -(myhei / 2), mywid, myhei);
+				artMode.restore();
+			});
+			dataURL = artBoard.toDataURL('image/png');
+			window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
+			artBoard.width = artBoard.width * 2 / 2;
 		} else {
 			var fullMapURL, mapData;
 			if ((mapWidth * mapHeight) > 64) {
@@ -350,59 +368,6 @@ var createCookie = function (name, value, days) {
 			buggedyet = 1;
 			createCookie("buggedyet", 1, 365);
 		}
-	},
-	courtney = function () {
-		"use strict";
-		var dataURL;
-		$("#notification").slideUp("fast");
-		if ((mapWidth * mapHeight) > 36) {
-			if (!confirm("Whoa there! Your browser might choke on saving a map of this size and crash the tab and/or window. Are you sure you want to let it run?")) { return false; }
-		}
-		//artMode.clearRect(0,0,artBoard.width,artBoard.height);
-		artBoard.width = imgBoard.width() - 2;
-		artBoard.height = imgBoard.height();
-		if (currentmode === 4) {
-			artBoard.width = "900px";
-			artBoard.height = "1235px";
-		}
-		$("#tiles").find("img").each(function () {
-			artMode.save();
-			mypos = $(this).position();
-			myrot = $(this).data("rot");
-			mywid = $(this).width();
-			myhei = $(this).height();
-			imgho.src = $(this).attr("src");
-			mypos.left -= 22;
-			mypos.top -= 22;
-			if (maptype === 6) {
-				artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-				if ((myrot % 2) === 1) {
-					artMode.scale(-1, 1);
-				}
-			} else {
-				if ((myrot % 2) === 1 && mywid > 150 && myhei < 300) {
-					mypos.left -= 150;
-					mypos.top += 75;
-				}
-				artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-				artMode.rotate(myrot * Math.PI / 2);
-			}
-			artMode.drawImage(imgho, -(mywid / 2), -(myhei / 2), mywid, myhei);
-			artMode.restore();
-		});
-		$("#grid").find("img").each(function () {
-			artMode.save();
-			mypos = $(this).position();
-			mywid = $(this).width();
-			myhei = $(this).height();
-			imgho.src = $(this).attr("src");
-			artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-			artMode.drawImage(imgho, -(mywid / 2), -(myhei / 2), mywid, myhei);
-			artMode.restore();
-		});
-		dataURL = artBoard.toDataURL('image/png');
-		window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
-		artBoard.width = artBoard.width * 2 / 2;
 	},
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		"use strict";

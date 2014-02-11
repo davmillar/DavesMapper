@@ -7,7 +7,7 @@
 	$webOS= stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
 ?>
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="nevermind.appcache">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
 		<title>Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>

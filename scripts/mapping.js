@@ -1,43 +1,99 @@
-var	TileDeck = function () {
+var	TileDeck,
+		artBoard,
+		artMode,
+		imgBoard,
+		mypos,
+		myrot,
+		mywid,
+		myhei,
+		mapWidth,
+		mapHeight,
+		endcaps,
+		corners,
+		endstag,
+		map_kind,
+		imgho = new Image(),
+		scaled = false,
+		swap = false,
+		inrotate = false,
+		currentmode = 0,
+		gridsize = 0,
+		buggedyet = 0,
+		maptype = 1,
+		stagcount = 0,
+		tilecount = 0,
+		normalTileCount = 0,
+		edgeTileCount = 0,
+		detectedrotate = 0,
+		tileSetOptions = "",
+		imag = "",
+		iMenuTarget = null,
+		roomContents = [
+			"Empty",
+			"Monster(s) and Treasure",
+			"Monster(s) and Treasure",
+			"Empty, Hidden Treasure",
+			"Trap, Treasure",
+			"Trap",
+			"Monster(s)",
+			"Monster(s)",
+			"Monster(s)",
+			"Monster(s)"
+		],
+		specialContents = [
+			"Hindrance",
+			"Danger",
+			"Advantage",
+			"Mystery",
+			"Special Creature",
+			"Odor",
+			"Power"
+		],
+		$appmode = window.navigator.standalone,
+		$mobilemode = ((/iphone|ipod|ipad|android/gi).test(navigator.platform)),
+		$issafari = ((/Safari/i).test(navigator.appVersion)),
+		ua = navigator.userAgent
+		mainTiles,
+		edgeTiles,
+		cornerTiles,
+		topTiles,
+		tcoTiles,
+		btmTiles,
+		bcoTiles;
+
+TileDeck = function () {
 	this.deck = [];
 	this.cursor = 0;
 };
+
 TileDeck.prototype.shuffle = function () {
 	this.deck.sort(function () {
 		return Math.round(Math.random()) - 0.5;
 	});
 };
+
 TileDeck.prototype.draw = function () {
 	var cardDrawn = this.deck[this.cursor];
 	this.cursor += 1;
 	if ((this.cursor % this.deck.length) === 0) { this.cursor = 0; this.shuffle(); }
 	return cardDrawn;
 };
+
 TileDeck.prototype.stock = function (stockpile) {
-	this.deck = [];
-	this.deck = $.parseJSON(stockpile);
+	this.deck = stockpile || [];
 	this.cursor = 0;
 	this.shuffle();
 };
-var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight, endcaps, corners, endstag, map_kind,
-	imgho = new Image(), scaled = false, swap = false, inrotate = false,
-	currentmode = 0, gridsize = 0, buggedyet = 0, maptype = 1, stagcount = 0, tilecount = 0, normalTileCount = 0, edgeTileCount = 0, detectedrotate = 0,
-	tileSetOptions = "", imag = "",
-	iMenuTarget = null,
-	roomContents = ["Empty", "Monster(s) and Treasure", "Monster(s) and Treasure", "Empty, Hidden Treasure", "Trap, Treasure", "Trap", "Monster(s)", "Monster(s)", "Monster(s)", "Monster(s)"],
-	specialContents = ["Hindrance", "Danger", "Advantage", "Mystery", "Special Creature", "Odor", "Power"],
-	$appmode = window.navigator.standalone,
-	$mobilemode = ((/iphone|ipod|ipad|android/gi).test(navigator.platform)),
-	$issafari = ((/Safari/i).test(navigator.appVersion)),
-	ua = navigator.userAgent,
-	mainTiles = new TileDeck(),
-	edgeTiles = new TileDeck(),
-	cornerTiles = new TileDeck(),
-	topTiles = new TileDeck(),
-	tcoTiles = new TileDeck(),
-	btmTiles = new TileDeck(),
-	bcoTiles = new TileDeck(),
-	createCookie = function (name, value, days) {
+
+mainTiles = new TileDeck();
+edgeTiles = new TileDeck();
+cornerTiles = new TileDeck();
+topTiles = new TileDeck();
+tcoTiles = new TileDeck();
+btmTiles = new TileDeck();
+bcoTiles = new TileDeck();
+
+var createCookie = function (name, value, days) {
 		"use strict";
 		var date, expires;
 		if (days) {
@@ -209,20 +265,31 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 		if (maptype !== 6) {
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * (mapHeight + mapWidth);
-			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-				mainTiles.stock(data);
-				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-					edgeTiles.stock(data);
-					$.post("scripts/load_morphs.php", { "amount": 4, "tile_kind": 3, "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-						cornerTiles.stock(data);
-						composeMap(mapWidth, mapHeight);
-					});
-				});
+			$.post("scripts/load_morphs.php", { "map_kind": maptype, "artists": tileSetOptions }, function (data) {
+				var fulldata = $.parseJSON(data);
+				mainTiles.stock(fulldata[1]);
+				edgeTiles.stock(fulldata[2]);
+				cornerTiles.stock(fulldata[3]);
+				composeMap(mapWidth, mapHeight);
 			});
 		} else {
 			normalTileCount = mapHeight * mapWidth;
 			edgeTileCount = 2 * mapHeight;
-			$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
+			
+			$.post("scripts/load_morphs.php", { "map_kind": 6, "artists": tileSetOptions }, function (data) {
+				var fulldata = $.parseJSON(data);
+				mainTiles.stock(fulldata[1]);
+				edgeTiles.stock(fulldata[2]);
+				cornerTiles.stock(fulldata[3]);
+				topTiles.stock(fulldata[4]);
+				tcoTiles.stock(fulldata[5]);
+				btmTiles.stock(fulldata[6]);
+				bcoTiles.stock(fulldata[7]);
+				composeMap(mapWidth, mapHeight);
+			});
+			
+			
+			/*$.post("scripts/load_morphs.php", { "amount": normalTileCount, "tile_kind": 1, "map_kind": 6, "artists": tileSetOptions }, function (data) {
 				mainTiles.stock(data);
 				$.post("scripts/load_morphs.php", { "amount": edgeTileCount, "tile_kind": 2, "map_kind": 6, "artists": tileSetOptions }, function (data) {
 					edgeTiles.stock(data);
@@ -243,7 +310,7 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 						});
 					});
 				});
-			});
+			});*/
 		}
 	},
 	selectTileSets = function () {
@@ -339,17 +406,36 @@ var artBoard, artMode, imgBoard, mypos, myrot, mywid, myhei, mapWidth, mapHeight
 	},
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		"use strict";
-		$.post("scripts/load_morphs.php",
-			{ "amount": 1, "tile_kind": type, "map_kind": maptype, "artists": tileSetOptions, "exit": hasexit, "old_tile": oldtile },
-			function (data) {
-				var newData = $.parseJSON(data);
-				if (newData.length > 0) {
-					$image.attr("src", "../tiles/" + newData[0].image).data("imgid", newData[0].id).data("artist", newData[0].artist_id);
-				} else {
-					$("#notification span").text("The tile sets you selected do not contain any of tiles of this kind with stairs or entrances.");
-					$("#notification").slideDown("fast");
-				}
-			});
+		if (hasexit) {
+			$("#notification span").text("Exit tiles had to be temporarily disabled while optimizations were made to keep the site online. Sorry!");
+			$("#notification").slideDown("fast");
+		}
+		var tileimg;
+		switch (type) {
+		case 2:
+			tileimg = cornerTiles.draw();
+			break;
+		case 3:
+			tileimg = edgeTiles.draw();
+			break;
+		case 4:
+			tileimg = topTiles.draw();
+			break;
+		case 5:
+			tileimg = tcoTiles.draw();
+			break;
+		case 6:
+			tileimg = btmTiles.draw();
+			break;
+		case 7:
+			tileimg = bcoTiles.draw();
+			break;
+		default:
+			tileimg = mainTiles.draw();
+			break;
+		}
+		console.log(type,tileimg);
+		$image.attr("src", "../tiles/" + tileimg.image).data("imgid", tileimg.id).data("artist", tileimg.artist_id);
 	},
 	nextGrid = function () {
 		"use strict";

@@ -378,10 +378,10 @@ var createCookie = function (name, value, days) {
 		var tileimg;
 		switch (type) {
 		case 2:
-			tileimg = cornerTiles.draw();
+			tileimg = edgeTiles.draw();
 			break;
 		case 3:
-			tileimg = edgeTiles.draw();
+			tileimg = cornerTiles.draw();
 			break;
 		case 4:
 			tileimg = topTiles.draw();

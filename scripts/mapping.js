@@ -50,9 +50,9 @@ var	TileDeck,
 			"Power"
 		],
 		$appmode = window.navigator.standalone,
-		$mobilemode = ((/iphone|ipod|ipad|android/gi).test(navigator.platform)),
-		$issafari = ((/Safari/i).test(navigator.appVersion)),
-		ua = navigator.userAgent
+		$mobilemode = ((/iphone|ipod|ipad|android/gi).test(window.navigator.platform)),
+		$issafari = ((/Safari/i).test(window.navigator.appVersion)),
+		ua = window.navigator.userAgent,
 		mainTiles,
 		edgeTiles,
 		cornerTiles,
@@ -534,7 +534,7 @@ $(document)
 		if (gridsize === 3) { $("#grid").addClass("gh"); }
 		if ($("#fitwidth").is(":checked")) { scaled = true; }
 		if (($mobilemode) && (ua.indexOf("Android") >= 0)) {
-			var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8)); 
+			var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
 			if (androidversion < 3) {
 				$("body").addClass("faildroid");
 			}

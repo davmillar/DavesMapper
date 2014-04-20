@@ -1,4 +1,8 @@
 *.sublime*
+*.ftpquota
+scripts/datacache/
+blog/
+bucket/
 
 #################
 ## Eclipse

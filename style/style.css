@@ -120,7 +120,7 @@ aside.widget ul li ul.children li a{padding:7px 15px 7px 35px}
 .tile,.sv .top,.tab{width:300px;height:300px;z-index:10 !important}
 .corner{width:150px;height:150px}
 .swapfirst{z-index:100 !important;padding:30px;opacity:.5}.swapfirst.tile{width:240px;height:240px}
-.swapfirst.swapfirst{width:90px;height:90px}
+.swapfirst.corner{width:90px;height:90px}
 .nm .edge{width:300px;height:150px}.nm .edge.rot1,.nm .edge.rot3{margin-left:-75px !important;margin-right:-75px !important}
 .nm .edge.swapfirst{width:240px;height:90px}
 .nm .rot1{-moz-transform:rotateZ(90deg);-webkit-transform:rotateZ(90deg);-o-transform:rotateZ(90deg);-ms-transform:rotateZ(90deg);transform:rotateZ(90deg);filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1)}

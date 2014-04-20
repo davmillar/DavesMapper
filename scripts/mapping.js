@@ -50,8 +50,6 @@ var	TileDeck,
 			"Odor",
 			"Power"
 		],
-		$appmode = window.navigator.standalone,
-		$mobilemode = ((/iphone|ipod|ipad|android/gi).test(window.navigator.platform)),
 		$issafari = ((/Safari/i).test(window.navigator.appVersion)),
 		ua = window.navigator.userAgent,
 		tileLibrary = {};
@@ -389,7 +387,7 @@ var createCookie = function (name, value, days) {
 				$("#roomcont").append(c);
 			}
 		} while (clear === 0);
-		_gaq.push(['_trackEvent', 'Room Stocker', 'Stock']);
+		ga('send', 'event', 'Room Stocker', 'Stock');
 	};
 $(document)
 	.ready(function () {

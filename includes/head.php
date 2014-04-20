@@ -33,7 +33,7 @@
 <script src="/scripts/jquery.qtip.min.js"></script>
 <script src="/scripts/jquery.hotkeys.js"></script>
 <script src="/scripts/mydate.js"></script>
-<script src="/scripts/script_shared.js?t=<?=filemtime("/home/dmillar/public_html/scripts/script_shared.js")?>"></script>
+<script src="/scripts/global.min.js?t=<?=filemtime("/home/dmillar/public_html/scripts/global.min.js")?>"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen" />
 <![endif]-->

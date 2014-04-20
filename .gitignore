@@ -3,6 +3,8 @@
 scripts/datacache/
 blog/
 bucket/
+error_log
+*/error_log
 
 #################
 ## Eclipse

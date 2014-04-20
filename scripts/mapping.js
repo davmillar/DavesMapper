@@ -19,7 +19,6 @@ var	TileDeck,
 		scaled = false,
 		swap = false,
 		inrotate = false,
-		buggedyet = 0,
 		maptype = 1,
 		stagcount = 0,
 		tilecount = 0,
@@ -345,13 +344,6 @@ var createCookie = function (name, value, days) {
 				window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
 			}
 		}
-		if (buggedyet !== 1) {
-			if (confirm("Dave here. Thanks for using my mapper! I hate to ask, but would you be interested in taking me on a virtual Taco Bell run?")) {
-				window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVMXRJ6VVXLMY", 'DonateWindow');
-			}
-			buggedyet = 1;
-			createCookie("buggedyet", 1, 365);
-		}
 	},
 	replaceTile = function ($image, oldtile, type, hasexit) {
 		var tileimg = tileLibrary[type].draw();
@@ -435,7 +427,6 @@ $(document)
 				createCookie("popup", "original", 90);
 			});
 		}
-		buggedyet = readCookie("buggedyet");
 		$("#tilepanel").find(".collapsed").hide();
 		$("#width").val(2);
 		$("#height").val(2);

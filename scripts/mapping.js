@@ -257,7 +257,7 @@ var createCookie = function (name, value, days) {
 			tileLibrary['tile'].stock(fulldata[1]);
 			tileLibrary['edge'].stock(fulldata[2]);
 			tileLibrary['corner'].stock(fulldata[3]);
-			if (maptype !== 6) {
+			if (maptype === 6) {
 				tileLibrary['top'].stock(fulldata[4]);
 				tileLibrary['tco'].stock(fulldata[5]);
 				tileLibrary['btm'].stock(fulldata[6]);

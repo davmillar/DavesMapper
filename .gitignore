@@ -5,6 +5,7 @@ blog/
 bucket/
 error_log
 */error_log
+tiles
 
 #################
 ## Eclipse

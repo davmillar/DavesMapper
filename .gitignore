@@ -6,6 +6,8 @@ bucket/
 error_log
 */error_log
 tiles
+tiles/
+tiles/**/*
 
 #################
 ## Eclipse

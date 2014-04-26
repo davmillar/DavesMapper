@@ -1,5 +1,6 @@
-<?
-	include "/home/dmillar/public_html/cgi-bin/db_start.php";
+<?php
+  define('PATH', $_SERVER['DOCUMENT_ROOT']);
+	include PATH . "/cgi-bin/db_start.php";
 	$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
 	$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");

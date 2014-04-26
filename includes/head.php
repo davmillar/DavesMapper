@@ -1,4 +1,3 @@
-<?php define('PATH', dirname(__FILE__)); ?>
 <meta charset="utf-8" />
 <meta name="application-name" content="Dave's Mapper" />
 <meta name="application-url" content="http://www.davesmapper.com" />

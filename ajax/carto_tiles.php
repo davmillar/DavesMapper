@@ -1,4 +1,4 @@
-<?
+<?php 
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: Wed, 8 Jun 1988 05:00:00 GMT');
 	header('Content-type: application/json');

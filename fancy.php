@@ -1,11 +1,11 @@
-<? include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
+<?php include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
     <title>Dave's Mapper | RPG Map Generator</title>
     <meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>
     <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
-    <? include "includes/head.php"; ?>
+    <?php include "includes/head.php"; ?>
     <script type="text/javascript" src="scripts/jquery.hotkeys.js"></script>
     <script type="text/javascript" src="scripts/mydate.js"></script>
     <script type="text/javascript" src="scripts/json2.js"></script>
@@ -55,7 +55,7 @@
 				transform: matrix(0.75,-0.5,0,1,0,0);}
 		</style>
   </head>
-	<?
+	<?php 
 		$corners = Array(); $edges = Array(); $mains = Array(); $sides = Array(); $walls = Array();
 		$cornersget = mysql_query("SELECT image FROM tiles WHERE map_type IN (1,2,3) AND tile_type = 3 ORDER BY RAND() LIMIT 4");
 		while ($c = mysql_fetch_assoc($cornersget)) {	$corners[] = $c['image'];	}
@@ -69,11 +69,11 @@
 		while ($w = mysql_fetch_assoc($wallsget)) {	$walls[] = $w['image'];	}
 	?>
   <body>
-    <? include "includes/magic.php"; ?>    
+    <?php include "includes/magic.php"; ?>    
     <section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
     <section id="tilepanel"><form>
       <a class="widebutton large" href="/" id="newBtn" title="Back to the Mapper">Dave's Mapper</a>
-      <? include "/home/dmillar/public_html/includes/nav.php"; ?>
+      <?php include "/home/dmillar/public_html/includes/nav.php"; ?>
       <!--h4>FB News Feed</h4>
       <section class="collapse" id="news">
       </section-->
@@ -84,42 +84,42 @@
 				<div id="maincontainer">
 					<div id="rowa" class="nm">
 						<div id="rowacontainer">
-							<img src="/tiles/<?=$corners[0]?>" class="corner rot0" /><img src="/tiles/<?=$edges[0]?>" class="edge rot0" />
-							<img src="/tiles/<?=$edges[1]?>" class="edge rot3" /><img src="/tiles/<?=$mains[0]?>" class="tile rot<?=rand(0,3)?>" />
+							<img src="/tiles/<?php echo $corners[0]?>" class="corner rot0" /><img src="/tiles/<?php echo $edges[0]?>" class="edge rot0" />
+							<img src="/tiles/<?php echo $edges[1]?>" class="edge rot3" /><img src="/tiles/<?php echo $mains[0]?>" class="tile rot<?php echo rand(0,3)?>" />
 						</div>
 					</div>
 					<div id="rowb" class="sv">
 						<div id="rowbleft" class="leftslant">
-							<img src="/tiles/<?=$sides[0]?>" class="edge rot0" /><img src="/tiles/<?=$walls[0]?>" class="tile rot<?=rand(0,1)?>" />
+							<img src="/tiles/<?php echo $sides[0]?>" class="edge rot0" /><img src="/tiles/<?php echo $walls[0]?>" class="tile rot<?php echo rand(0,1)?>" />
 						</div>
 						<div id="rowbright" class="rightslant">
-							<img src="/tiles/<?=$walls[1]?>" class="tile rot<?=rand(0,1)?>" /><img src="/tiles/<?=$sides[1]?>" class="edge rot1" />
+							<img src="/tiles/<?php echo $walls[1]?>" class="tile rot<?php echo rand(0,1)?>" /><img src="/tiles/<?php echo $sides[1]?>" class="edge rot1" />
 						</div>
 					</div>
 					<div id="rowc" class="nm">
 						<div id="rowccontainer">
-							<img src="/tiles/<?=$edges[2]?>" class="edge rot0" /><img src="/tiles/<?=$corners[1]?>" class="corner rot1" /><br/>
-							<img src="/tiles/<?=$mains[1]?>" class="tile rot<?=rand(0,3)?>" /><img src="/tiles/<?=$edges[3]?>" class="edge rot1" /><br/>
-							<div style="text-align:left;"><img src="/tiles/<?=$edges[4]?>" class="edge rot3" /><img src="/tiles/<?=$mains[2]?>" class="tile rot<?=rand(0,3)?>" /><img src="/tiles/<?=$mains[3]?>" class="tile rot<?=rand(0,3)?>" /><br/>
-							<img src="/tiles/<?=$corners[2]?>" class="corner rot3" /><img src="/tiles/<?=$edges[5]?>" class="edge rot2" /></div>
+							<img src="/tiles/<?php echo $edges[2]?>" class="edge rot0" /><img src="/tiles/<?php echo $corners[1]?>" class="corner rot1" /><br/>
+							<img src="/tiles/<?php echo $mains[1]?>" class="tile rot<?php echo rand(0,3)?>" /><img src="/tiles/<?php echo $edges[3]?>" class="edge rot1" /><br/>
+							<div style="text-align:left;"><img src="/tiles/<?php echo $edges[4]?>" class="edge rot3" /><img src="/tiles/<?php echo $mains[2]?>" class="tile rot<?php echo rand(0,3)?>" /><img src="/tiles/<?php echo $mains[3]?>" class="tile rot<?php echo rand(0,3)?>" /><br/>
+							<img src="/tiles/<?php echo $corners[2]?>" class="corner rot3" /><img src="/tiles/<?php echo $edges[5]?>" class="edge rot2" /></div>
 						</div>
 					</div>
 					<div id="rowd" class="sv">
-						<img src="/tiles/<?=$sides[2]?>" class="edge rot0 rightslant" />
-						<img src="/tiles/<?=$walls[2]?>" class="tile leftslant" />
-						<img src="/tiles/<?=$walls[3]?>" class="tile rightslant" />
-						<img src="/tiles/<?=$sides[3]?>" class="edge rot1 leftslant" />
+						<img src="/tiles/<?php echo $sides[2]?>" class="edge rot0 rightslant" />
+						<img src="/tiles/<?php echo $walls[2]?>" class="tile leftslant" />
+						<img src="/tiles/<?php echo $walls[3]?>" class="tile rightslant" />
+						<img src="/tiles/<?php echo $sides[3]?>" class="edge rot1 leftslant" />
 					</div>
 					<div id="rowe" class="nm">
 						<div id="rowecontainer">
-							<img src="/tiles/<?=$edges[6]?>" class="edge rot1" /><br/>
-							<img src="/tiles/<?=$edges[7]?>" class="edge rot2" /><img src="/tiles/<?=$corners[3]?>" class="corner rot2" />
+							<img src="/tiles/<?php echo $edges[6]?>" class="edge rot1" /><br/>
+							<img src="/tiles/<?php echo $edges[7]?>" class="edge rot2" /><img src="/tiles/<?php echo $corners[3]?>" class="corner rot2" />
 						</div>
 					</div>
 				</div>
       </section>
     </section>
-    <? include "includes/footer.php"; ?>
+    <?php include "includes/footer.php"; ?>
   </body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>

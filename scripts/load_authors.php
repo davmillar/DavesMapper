@@ -1,4 +1,4 @@
-<?
+<?php 
   include "/home/dmillar/public_html/cgi-bin/db_start.php";
   
   $map_type = intval($_REQUEST['map_kind']);

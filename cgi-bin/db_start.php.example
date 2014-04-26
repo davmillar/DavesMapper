@@ -1,4 +1,4 @@
-<?
+<?php 
   $user="---your-db-username-here";
   $password="---your-pass-here---";
   $database="---your-db-name-here---";

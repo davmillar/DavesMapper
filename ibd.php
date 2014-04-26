@@ -1,15 +1,15 @@
-<? include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
+<?php include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
 		<title>IBD Tile Drive | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="The mapper's IBD tile drive landing page. RPG cartographers pledge to add new mapper tiles in exchange for fans donating to Crohn's and colitis research."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app,IBD,Crohn's,ulcerative colitis" />
-		<? include "includes/head.php"; ?>
+		<?php include "includes/head.php"; ?>
 		<script type="text/javascript" src="scripts/script_about.js"></script>
 	</head>
 	<body>
-    <? include "includes/magic.php"; ?>		
+    <?php include "includes/magic.php"; ?>		
 		<section id="tilepanel"><form>
 			<h4>Quick Links</h4>
 			<section class="collapse">
@@ -55,10 +55,10 @@
 						<g:plusone href="http://davesmapper.com/ibd"></g:plusone>
 					</section>
 				<hr/>
-				<? include "includes/ad_468x60.php"; ?>
+				<?php include "includes/ad_468x60.php"; ?>
 			</section>
 		</section>
-		<? include "includes/footer.php"; ?>
+		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>

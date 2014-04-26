@@ -25,7 +25,7 @@
 <![endif]-->
 
 <link href="http://fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
-<link href="/style/style.css?t=<?=filemtime("/home/dmillar/public_html/style/style.css")?>" rel="stylesheet" media="screen" />
+<link href="/style/style.css?t=<?php echo filemtime("/home/dmillar/public_html/style/style.css")?>" rel="stylesheet" media="screen" />
 <link href="/style/print.css" rel="stylesheet" media="print" />
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>window.jQuery || document.write("<script src='scripts/jquery.js'>\x3C/script>")</script>
@@ -33,7 +33,7 @@
 <script src="/scripts/jquery.qtip.min.js"></script>
 <script src="/scripts/jquery.hotkeys.js"></script>
 <script src="/scripts/mydate.js"></script>
-<script src="/scripts/global.min.js?t=<?=filemtime("/home/dmillar/public_html/scripts/global.min.js")?>"></script>
+<script src="/scripts/global.min.js?t=<?php echo filemtime("/home/dmillar/public_html/scripts/global.min.js")?>"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen" />
 <![endif]-->

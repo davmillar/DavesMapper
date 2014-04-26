@@ -1,4 +1,4 @@
-<?  
+<?php  
   $datafile = "./datacache/" . substr(md5($_POST['map_kind'].$_POST['artists']), 0, 15) . ".json";
   if (file_exists($datafile) && (time() - filemtime($datafile) >= 60 * 60 *24 * 5)) {
   	include($datafile);

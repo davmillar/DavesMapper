@@ -1,6 +1,8 @@
 <?php
-  define('PATH', $_SERVER['DOCUMENT_ROOT']);
+  define('PATH', dirname(__FILE__));
+
 	include PATH . "/cgi-bin/db_start.php";
+
 	$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
 	$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
@@ -194,4 +196,4 @@
 		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include PATH . "/cgi-bin/db_end.php"; ?>

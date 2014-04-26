@@ -1,4 +1,10 @@
-<?php include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
+<?php
+
+define('PATH', dirname(__FILE__));
+
+include PATH . "/cgi-bin/db_start.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
@@ -129,4 +135,4 @@
 		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include PATH . "/cgi-bin/db_end.php"; ?>

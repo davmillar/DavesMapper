@@ -1,4 +1,4 @@
-<?
+<?php 
 	include "/home/dmillar/public_html/cgi-bin/db_start.php";
 	if ($_REQUEST['artist']) {
 		$thisartist = $_REQUEST['artist'];
@@ -15,23 +15,23 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
-		<title><?=$artistdata['name']?> | Dave's Mapper | RPG Map Generator</title>
-		<meta name="description" content="Profile for RPG cartographer <?=$artistdata['name']?> on Dave's Mapper."/>
+		<title><?php echo $artistdata['name']?> | Dave's Mapper | RPG Map Generator</title>
+		<meta name="description" content="Profile for RPG cartographer <?php echo $artistdata['name']?> on Dave's Mapper."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
-		<? include "includes/head.php"; ?>
+		<?php include "includes/head.php"; ?>
 		<script type="text/javascript" src="scripts/script_about.js"></script>
 	</head>
 	<body>
-    <? include "includes/magic.php"; ?>		
+    <?php include "includes/magic.php"; ?>		
 		<section id="sidepanel"><form>
-			<h2><?=$artistdata['name']?></h2>
-			<p><?=$artistdata['bio']?></p>
-			<? if ($artistdata['url']) { ?><a href="<?=$artistdata['url']?>" target="_blank" class="widebutton"><?=$artistdata['name']?>'s Site</a><?	} ?>
+			<h2><?php echo $artistdata['name']?></h2>
+			<p><?php echo $artistdata['bio']?></p>
+			<?php if ($artistdata['url']) { ?><a href="<?php echo $artistdata['url']?>" target="_blank" class="widebutton"><?php echo $artistdata['name']?>'s Site</a><?php 	} ?>
 		</form></section>
 		<section id="viewport">
 			<section id="about">
-				<h2>Tiles Contributed by <?=$artistdata['name']?></h2>
-					<?
+				<h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
+					<?php 
 						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
 						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
 						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
@@ -44,36 +44,36 @@
 					<table id="cartomagic">
 						<tr>
 							<th></th>
-							<? foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?=$tname?></th><? } ?>
+							<?php foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
 							<th>Map Type Total</th>
 						</tr>
-						<? foreach ($mtypes as $mname=>$mid) { ?>
-							<? $rowtotal = 0; ?>
-							<tr><th><?=$mname?></th>
-								<? foreach ($ttypes as $tname=>$tid) { ?>
-									<td class="showme" data-carto="<?=$artistdata['id']?>" data-ttype="<?=$tid?>" data-mtype="<?=$mid?>">
-										<?=($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?>
+						<?php foreach ($mtypes as $mname=>$mid) { ?>
+							<?php $rowtotal = 0; ?>
+							<tr><th><?php echo $mname?></th>
+								<?php foreach ($ttypes as $tname=>$tid) { ?>
+									<td class="showme" data-carto="<?php echo $artistdata['id']?>" data-ttype="<?php echo $tid?>" data-mtype="<?php echo $mid?>">
+										<?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?>
 									</td>
-									<? $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
+									<?php $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
 										$totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0); ?>
-								<? } ?>
-								<td><strong><?=$rowtotal?></strong></td>
+								<?php } ?>
+								<td><strong><?php echo $rowtotal?></strong></td>
 							</tr>
-						<? } ?>
-						<? $rowtotal = 0; ?>
+						<?php } ?>
+						<?php $rowtotal = 0; ?>
 						<tr><th>Tile Type Total</th>
-							<? foreach ($totals as $tid=>$tsum) { ?>
-								<td><strong><?=$tsum?></strong></td>
-								<? $rowtotal += $tsum; ?>
-							<? } ?>
-							<td><strong><?=$rowtotal?></strong></td>
+							<?php foreach ($totals as $tid=>$tsum) { ?>
+								<td><strong><?php echo $tsum?></strong></td>
+								<?php $rowtotal += $tsum; ?>
+							<?php } ?>
+							<td><strong><?php echo $rowtotal?></strong></td>
 						</tr>
 					</table>
 					<div id="cartoload"></div>
 					<div id="cartoloadanim"><img src="/images/ajax-loader.gif" alt="Loading..." /></div>
 			</section>
 		</section>
-		<? include "includes/footer.php"; ?>
+		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>

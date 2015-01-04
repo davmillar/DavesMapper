@@ -1,1 +1,1 @@
-<? mysql_close(); ?>
+<?php mysql_close(); ?>

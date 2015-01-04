@@ -1,4 +1,4 @@
-<?
+<?php 
   include "/home/dmillar/public_html/cgi-bin/db_start.php";
   
   $data = base64_decode($_REQUEST['mapData']);

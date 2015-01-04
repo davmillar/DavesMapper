@@ -1,15 +1,21 @@
-<? include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
+<?php
+
+define('PATH', dirname(__FILE__));
+
+include PATH . "/cgi-bin/db_start.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
 		<title>Supporters | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Information on the people supporting the Dave's Mapper web app for role-playing enthusiasts. Includes information on the tile artists and mapper contributors."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
-		<? include "includes/head.php"; ?>
+		<?php include "includes/head.php"; ?>
 		<script type="text/javascript" src="scripts/script_about.js"></script>
 	</head>
 	<body>
-    <? include "includes/magic.php"; ?>
+    <?php include "includes/magic.php"; ?>
 		<section id="tilepanel"><form>
 			<h4>Quick Links</h4>
 			<section class="collapse">
@@ -30,7 +36,7 @@
           <p>Dave's Mapper started out as an improvement on the mappers made by <a href="http://www.thefreerpgblog.com/" target="_blank">Rob Lang</a>. When I noticed that wide maps broke across lines rather than being the proper size, I wrote a line or two of code that could fix it, as well as a few lines to randomly rotate tiles for an extra feature.</p>
           <p>Shortly thereafter, I came up with my own set of tiles and thought it would be fun to make my own mapper for my tiles; one that would fix some of the issues and add the features not present in Rob's mappers. I soon asked a few other tile artists if they would be interested in having their tiles featured, and off I went building this mapper you see here. The support from the community has been awesome and I can't thank everyone enough!</p>
 				<h2 id="alltiles">Tiles Contributed</h2>
-					<?
+					<?php 
 						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
 						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
 						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
@@ -43,39 +49,39 @@
 					<table>
 						<tr>
 							<th></th>
-							<? foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?=$tname?></th><? } ?>
+							<?php foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
 							<th>Map Type Total</th>
 						</tr>
-						<? foreach ($mtypes as $mname=>$mid) { ?>
-							<? $rowtotal = 0; ?>
-							<tr><th><?=$mname?></th>
-								<? foreach ($ttypes as $tname=>$tid) { ?>
-									<td><?=($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?></td>
-									<? $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
+						<?php foreach ($mtypes as $mname=>$mid) { ?>
+							<?php $rowtotal = 0; ?>
+							<tr><th><?php echo $mname?></th>
+								<?php foreach ($ttypes as $tname=>$tid) { ?>
+									<td><?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?></td>
+									<?php $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
 										$totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0); ?>
-								<? } ?>
-								<td><strong><?=$rowtotal?></strong></td>
+								<?php } ?>
+								<td><strong><?php echo $rowtotal?></strong></td>
 							</tr>
-						<? } ?>
-						<? $rowtotal = 0; ?>
+						<?php } ?>
+						<?php $rowtotal = 0; ?>
 						<tr><th>Tile Type Total</th>
-							<? foreach ($totals as $tid=>$tsum) { ?>
-								<td><strong><?=$tsum?></strong></td>
-								<? $rowtotal += $tsum; ?>
-							<? } ?>
-							<td><strong><?=$rowtotal?></strong></td>
+							<?php foreach ($totals as $tid=>$tsum) { ?>
+								<td><strong><?php echo $tsum?></strong></td>
+								<?php $rowtotal += $tsum; ?>
+							<?php } ?>
+							<td><strong><?php echo $rowtotal?></strong></td>
 						</tr>
 					</table>
 				<h2 id="dice"><a href="http://www.dungeonmorphs.com/">DungeonMorph Dice</a></h2>
 					<p>The awesome concept and planning by Joe Wetzel of Inkwell Ideas turned into the <a href="http://www.dungeonmorphs.com/">DungeonMorph Dice</a> project. I'm glad to have been a part of it, and happy that the mapper played a small role in bringing together some of the contributors to his project. Check out the dice, cards, font, and other cool stuff Joe is making with map tiles over at <a href="http://www.dungeonmorphs.com/">DungeonMorphs.com</a>.</p>
 				<h2 id="authors">Cartographers' Profiles</h2>
 					<section class="columns"><ul>
-					<?
+					<?php 
 						$artistdata = mysql_query("SELECT url_slug, name FROM artists ORDER BY name ASC");
 						if (mysql_num_rows($artistdata) > 0) {
 							while ($thisartist = mysql_fetch_array($artistdata)) { ?>
-								<li><a href="/supporters/<?=$thisartist['url_slug']?>"><?=$thisartist['name']?></a></li>
-							<? }
+								<li><a href="/supporters/<?php echo $thisartist['url_slug']?>"><?php echo $thisartist['name']?></a></li>
+							<?php }
 						}
 					?></ul></section>
 
@@ -123,10 +129,10 @@
 					</section>
 					<p>As of 2012, I'm no longer asking for sandwich donations. Instead, I'm asking for any amount you'd like to give toward my personal medical expenses and/or donations toward the Crohn's and Colitis Foundation of America. Links for those are in the footer.</p>
 				<hr/>
-				<? include "includes/ad_468x60.php"; ?>
+				<?php include "includes/ad_468x60.php"; ?>
 			</section>
 		</section>
-		<? include "includes/footer.php"; ?>
+		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include PATH . "/cgi-bin/db_end.php"; ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 	include "../cgi-bin/db_start.php";
 	session_start();
 	
@@ -105,26 +105,26 @@
   <head>
     <title>Admin Area | Dave's Mapper | RPG Map Generator</title>
     <meta name="robots" content="noindex,nofollow" />
-    <? include "/home/dmillar/public_html/includes/head.php"; ?>
+    <?php include "/home/dmillar/public_html/includes/head.php"; ?>
   </head>
   <body>
-    <? include "/home/dmillar/public_html/includes/magic.php"; ?>
+    <?php include "/home/dmillar/public_html/includes/magic.php"; ?>
     <section id="sidepanel">
 		
 		</section>
     <section id="viewport">
       <section id="about">
         <h1>Cartographer Tools</h1>
-        <?
+        <?php 
 					if ($_SESSION['message']) {
 						echo $_SESSION['message'];
-						?><hr /><?
+						?><hr /><?php 
 						unset($_SESSION['message']);
 					}
 					if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
 						$tileprefix = "";
 						if ($_POST['action'] == "add_tile_m") {
-							?><h2>Results</h2><?
+							?><h2>Results</h2><?php 
 							$hexit = (isset($_POST['hasexit_m']) && $_POST['hasexit_m'] == "1") ? 1 : 0;
 							$imagebit = mysql_real_escape_string($_POST['imagefn_m']);
 							$r_start = intval($_POST['start_m']);
@@ -136,11 +136,11 @@
 														 VALUES ('".$full_name."', ".intval($_POST['ttype_m']).", ".intval($_POST['mtype_m']).", ".intval($_POST['artist_m']).", ".$hexit.", 1)");
 								$result = mysql_insert_id();
 								if ($result) {
-									?><img src="/tiles/<?=$full_name?>" alt="Tile Preview" style="width:100px;" /><?
+									?><img src="/tiles/<?php echo $full_name?>" alt="Tile Preview" style="width:100px;" /><?php 
 								}
 							}
 							$tileprefix = substr($_POST['imagefn_m'],0,strrpos($_POST['imagefn_m'],"/",-1)+1);
-							?><hr/><?
+							?><hr/><?php 
 						}
 						
 						if (isset($_POST['artist'])) {
@@ -178,47 +178,47 @@
 									<input type="file" name="tileImg" id="tileImg" /><br/>
 										<label for="tileImg" class="labelTxt tBox">Image Path</label>
 								</div>
-								<? if ($_SESSION['liuser'] == 17) { ?>
+								<?php if ($_SESSION['liuser'] == 17) { ?>
 									<div class="fieldset">
 										<h4 class="legend">Tile Artist</h4>
-										<select name="artist" id="artist"><?
+										<select name="artist" id="artist"><?php 
 											$artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
 											if (mysql_num_rows($artistdata) > 0) {
 												while ($thisartist = mysql_fetch_array($artistdata)) { ?>
-													<option value="<?=$thisartist['id']?>" <?=(($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?=$thisartist['name']?></option>
-												<? }
+													<option value="<?php echo $thisartist['id']?>" <?php echo (($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?php echo $thisartist['name']?></option>
+												<?php }
 											}
 										?></select><br/>
 											<label for="artist" class="labelTxt">Artist</label>
 									</div>
-								<? } else { ?>
-									<input type="hidden" name="artist" value="<?=$_SESSION['liuser']?>" />
-								<? } ?>
+								<?php } else { ?>
+									<input type="hidden" name="artist" value="<?php echo $_SESSION['liuser']?>" />
+								<?php } ?>
 								<div class="fieldset">
 									<h4 class="legend">Tile Data</h4>
 									<select name="mtype" id="mtype">
-										<option value="1" <?=(($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
-										<option value="2" <?=(($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
-										<option value="3" <?=(($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
-										<option value="4" <?=(($mmtype == 4) ? 'selected' : '')?>>City</option>
-										<option value="5" <?=(($mmtype == 5) ? 'selected' : '')?>>Village</option>
-										<option value="6" <?=(($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
-										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
-										<option value="8" <?=(($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
+										<option value="1" <?php echo (($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
+										<option value="2" <?php echo (($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
+										<option value="3" <?php echo (($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
+										<option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
+										<option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
+										<option value="6" <?php echo (($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
+										<option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+										<option value="8" <?php echo (($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
 									</select>
 									<select name="ttype" id="ttype">
 										<optgroup label="Regular" id="nmbits">
-											<option value="1" <?=(($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
-											<option value="2" <?=(($tttype == 2) ? 'selected' : '')?>>Edge (300x150px)</option>
-											<option value="3" <?=(($tttype == 3) ? 'selected' : '')?>>Corner (150x150px)</option>
+											<option value="1" <?php echo (($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
+											<option value="2" <?php echo (($tttype == 2) ? 'selected' : '')?>>Edge (300x150px)</option>
+											<option value="3" <?php echo (($tttype == 3) ? 'selected' : '')?>>Corner (150x150px)</option>
 										</optgroup>
 										<optgroup label="Side View" id="svbits" style="display:none;">
-											<option value="4" <?=(($tttype == 4) ? 'selected' : '')?>>Top (300x300px)</option>
-											<option value="5" <?=(($tttype == 5) ? 'selected' : '')?>>Top Corner (150x300px)</option>
-											<option value="1" <?=(($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
-											<option value="2" <?=(($tttype == 2) ? 'selected' : '')?>>Edge (150x300px)</option>
-											<option value="6" <?=(($tttype == 6) ? 'selected' : '')?>>Bottom (300x300px)</option>
-											<option value="7" <?=(($tttype == 7) ? 'selected' : '')?>>Bottom Corner (150x300px)</option>
+											<option value="4" <?php echo (($tttype == 4) ? 'selected' : '')?>>Top (300x300px)</option>
+											<option value="5" <?php echo (($tttype == 5) ? 'selected' : '')?>>Top Corner (150x300px)</option>
+											<option value="1" <?php echo (($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
+											<option value="2" <?php echo (($tttype == 2) ? 'selected' : '')?>>Edge (150x300px)</option>
+											<option value="6" <?php echo (($tttype == 6) ? 'selected' : '')?>>Bottom (300x300px)</option>
+											<option value="7" <?php echo (($tttype == 7) ? 'selected' : '')?>>Bottom Corner (150x300px)</option>
 										</optgroup>
 									</select><br/>
 										<label for="mtype" class="labelTxt">Map Type</label>
@@ -242,13 +242,13 @@
 								<img src="/images/svinfo1.png" style="height:300px;" />
 								<img src="/images/svinfo2.png" style="height:300px;" />
 								<img src="/images/svinfo3.png" style="height:300px;" />
-							</section><?
+							</section><?php 
 						if ($_SESSION['liuser'] == 17) {
 							?><h2>Add Tile Range to DB</h2>
 							<form method="post" action="/admin/" class="admin">
 								<div class="fieldset">
 									<h4 class="legend">Image Path</h4>
-									<input type="text" name="imagefn_m" id="imagefn_m" autocomplete="off" value="<?=$tileprefix?>" />
+									<input type="text" name="imagefn_m" id="imagefn_m" autocomplete="off" value="<?php echo $tileprefix?>" />
 									<input type="number" name="start_m" id="start_m" autocomplete="off" />
 									<input type="number" name="end_m" id="end_m" autocomplete="off" />
 									<input type="number" name="deci_m" id="deci_m" autocomplete="off" /><br/>
@@ -257,45 +257,45 @@
 										<label for="end_m" class="labelTxt nBox">End</label>
 										<label for="deci_m" class="labelTxt nBox">Places</label>
 								</div>
-								<? if ($_SESSION['liuser'] == 17) { ?>
+								<?php if ($_SESSION['liuser'] == 17) { ?>
 									<div class="fieldset">
 										<h4 class="legend">Tile Artist</h4>
-										<select name="artist_m" id="artist_m"><?
+										<select name="artist_m" id="artist_m"><?php 
 											$artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
 											if (mysql_num_rows($artistdata) > 0) {
 												while ($thisartist = mysql_fetch_array($artistdata)) { ?>
-													<option value="<?=$thisartist['id']?>" <?=(($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?=$thisartist['name']?></option>
-												<? }
+													<option value="<?php echo $thisartist['id']?>" <?php echo (($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?php echo $thisartist['name']?></option>
+												<?php }
 											}
 										?></select><br/>
 											<label for="artist_m" class="labelTxt">Artist</label>
 									</div>
-								<? } else { ?>
-									<input type="hidden" name="artist_m" value="<?=$_SESSION['liuser']?>" />
-								<? } ?>
+								<?php } else { ?>
+									<input type="hidden" name="artist_m" value="<?php echo $_SESSION['liuser']?>" />
+								<?php } ?>
 								<div class="fieldset">
 									<h4 class="legend">Tile Data</h4>
 									<select name="mtype_m" id="mtype_m">
-										<option value="1" <?=(($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
-										<option value="2" <?=(($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
-										<option value="3" <?=(($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
-										<option value="4" <?=(($mmtype == 4) ? 'selected' : '')?>>City</option>
-										<option value="5" <?=(($mmtype == 5) ? 'selected' : '')?>>Village</option>
-										<option value="6" <?=(($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
-										<option value="7" <?=(($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
-										<option value="8" <?=(($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
+										<option value="1" <?php echo (($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
+										<option value="2" <?php echo (($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
+										<option value="3" <?php echo (($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
+										<option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
+										<option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
+										<option value="6" <?php echo (($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
+										<option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+										<option value="8" <?php echo (($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
 									</select>
 									<select name="ttype_m" id="ttype_m">
 										<optgroup label="All">
-											<option value="1" <?=(($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
-											<option value="2" <?=(($tttype == 2) ? 'selected' : '')?>>Edge (300x150px)</option>
-											<option value="3" <?=(($tttype == 3) ? 'selected' : '')?>>Corner (150x150px)</option>
+											<option value="1" <?php echo (($tttype == 1) ? 'selected' : '')?>>Tile (300x300px)</option>
+											<option value="2" <?php echo (($tttype == 2) ? 'selected' : '')?>>Edge (300x150px)</option>
+											<option value="3" <?php echo (($tttype == 3) ? 'selected' : '')?>>Corner (150x150px)</option>
 										</optgroup>
 										<optgroup label="Side View">
-											<option value="4" <?=(($tttype == 4) ? 'selected' : '')?>>Top (300x300px)</option>
-											<option value="5" <?=(($tttype == 5) ? 'selected' : '')?>>Top Corner (300x150px)</option>
-											<option value="6" <?=(($tttype == 6) ? 'selected' : '')?>>Bottom (300x300px)</option>
-											<option value="7" <?=(($tttype == 7) ? 'selected' : '')?>>Bottom Corner (300x150px)</option>
+											<option value="4" <?php echo (($tttype == 4) ? 'selected' : '')?>>Top (300x300px)</option>
+											<option value="5" <?php echo (($tttype == 5) ? 'selected' : '')?>>Top Corner (300x150px)</option>
+											<option value="6" <?php echo (($tttype == 6) ? 'selected' : '')?>>Bottom (300x300px)</option>
+											<option value="7" <?php echo (($tttype == 7) ? 'selected' : '')?>>Bottom Corner (300x150px)</option>
 										</optgroup>
 									</select><br/>
 										<label for="mtype_m" class="labelTxt">Map Type</label>
@@ -341,7 +341,7 @@
 										<input type="hidden" name="action" value="add_carto" />      
 										<input type="submit" value="Add Cartographer" />
 									</div>
-								</form><?
+								</form><?php 
 						}
 						?><h2>Change Password</h2>
 							<form method="post" action="/admin/" class="admin">
@@ -359,7 +359,7 @@
 								</div>
 							</form>
 							
-							<a href="/admin/?action=log_me_out" class="widebuttonlite">Log Out</a><?
+							<a href="/admin/?action=log_me_out" class="widebuttonlite">Log Out</a><?php 
 					} else {
 						?><h2>Cartographer Login</h2>
 							<form method="post" action="/admin/" class="admin">
@@ -375,7 +375,7 @@
 									<input type="hidden" name="action" value="log_me_in" />      
 									<input type="submit" value="Log Me In" />
 								</div>
-							</form><?
+							</form><?php 
 					}
 				?>
 			</section>
@@ -393,4 +393,4 @@
 		</script>
   </body>
 </html>
-<? include "../cgi-bin/db_end.php"; ?>
+<?php include "../cgi-bin/db_end.php"; ?>

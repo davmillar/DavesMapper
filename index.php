@@ -1,5 +1,8 @@
-<?
-	include "/home/dmillar/public_html/cgi-bin/db_start.php";
+<?php
+  define('PATH', dirname(__FILE__));
+
+	include PATH . "/cgi-bin/db_start.php";
+
 	$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
 	$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
@@ -13,16 +16,16 @@
 		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<meta name="wot-verification" content="fb53c891a20198877c5e" />
-		<? include "includes/head.php"; ?>
+		<?php include "includes/head.php"; ?>
 		<script type="text/javascript" src="scripts/jquery.hotkeys.js"></script>
 		<script type="text/javascript" src="scripts/mydate.js"></script>
 		<script type="text/javascript" src="scripts/json2.js"></script>
 		<script type="text/javascript" src="scripts/b64.js"></script>
 		<script type="text/javascript" src="scripts/jquery.hammer.min.js"></script>
-		<script type="text/javascript" src="scripts/mapping.min.js?t=<?=filemtime("scripts/mapping.min.js")?>"></script>
+		<script type="text/javascript" src="scripts/mapping.min.js?t=<?php echo filemtime("scripts/mapping.min.js")?>"></script>
 	</head>
 	<body>
-		<? include "includes/magic.php"; ?>
+		<?php include "includes/magic.php"; ?>
 		<header id="site-head"><form>
 			<div class="fieldset">
 				<h4 class="legend" title="Choose between different map types.">Map Type</h4>
@@ -190,7 +193,7 @@
 				<div id="tiles"></div>
 			</section>
 		</section>
-		<? include "includes/footer.php"; ?>
+		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<? include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php include PATH . "/cgi-bin/db_end.php"; ?>

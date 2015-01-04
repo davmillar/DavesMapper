@@ -3,14 +3,14 @@
 	<a class="main" href="/blog">Blog</a>
 	<div class="downcontainer">
 		<a class="main" href="/supporters">About Us</a>
-		<div class="downpanel"><?
+		<div class="downpanel"><?php 
 			if (!$dbestablished) {
 				include "/home/dmillar/public_html/cgi-bin/db_start.php";
 			}
 			$navdata = mysql_query("SELECT url_slug, name FROM dmillar_cartography.artists ORDER BY name ASC");
 			if (mysql_num_rows($navdata) > 0) {
 				while ($nextguy = mysql_fetch_array($navdata)) {
-					?><a href="/supporters/<?=$nextguy['url_slug']?>"><?=$nextguy['name']?></a><?
+					?><a href="/supporters/<?php echo $nextguy['url_slug']?>"><?php echo $nextguy['name']?></a><?php 
 				}
 			}
 		?></div>

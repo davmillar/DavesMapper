@@ -1,5 +1,7 @@
-<?
-  include "/home/dmillar/public_html/cgi-bin/db_start.php";
+<?php 
+  define('PATH', dirname(__FILE__) . '/..');
+
+  include PATH . "/cgi-bin/db_start.php";
   
   $map_type = intval($_REQUEST['map_kind']);
     $map_type = ($map_type > 0) ? $map_type : 1;
@@ -28,5 +30,5 @@
     }
   }
  
-  include "/home/dmillar/public_html/cgi-bin/db_end.php";
+  include PATH . "/cgi-bin/db_end.php";
 ?>

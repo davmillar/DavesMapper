@@ -12,14 +12,14 @@ $(document)
 		$("#notification").slideUp("fast");
 	})
 	.on("click", "a[href*=#]", function(event){
-			if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-				var $target = $(this.hash);
-				$target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
-				if ($target.length) {
-					$('html,body').animate({scrollTop: ($target.offset().top - 125)}, 1000);
-					event.preventDefault();
-				}
+		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			var $target = $(this.hash);
+			$target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
+			if ($target.length) {
+				$('html,body').animate({scrollTop: ($target.offset().top - 125)}, 1000);
+				event.preventDefault();
 			}
+		}
 	})
 	.on("click", ".showme", function(){
 		var $me = $(this),
@@ -37,7 +37,7 @@ $(document)
 				items.push('<img src="/tiles/' + val + '" data-id="' + key + '" />');
 			});
 
-			showit = (items.length > 0) ? items.join('') : "No tiles of this type to display.";
+			showit = (items.length > 0) ? items.join('') : "There are no tiles of this type to display.";
 
 			$("#cartoload").html(showit).fadeIn("fast");
 			$("#cartoloadanim").fadeOut("fast");
@@ -74,7 +74,7 @@ $(document)
 	});
 
 (function(i,s,o,g,r,a,m){
-	i['GoogleAnalyticsObject']=r;
+	i.GoogleAnalyticsObject=r;
 	i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments);
 	};

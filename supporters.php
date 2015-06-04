@@ -36,10 +36,19 @@ include PATH . "/cgi-bin/db_start.php";
           <p>Dave's Mapper started out as an improvement on the mappers made by <a href="http://www.thefreerpgblog.com/" target="_blank">Rob Lang</a>. When I noticed that wide maps broke across lines rather than being the proper size, I wrote a line or two of code that could fix it, as well as a few lines to randomly rotate tiles for an extra feature.</p>
           <p>Shortly thereafter, I came up with my own set of tiles and thought it would be fun to make my own mapper for my tiles; one that would fix some of the issues and add the features not present in Rob's mappers. I soon asked a few other tile artists if they would be interested in having their tiles featured, and off I went building this mapper you see here. The support from the community has been awesome and I can't thank everyone enough!</p>
 				<h2 id="alltiles">Tiles Contributed</h2>
-					<?php 
+					<?php
 						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
 						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
-						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
+						$tabular = Array(
+							1 => Array(),
+							2 => Array(),
+							3 => Array(),
+							4 => Array(),
+							5 => Array(),
+							6 => Array(),
+							7 => Array(),
+							8 => Array()
+						);
 						$totals = Array();
 						$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles GROUP BY map_type, tile_type");
 						while ($td = mysql_fetch_array($tdata)) {
@@ -55,11 +64,13 @@ include PATH . "/cgi-bin/db_start.php";
 						<?php foreach ($mtypes as $mname=>$mid) { ?>
 							<?php $rowtotal = 0; ?>
 							<tr><th><?php echo $mname?></th>
-								<?php foreach ($ttypes as $tname=>$tid) { ?>
-									<td><?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?></td>
-									<?php $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
-										$totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0); ?>
-								<?php } ?>
+								<?php
+									foreach ($ttypes as $tname=>$tid) {
+										?><td><?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?></td><?php
+										$rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
+										$totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
+									}
+								?>
 								<td><strong><?php echo $rowtotal?></strong></td>
 							</tr>
 						<?php } ?>
@@ -76,7 +87,7 @@ include PATH . "/cgi-bin/db_start.php";
 					<p>The awesome concept and planning by Joe Wetzel of Inkwell Ideas turned into the <a href="http://www.dungeonmorphs.com/">DungeonMorph Dice</a> project. I'm glad to have been a part of it, and happy that the mapper played a small role in bringing together some of the contributors to his project. Check out the dice, cards, font, and other cool stuff Joe is making with map tiles over at <a href="http://www.dungeonmorphs.com/">DungeonMorphs.com</a>.</p>
 				<h2 id="authors">Cartographers' Profiles</h2>
 					<section class="columns"><ul>
-					<?php 
+					<?php
 						$artistdata = mysql_query("SELECT url_slug, name FROM artists ORDER BY name ASC");
 						if (mysql_num_rows($artistdata) > 0) {
 							while ($thisartist = mysql_fetch_array($artistdata)) { ?>

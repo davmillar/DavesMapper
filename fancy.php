@@ -6,10 +6,9 @@
     <meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>
     <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
     <?php include "includes/head.php"; ?>
-    <script type="text/javascript" src="scripts/jquery.hotkeys.js"></script>
-    <script type="text/javascript" src="scripts/mydate.js"></script>
-    <script type="text/javascript" src="scripts/json2.js"></script>
-    <script type="text/javascript" src="scripts/b64.js"></script>
+    <script src="scripts/jquery.hotkeys.js"></script>
+    <script src="scripts/json2.js"></script>
+    <script src="scripts/b64.js"></script>
 		<style type="text/css">
 			#maincontainer{
 				margin:0 auto;
@@ -55,7 +54,7 @@
 				transform: matrix(0.75,-0.5,0,1,0,0);}
 		</style>
   </head>
-	<?php 
+	<?php
 		$corners = Array(); $edges = Array(); $mains = Array(); $sides = Array(); $walls = Array();
 		$cornersget = mysql_query("SELECT image FROM tiles WHERE map_type IN (1,2,3) AND tile_type = 3 ORDER BY RAND() LIMIT 4");
 		while ($c = mysql_fetch_assoc($cornersget)) {	$corners[] = $c['image'];	}
@@ -69,7 +68,7 @@
 		while ($w = mysql_fetch_assoc($wallsget)) {	$walls[] = $w['image'];	}
 	?>
   <body>
-    <?php include "includes/magic.php"; ?>    
+    <?php include "includes/magic.php"; ?>
     <section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
     <section id="tilepanel"><form>
       <a class="widebutton large" href="/" id="newBtn" title="Back to the Mapper">Dave's Mapper</a>

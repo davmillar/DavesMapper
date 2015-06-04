@@ -1,32 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage" manifest="nevermind.appcache">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
 		<title>About | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Information, help, and tips about the Dave's Mapper web app for role-playing enthusiasts."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<?php include "includes/head.php"; ?>
-		<script type="text/javascript" src="scripts/script_about.js"></script>
+		<script src="scripts/script_about.js"></script>
 	</head>
-	<body>
+	<body class="single">
 		<?php include "includes/magic.php"; ?>
-		<section id="tilepanel"><form>
-			<h4>Quick Links</h4>
-			<section class="collapse">
-				<h5>Jump to a Section</h5>
-				<p>
-					<a class="widebutton" href="#shortcuts">Shortcuts</a>
-					<a class="widebutton" href="#modes">Modes</a>
-					<a class="widebutton" href="#tools">Tile Tools</a>
-					<a class="widebutton" href="#features">Features</a>
-					<a class="widebutton" href="#what">Symbol Key</a>
-					<a class="widebuttonlite" href="#common">Common Symbols</a>
-					<a class="widebuttonlite" href="#uncommon">Uncommon Symbols</a>
-					<a class="widebuttonlite" href="#special">Special Things</a>
-					<a class="widebuttonlite" href="#reminder">Final Reminder</a>
-					<a class="widebutton" href="#copy">Copyright/Usage</a>
-				</p>
-			</section>
-		</form></section>
 		<section id="viewport">
 			<section id="about">
 				<h3>Keyboard Shortcuts</h3>

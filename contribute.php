@@ -14,17 +14,8 @@ include PATH . "/cgi-bin/db_start.php";
 		<?php include "includes/head.php"; ?>
 		<script type="text/javascript" src="scripts/script_about.js"></script>
 	</head>
-	<body>
+	<body class="single">
     <?php include "includes/magic.php"; ?>
-		<section id="tilepanel"><form>
-			<h4>Quick Links</h4>
-			<section class="collapse">
-				<h5>Jump to a Section</h5>
-				<p>
-					<a class="widebuttonlite" href="#contrib">How to Contribute</a>
-				</p>
-			</section>
-		</form></section>
 		<section id="viewport">
 			<section id="about">
 				<h2 id="contrib">How to Contribute</h2>

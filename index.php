@@ -17,12 +17,11 @@
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<meta name="wot-verification" content="fb53c891a20198877c5e" />
 		<?php include "includes/head.php"; ?>
-		<script type="text/javascript" src="scripts/jquery.hotkeys.js"></script>
-		<script type="text/javascript" src="scripts/mydate.js"></script>
-		<script type="text/javascript" src="scripts/json2.js"></script>
-		<script type="text/javascript" src="scripts/b64.js"></script>
-		<script type="text/javascript" src="scripts/jquery.hammer.min.js"></script>
-		<script type="text/javascript" src="scripts/mapping.min.js?t=<?php echo filemtime("scripts/mapping.min.js")?>"></script>
+		<script src="scripts/jquery.hotkeys.js"></script>
+		<script src="scripts/json2.js"></script>
+		<script src="scripts/b64.js"></script>
+		<script src="scripts/jquery.hammer.min.js"></script>
+		<script src="scripts/mapping.min.js?t=<?php echo filemtime("scripts/mapping.min.js")?>"></script>
 	</head>
 	<body>
 		<?php include "includes/magic.php"; ?>
@@ -54,7 +53,7 @@
 					<label for="mt_jet" class="shitblock">
 						<input type="radio" name="maptype" value="8" id="mt_jet" /><br/>Boardwalk
 					</label>
-					<![endif]-->		
+					<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
 				<div class="dropradio" id="mapTypeDrop"><div>
 					<input type="radio" class="btnDrp mtBtn first" name="maptype" value="1" id="mt_dun" checked/>
@@ -94,7 +93,7 @@
 					<label for="cubeBtn" class="shitblock" title="Foldable Cube">
 						<input type="radio" name="mode" value="4" id="cubeBtn" /><br/>
 						<img src="m_icons/tb_cube.png" alt="Cube" /></label>
-				<![endif]-->		
+				<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
 				<div class="dropradio" id="mapModeDrop"><div>
 					<input type="radio" class="btnDrp first" name="mode" value="0" id="normal" />
@@ -142,7 +141,7 @@
 					<label for="gridhex" class="shitblock" title="Use 10-foot Grid">
 						<input type="radio" name="grid" value="3" id="gridhex" /><br/>
 						<em class="sprite spHex">Hex Grid</em></label>
-				<![endif]-->		
+				<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
 				<input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked/>
 					<label for="nogrid" title="Don't Use a Grid"><em class="sprite spX">No Grid</em></label>

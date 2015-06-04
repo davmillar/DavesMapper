@@ -62,8 +62,6 @@
 						<h3>Room Stocker</h3>
 							<p>You can get random room stocking suggestions using the room stocker. It will generate 5 rooms worth of stock at a time.</p>
 					</section>
-				<h2>New Feature Weirdness</h2>
-					<p>If you've been here before but are seeing a new feature for the first time, you may need to refresh or clear your cache to get updated JavaScript and CSS files. Although the majority of the code and style remains the same, sometimes major changes are made behind the scenes to make new features work properly.</p>
 				<h2>Saving Your Map</h2>
 					<section class="columns">
 						<p>You can save your full map as a PNG using the "Export to PNG" button in the View menu panel. This feature currently works with Normal and Capped modes.</p>
@@ -123,8 +121,6 @@
 							<h3>Fist</h3>
 							<p>A giant stone fist, or it could be wood, metal &hellip; or living flesh.</p></section>
 					</section>
-				<h2 id="reminder">Dave's Final Reminder</h2>
-					<p>As much as Dave's Mapper can help you automate the mapmaking process, you're not necessarily stuck with a dungeon feature that you hate or don't understand or want. Feel free to use the Export to PNG feature along with tools like <a href="http://www.gimp.org/">GIMP</a> or other image editing software to tailor your generated map to further meet your needs.</p>
 				<h2 id="copy">Copyright/Usage</h2>
 					<p>All tiles are owned by their respective artists and used here with permission from the artist. The tiles were made to be used in maps &#8212; so use them! But don't be a jerk &#8212; if you repost a generated map somewhere, don't claim it as your own work, and think about throwing a backlink here and/or to the tile artist(s).</p>
 					<p>The app was designed and coded by me, <a href="http://www.thegriddle.net" target="_blank">David Millar</a>, with some of the functionality based on the original Morph Mapper and Monkey Mapper written by <a href="http://www.thefreerpgblog.com/" target="_blank">Rob Lang</a>. If you make tiles and want to include them, <a href="mailto:dave@davesmapper.com?subject=Mapper">let me know</a>. If you like the GUI or the app and you're looking for a UI designer with a wealth of print and web design experience, <a href="mailto:dave@davesmapper.com">I'm your guy</a>!</p>

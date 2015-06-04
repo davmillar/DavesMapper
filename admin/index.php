@@ -1,7 +1,7 @@
-<?php 
+<?php
 	include "../cgi-bin/db_start.php";
 	session_start();
-	
+
 	$business = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
 	$folders = Array(
 		1 => 'dungeon',
@@ -12,7 +12,7 @@
 		6 => 'sideview',
 		7 => 'spaceship',
 		8 => 'boardwalk');
-	
+
 	while ($nextb = mysql_fetch_assoc($business)){
 		if (!is_dir("../tiles/".$nextb['icon'])) {
 			mkdir("../tiles/".$nextb['icon']);
@@ -25,14 +25,14 @@
 	}
 
 	function bounceOut(){ header("Location: http://davesmapper.com/admin"); exit; }
-	
+
 	if ($_GET['action'] == 'log_me_out') {
 		session_destroy();
 		session_start();
 		$_SESSION['message'] = "<p>Bye!</p>";
 		bounceOut();
 	}
-	
+
 	if ($_POST['action'] == 'log_me_in') {
 		$myquery = mysql_query("SELECT * FROM artists WHERE email = '".mysql_real_escape_string($_POST['aemail'])."' AND password = '".sha1($_POST['aemail']."bacon".$_POST['apass'])."'");
 		if (mysql_num_rows($myquery) > 0) {
@@ -46,7 +46,7 @@
 		}
 		bounceOut();
 	}
-	
+
 	if ($_POST['action'] == "add_tile_full") {
 		if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
 			$foruser = mysql_fetch_array(mysql_query("SELECT * FROM artists WHERE id = '".intval($_POST['artist'])."' LIMIT 1"));
@@ -54,7 +54,7 @@
 				$upDirectory = dirname(__FILE__) . '/../tiles/';
 				$upFilename = str_replace(" ","_",$foruser['icon'] . '/' . $folders[intval($_POST['mtype'])] . "/" . time() . $_FILES['tileImg']['name']);
 				move_uploaded_file($_FILES['tileImg']['tmp_name'], $upDirectory.$upFilename);
-				
+
 				$hexit = (isset($_POST['hasexit']) && $_POST['hasexit'] == "1") ? 1 : 0;
 				mysql_query("INSERT INTO tiles (image, tile_type, map_type, artist_id, has_exit, approved)
 										 VALUES ('".mysql_real_escape_string($upFilename)."', ".intval($_POST['ttype']).", ".intval($_POST['mtype']).", ".intval($_POST['artist']).", ".$hexit.",1)");
@@ -74,7 +74,7 @@
 		}
 		bounceOut();
 	}
-	
+
 	if ($_POST['action'] == "change_it") {
 		if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
 			if ($_POST['apass'] == $_POST['apass2']) {
@@ -90,7 +90,14 @@
 	}
 	if ($_POST['action'] == "add_carto") {
 		mysql_query("INSERT INTO artists (name, url_slug, initials, icon, url, bio, email, password)
-								 VALUES ('".mysql_real_escape_string($_POST['aname'])."', '".mysql_real_escape_string($_POST['aurlslug'])."', '".mysql_real_escape_string($_POST['ainit'])."', '".mysql_real_escape_string($_POST['aicon'])."', '".mysql_real_escape_string($_POST['alink'])."', '".mysql_real_escape_string($_POST['abio'])."', '".mysql_real_escape_string($_POST['aemail'])."', '".sha1($_POST['aemail']."bacon"."c00lt1l3sbr0")."')");
+								 VALUES ('".mysql_real_escape_string($_POST['aname'])."',
+								 				 '".mysql_real_escape_string($_POST['aurlslug'])."',
+								 				 '".mysql_real_escape_string($_POST['ainit'])."',
+								 				 '".mysql_real_escape_string($_POST['aicon'])."',
+								 				 '".mysql_real_escape_string($_POST['alink'])."',
+								 				 '".mysql_real_escape_string($_POST['abio'])."',
+								 				 '".mysql_real_escape_string($_POST['aemail'])."',
+								 				 '".sha1($_POST['aemail']."bacon".$_POST['apass'])."')");
 		$result = mysql_insert_id();
 		if ($result) {
 			$_SESSION['message'] = "<p>" .  $_POST['aname'] . " added to list of users.</p>";
@@ -110,21 +117,21 @@
   <body>
     <?php include "/home/dmillar/public_html/includes/magic.php"; ?>
     <section id="sidepanel">
-		
+
 		</section>
     <section id="viewport">
       <section id="about">
         <h1>Cartographer Tools</h1>
-        <?php 
+        <?php
 					if ($_SESSION['message']) {
 						echo $_SESSION['message'];
-						?><hr /><?php 
+						?><hr /><?php
 						unset($_SESSION['message']);
 					}
 					if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
 						$tileprefix = "";
 						if ($_POST['action'] == "add_tile_m") {
-							?><h2>Results</h2><?php 
+							?><h2>Results</h2><?php
 							$hexit = (isset($_POST['hasexit_m']) && $_POST['hasexit_m'] == "1") ? 1 : 0;
 							$imagebit = mysql_real_escape_string($_POST['imagefn_m']);
 							$r_start = intval($_POST['start_m']);
@@ -136,13 +143,13 @@
 														 VALUES ('".$full_name."', ".intval($_POST['ttype_m']).", ".intval($_POST['mtype_m']).", ".intval($_POST['artist_m']).", ".$hexit.", 1)");
 								$result = mysql_insert_id();
 								if ($result) {
-									?><img src="/tiles/<?php echo $full_name?>" alt="Tile Preview" style="width:100px;" /><?php 
+									?><img src="/tiles/<?php echo $full_name?>" alt="Tile Preview" style="width:100px;" /><?php
 								}
 							}
 							$tileprefix = substr($_POST['imagefn_m'],0,strrpos($_POST['imagefn_m'],"/",-1)+1);
-							?><hr/><?php 
+							?><hr/><?php
 						}
-						
+
 						if (isset($_POST['artist'])) {
 							$currentartistid = intval($_POST['artist']);
 						} else if (isset($_POST['artist_m'])) {
@@ -154,23 +161,23 @@
 						} else {
 							$currentartistid = 0;
 						}
-						
-						if (isset($_POST['mtype'])) { 
+
+						if (isset($_POST['mtype'])) {
 							$mmtype = $_POST['mtype'];
 						} else if (isset($_POST['mtype_m'])) {
 							$mmtype = $_POST['mtype_m'];
 						} else {
 							$mmtype = 1;
 						}
-						
-						if ($_POST['ttype']) { 
+
+						if ($_POST['ttype']) {
 							$tttype = $_POST['ttype'];
 						} else if ($_POST['ttype_m']) {
 							$tttype = $_POST['ttype_m'];
 						} else {
 							$tttype = 1;
 						}
-						
+
 						?><h2>Fully Upload Tile</h2>
 							<form method="post" action="/admin/" class="admin" enctype="multipart/form-data">
 								<div class="fieldset">
@@ -181,7 +188,7 @@
 								<?php if ($_SESSION['liuser'] == 17) { ?>
 									<div class="fieldset">
 										<h4 class="legend">Tile Artist</h4>
-										<select name="artist" id="artist"><?php 
+										<select name="artist" id="artist"><?php
 											$artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
 											if (mysql_num_rows($artistdata) > 0) {
 												while ($thisartist = mysql_fetch_array($artistdata)) { ?>
@@ -231,7 +238,7 @@
 								</div>
 								<div class="fieldset">
 									<h4 class="legend">Finish!</h4>
-									<input type="hidden" name="action" value="add_tile_full" />      
+									<input type="hidden" name="action" value="add_tile_full" />
 									<input type="submit" value="Add Tile" />
 								</div>
 							</form>
@@ -242,7 +249,7 @@
 								<img src="/images/svinfo1.png" style="height:300px;" />
 								<img src="/images/svinfo2.png" style="height:300px;" />
 								<img src="/images/svinfo3.png" style="height:300px;" />
-							</section><?php 
+							</section><?php
 						if ($_SESSION['liuser'] == 17) {
 							?><h2>Add Tile Range to DB</h2>
 							<form method="post" action="/admin/" class="admin">
@@ -260,7 +267,7 @@
 								<?php if ($_SESSION['liuser'] == 17) { ?>
 									<div class="fieldset">
 										<h4 class="legend">Tile Artist</h4>
-										<select name="artist_m" id="artist_m"><?php 
+										<select name="artist_m" id="artist_m"><?php
 											$artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
 											if (mysql_num_rows($artistdata) > 0) {
 												while ($thisartist = mysql_fetch_array($artistdata)) { ?>
@@ -308,7 +315,7 @@
 								</div>
 								<div class="fieldset">
 									<h4 class="legend">Finish!</h4>
-									<input type="hidden" name="action" value="add_tile_m" />      
+									<input type="hidden" name="action" value="add_tile_m" />
 									<input type="submit" value="Add Tile Series" />
 								</div>
 							</form>
@@ -326,11 +333,16 @@
 									<div class="fieldset">
 										<h4 class="legend">Info</h4>
 										<input type="text" name="alink" id="alink" autocomplete="off" />
-										<input type="text" name="aemail" id="aemail" autocomplete="off" />
 										<input type="text" name="aicon" id="aicon" class="little" autocomplete="off" /><br/>
 											<label for="alink" class="labelTxt tBox">Link URL</label>
-											<label for="aemail" class="labelTxt tBox">Email</label>
 											<label for="aicon" class="labelTxt nBox">.png</label>
+									</div>
+									<div class="fieldset">
+										<h4 class="legend">Auth</h4>
+										<input type="text" name="aemail" id="aemail" autocomplete="off" />
+										<input type="text" name="apass" id="apass" autocomplete="off" /><br/>
+											<label for="aemail" class="labelTxt tBox">Email</label>
+											<label for="apass" class="labelTxt tBox">Password</label>
 									</div>
 									<div class="fieldset">
 										<h4 class="legend">Bio</h4>
@@ -338,10 +350,10 @@
 									</div>
 									<div class="fieldset">
 										<h4 class="legend">Finish!</h4>
-										<input type="hidden" name="action" value="add_carto" />      
+										<input type="hidden" name="action" value="add_carto" />
 										<input type="submit" value="Add Cartographer" />
 									</div>
-								</form><?php 
+								</form><?php
 						}
 						?><h2>Change Password</h2>
 							<form method="post" action="/admin/" class="admin">
@@ -354,12 +366,12 @@
 								</div>
 								<div class="fieldset">
 									<h4 class="legend">Finish!</h4>
-									<input type="hidden" name="action" value="change_it" />      
+									<input type="hidden" name="action" value="change_it" />
 									<input type="submit" value="Change it!" />
 								</div>
 							</form>
-							
-							<a href="/admin/?action=log_me_out" class="widebuttonlite">Log Out</a><?php 
+
+							<a href="/admin/?action=log_me_out" class="widebuttonlite">Log Out</a><?php
 					} else {
 						?><h2>Cartographer Login</h2>
 							<form method="post" action="/admin/" class="admin">
@@ -372,10 +384,10 @@
 								</div>
 								<div class="fieldset">
 									<h4 class="legend">Finish!</h4>
-									<input type="hidden" name="action" value="log_me_in" />      
+									<input type="hidden" name="action" value="log_me_in" />
 									<input type="submit" value="Log Me In" />
 								</div>
-							</form><?php 
+							</form><?php
 					}
 				?>
 			</section>

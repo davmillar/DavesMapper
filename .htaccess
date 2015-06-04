@@ -4,8 +4,8 @@ RewriteEngine on
 
 RewriteBase /
 
-RewriteCond %{HTTP_HOST} ^www\.mapper\.localhost [NC]
-RewriteRule ^(.*)$ http://mapper.localhost/$1 [R=301,QSA]
+RewriteCond %{HTTP_HOST} ^www\.davesmapper\.com [NC]
+RewriteRule ^(.*)$ http://davesmapper.com/$1 [R=301,QSA]
 
 RewriteCond %{QUERY_STRING} fb_xd_fragment=
 RewriteRule (.*) $1? [R=301]

@@ -10,26 +10,12 @@ include PATH . "/cgi-bin/db_start.php";
 	<head>
 		<title>Supporters | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="Information on the people supporting the Dave's Mapper web app for role-playing enthusiasts. Includes information on the tile artists and mapper contributors."/>
-		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
+		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<?php include "includes/head.php"; ?>
-		<script type="text/javascript" src="scripts/script_about.js"></script>
+		<script src="scripts/script_about.js"></script>
 	</head>
-	<body>
+	<body class="single">
     <?php include "includes/magic.php"; ?>
-		<section id="tilepanel"><form>
-			<h4>Quick Links</h4>
-			<section class="collapse">
-				<h5>Jump to a Section</h5>
-				<p>
-					<a class="widebuttonlite" href="#alltiles" title="A grand total of all tiles submitted and included in the mapper.">Tiles Contributed</a>
-					<a class="widebuttonlite" href="#dice" title="A mapping project that many contributors to the mapper have worked on.">DungeonMorph Dice</a>
-					<a class="widebuttonlite" href="#authors" title="All of the cartographers who have created and offered up their tiles for inclusion.">Cartographers</a>
-					<a class="widebuttonlite" href="#otherguys" title="Coders, graphic editors, and others who have helped in this endeavor.">Other Contributors</a>
-					<a class="widebuttonlite" href="#donors">Donors</a>
-					<a class="widebuttonlite" href="#sandwiches">Sandwich Gallery</a>
-				</p>
-			</section>
-		</form></section>
 		<section id="viewport">
 			<section id="about">
         <h2 id="history">History</h2>
@@ -111,34 +97,7 @@ include PATH . "/cgi-bin/db_start.php";
 					</section>
 				<h2 id="donors">Donors</h2>
 					<p>In early 2011, Dave's Mapper had a funding drive to get $200 for the costs of putting the mapper on a new domain and hosting plan. Thank you to all of the donors who helped reach the $200 goal and helped keep Dave's Mapper up and running for the next 3 years!</p>
-				<h2 id="sandwiches">Tasty Sandwiches</h2>
-					<p>Lots of people help me keep going by donating so I can get a tasty sub sandwich. (I used to get burgers, but sub sandwiches are tastier and better for you.) Here's a gallery of the sandwiches I've enjoyed so far:</p>
-					<section class="columns key">
-						<section class="keyimg"><img src="images/burgers/1.png" alt="Burger 1" />
-							<h3>Aaron M.</h3>
-							<p>Slamburger from Denny's.</p></section>
-						<section class="keyimg"><img src="images/burgers/2.png" alt="Burger 2" />
-							<h3>Olivia B.</h3>
-							<p>Double Stacker from Burger King.</p></section>
-						<section class="keyimg"><img src="images/burgers/3.png" alt="Burger 3" />
-							<h3>Christian S.</h3>
-							<p>Double Stacker with extra bacon and onions added from Burger King.</p></section>
-						<section class="keyimg"><img src="images/burgers/4.png" alt="Burger 4" />
-							<h3>Greg L.</h3>
-							<p>Baconator Double from Wendy's.</p></section>
-						<section class="keyimg"><img src="images/burgers/5.png" alt="Burger 5" />
-							<h3>Sigurd J.</h3>
-							<p>Mushroom Swissburger from Checkers.</p></section>
-						<section class="keyimg"><img src="images/burgers/6.png" alt="Burger 6" />
-							<h3>James G.</h3>
-							<p>Mushroom Swissburger from Checkers.</p></section>
-						<section class="keyimg"><p>Uneaten burger donations from Daniel S. (x2), Ryan S., Aron S., and Aaron P.</p></section>
-						<section class="keyimg"><img src="images/sandwiches/1.png" alt="Sub Sandwich 1" />
-							<h3>Alexander B.</h3>
-							<p>Veggie with Guacamole on Honey Wheat from Our Town Deli</p></section>
-						<section class="keyimg"><p>Uneaten sandwich donations from R. Lang, T K Backman , Alan D., and Forrest H.</p></section>
-					</section>
-					<p>As of 2012, I'm no longer asking for sandwich donations. Instead, I'm asking for any amount you'd like to give toward my personal medical expenses and/or donations toward the Crohn's and Colitis Foundation of America. Links for those are in the footer.</p>
+					<p>If you would like to help support the mapper, please consider donations toward Dave's personal medical bills or a donation to the Crohn's and Colitis Foundation of America. Links for those are in the footer.</p>
 				<hr/>
 				<?php include "includes/ad_468x60.php"; ?>
 			</section>

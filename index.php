@@ -17,11 +17,10 @@
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<meta name="wot-verification" content="fb53c891a20198877c5e" />
 		<?php include "includes/head.php"; ?>
-		<script src="scripts/jquery.hotkeys.js"></script>
 		<script src="scripts/json2.js"></script>
 		<script src="scripts/b64.js"></script>
 		<script src="scripts/jquery.hammer.min.js"></script>
-		<script src="scripts/mapping.min.js?t=<?php echo filemtime("scripts/mapping.min.js")?>"></script>
+		<script src="assets/js/compiled_app.js?t=<?php echo filemtime("assets/js/compiled_app.js")?>"></script>
 	</head>
 	<body>
 		<?php include "includes/magic.php"; ?>

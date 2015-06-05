@@ -354,6 +354,7 @@ h4{
     content:"\25bc";
   }
 }
+
 .fieldset{
   position:relative;
   display:inline-block;
@@ -368,7 +369,7 @@ h4{
   border-style:solid;
   border-left-color:rgba(255,255,255,0.15);
   border-right-color:rgba(153,102,51,0.15);
-  h4{
+  h4 {
     position:absolute;
     top:0;
     left:0;
@@ -1540,7 +1541,8 @@ table{
 .ui-tooltip-tipsy .ui-tooltip-titlebar .ui-state-hover{
   border-color:#303030;
 }
-.ui-tooltip-tipped .ui-tooltip-titlebar,.ui-tooltip-tipped .ui-tooltip-content{
+.ui-tooltip-tipped .ui-tooltip-titlebar,
+.ui-tooltip-tipped .ui-tooltip-content{
   border:3px solid #959FA9;
   filter:none;
   -ms-filter:none;
@@ -1567,7 +1569,8 @@ table{
   background-color:#FBFBFB;
   color:#555;
 }
-.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar{
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar{
   filter:none;
   -ms-filter:none;
 }
@@ -1644,6 +1647,24 @@ table{
     -moz-column-count:2 !important;
     -webkit-column-count:2 !important;
     column-count:2 !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #newnav,
+  #tilepanel,
+  #site-foot {
+    display: none;
+  }
+
+  #site-head {
+    top:0;
+    overflow-x: scroll;
   }
 }
 

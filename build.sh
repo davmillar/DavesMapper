@@ -25,8 +25,11 @@ cat \
 echo "Combining and compressing app JS...";
 
 cat \
-  scripts/mapping.js \
+  scripts/base64_encode.js \
   scripts/jquery.hotkeys.js \
+  scripts/json2.js \
+  scripts/utf8_encode.js \
+  scripts/mapping.js \
   | yui-compressor --type=js \
   > ./assets/js/compiled_app.js;
 

@@ -43,6 +43,7 @@ include PATH . "/cgi-bin/db_start.php";
               <p>If you have graphical skills and want to help format others' tiles, send Dave an email as well.</p>
             <h3>Templates</h3>
               <ul>
+                <li><a href="/assets/pdf/template_full.pdf">Full Tile Template</a> and <a href="/assets/pdf/template_edge.pdf">Edge and Corner Tile Template</a> by Kevin Campbell.</li>
                 <li><a href="/templates/mapTile_templates.pdf">Basic Template</a> by Marc Gelp&iacute; Mateu, who has graciously released the template under <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.</li>
               </ul>
           </section>

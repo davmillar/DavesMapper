@@ -536,7 +536,7 @@ $(document)
 	.on("dragstart", "#tiles img", function (event) {
 		var e = event.originalEvent;
 
-		if (swap) { return; }
+		if (swap || !e) { return; }
 		selectedTile = $(this);
 		$(".selTile").removeClass("selTile");
 		selectedTile.addClass("selTile");

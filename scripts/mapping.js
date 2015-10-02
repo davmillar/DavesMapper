@@ -554,14 +554,39 @@ $(document)
 		event = event.originalEvent;
 		event.preventDefault();
 		if (event.dataTransfer.getData("text/html") == "Swap") {
-			if (selectedTile.data("type") !== $(this).data("type")) { return false; }
-			firstTile = {"image": selectedTile.attr("src"), "id": selectedTile.data("imgid"), "artist": selectedTile.data("artist"), "rotation": selectedTile.data("rot") };
-			secondTile = {"image": $(this).attr("src"), "id": $(this).data("imgid"), "artist": $(this).data("artist"), "rotation": $(this).data("rot") };
-			selectedTile.attr("src", secondTile.image).data("imgid", secondTile.id).data("artist", secondTile.artist).removeClass("swapfirst");
-			$(this).attr("src", firstTile.image).data("imgid", firstTile.id).data("artist", firstTile.artist);
+			if (selectedTile.data("type") !== $(this).data("type")) {
+        return false;
+      }
+			firstTile = {
+        "image": selectedTile.attr("src"),
+        "id": selectedTile.data("imgid"),
+        "artist": selectedTile.data("artist"),
+        "rotation": selectedTile.data("rot")
+      };
+			secondTile = {
+        "image": $(this).attr("src"),
+        "id": $(this).data("imgid"),
+        "artist": $(this).data("artist"),
+        "rotation": $(this).data("rot")
+      };
+			selectedTile
+        .attr("src", secondTile.image)
+        .data("imgid", secondTile.id)
+        .data("artist", secondTile.artist)
+        .removeClass("swapfirst");
+			$(this)
+        .attr("src", firstTile.image)
+        .data("imgid", firstTile.id)
+        .data("artist", firstTile.artist);
 			if ($(this).data("type") == "tile") {
-				selectedTile.data("rot", secondTile.rotation).removeClass("rot"+firstTile.rotation).addClass("rot"+secondTile.rotation);
-				$(this).data("rot", firstTile.rotation).removeClass("rot"+secondTile.rotation).addClass("rot"+firstTile.rotation);
+				selectedTile
+          .data("rot", secondTile.rotation)
+          .removeClass("rot"+firstTile.rotation)
+          .addClass("rot"+secondTile.rotation);
+				$(this)
+          .data("rot", firstTile.rotation)
+          .removeClass("rot"+secondTile.rotation)
+          .addClass("rot"+firstTile.rotation);
 			}
 			selectedTile = $(this);
 			$(".selTile").removeClass("selTile");

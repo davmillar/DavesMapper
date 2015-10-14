@@ -36,7 +36,7 @@
   }
 
   // Function for getting the tile data, opening the image file, and adding the image data to the map.
-  function nextTile($img, $tileData, $data, $n, $dx, $dy, $tw = 300, $th = 300) {
+  function nextTile(&$img, &$tileData, &$data, $n, $dx, $dy, $tw = 300, $th = 300) {
     // Get tile ID from JSON data
     $tileId = intval($data->tiles[$n]);
     // Compose filename and die if it isn't there

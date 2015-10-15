@@ -347,6 +347,7 @@ var createCookie = function (name, value, days) {
       dataURL = artBoard.toDataURL('image/png');
       window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       artBoard.width = artBoard.width * 2 / 2;
+      ga('send', 'event', 'Export', 'Canvas');
     } else {
       var fullMapURL, mapData;
       if ((mapSettings.width * mapSettings.height) > 64) {

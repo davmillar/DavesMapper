@@ -1,4 +1,4 @@
-var  TileDeck,
+var TileDeck,
     artBoard,
     artMode,
     imgBoard,
@@ -116,27 +116,47 @@ var createCookie = function (name, value, days) {
     createCookie(name, "", -1);
   },
   appendTab = function (rotation) {
-    $("#tiles").append("<img class='tab rot" + rotation + "' data-rot='" + rotation + "' data-type='tab' src='../images/tab.png'/>");
+    var newTab = document.createElement('img'),
+        tilesElement = document.getElementById('tiles');
+
+    newTab.classList.add('tab');
+    newTab.classList.add('rot' + rotation);
+    newTab.setAttribute('data-rot', rotation);
+    newTab.setAttribute('data-type', 'tab');
+    newTab.setAttribute('src', '../images/tab.png');
+    tilesElement.appendChild(newTab);
   },
   appendTile = function (type, rotation) {
-    var newTile = tileLibrary[type].draw();
+    var newTile = tileLibrary[type].draw(),
+        newTileImage = document.createElement('img'),
+        tilesElement = document.getElementById('tiles');
 
-    $("#tiles").append("<img draggable='true' class='" + type + " rot" + rotation + "' data-rot='" + rotation + "' data-type='" + type + "' data-imgid='" + newTile.id + "' data-artist='" + newTile.artist_id + "' src='../tiles/" + newTile.image + "'/>");
+    newTileImage.classList.add(type);
+    newTileImage.classList.add('rot' + rotation);
+    newTileImage.setAttribute('data-rot', rotation);
+    newTileImage.setAttribute('data-type', type);
+    newTileImage.setAttribute('data-imgid', newTile.id);
+    newTileImage.setAttribute('data-artist', newTile.artist_id);
+    newTileImage.setAttribute('src', '../tiles/' + newTile.image);
+    newTileImage.setAttribute('draggable', 'true');
+    tilesElement.appendChild(newTileImage);
   },
   applyGridOverlay = function (gridType) {
+    var gridElement = document.getElementById('grid');
+
     mapSettings.gridType = parseInt(gridType, 10);
     switch (mapSettings.gridType) {
       case 1:
-        $("#grid").css("background","url(../grid_15.png)");
+        gridElement.style.background = "url(../grid_15.png)";
         break;
       case 2:
-        $("#grid").css("background","url(../grid_30.png)");
+        gridElement.style.background = "url(../grid_30.png)";
         break;
       case 3:
-        $("#grid").css("background","url(../images/hex.png)");
+        gridElement.style.background = "url(../images/hex.png)";
         break;
       default:
-        $("#grid").css("background","transparent");
+        gridElement.style.background = "transparent";
         break;
     }
     ga('send', 'event', 'Grid', 'Type ' + gridType);
@@ -549,71 +569,71 @@ $(document)
   .on("dragstart", "#tiles img", function (event) {
     var e = event.originalEvent;
 
-		if (swap || !e) { return; }
-		selectedTile = $(this);
-		$(".selTile").removeClass("selTile");
-		selectedTile.addClass("selTile");
-		e.dataTransfer.effectAllowed = "move";
-		e.dataTransfer.setData("text/html","Swap");
+    if (swap || !e) { return; }
+    selectedTile = $(this);
+    $(".selTile").removeClass("selTile");
+    selectedTile.addClass("selTile");
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html","Swap");
     ga('send', 'event', 'Swap', 'Drag Start');
-	})
-	// Handle dropping a tile
-	.on("dragover", "#tiles img", function (event) {
-		event.originalEvent.preventDefault();
-	})
-	.on("drop", "#tiles img", function (event) {
-		var firstTile,
-				secondTile;
+  })
+  // Handle dropping a tile
+  .on("dragover", "#tiles img", function (event) {
+    event.originalEvent.preventDefault();
+  })
+  .on("drop", "#tiles img", function (event) {
+    var firstTile,
+        secondTile;
 
-		event = event.originalEvent;
-		event.preventDefault();
-		if (event.dataTransfer.getData("text/html") == "Swap") {
-			if (selectedTile.data("type") !== $(this).data("type")) {
+    event = event.originalEvent;
+    event.preventDefault();
+    if (event.dataTransfer.getData("text/html") == "Swap") {
+      if (selectedTile.data("type") !== $(this).data("type")) {
         return false;
       }
-			firstTile = {
+      firstTile = {
         "image": selectedTile.attr("src"),
         "id": selectedTile.data("imgid"),
         "artist": selectedTile.data("artist"),
         "rotation": selectedTile.data("rot")
       };
-			secondTile = {
+      secondTile = {
         "image": $(this).attr("src"),
         "id": $(this).data("imgid"),
         "artist": $(this).data("artist"),
         "rotation": $(this).data("rot")
       };
-			selectedTile
+      selectedTile
         .attr("src", secondTile.image)
         .data("imgid", secondTile.id)
         .data("artist", secondTile.artist)
         .removeClass("swapfirst");
-			$(this)
+      $(this)
         .attr("src", firstTile.image)
         .data("imgid", firstTile.id)
         .data("artist", firstTile.artist);
-			if ($(this).data("type") == "tile") {
-				selectedTile
+      if ($(this).data("type") == "tile") {
+        selectedTile
           .data("rot", secondTile.rotation)
           .removeClass("rot"+firstTile.rotation)
           .addClass("rot"+secondTile.rotation);
-				$(this)
+        $(this)
           .data("rot", firstTile.rotation)
           .removeClass("rot"+secondTile.rotation)
           .addClass("rot"+firstTile.rotation);
-			}
-			selectedTile = $(this);
-			$(".selTile").removeClass("selTile");
-			selectedTile.addClass("selTile");
+      }
+      selectedTile = $(this);
+      $(".selTile").removeClass("selTile");
+      selectedTile.addClass("selTile");
       ga('send', 'event', 'Swap', 'Drop');
-		}
-	})
-	// Handle clicking on a tile
-	.on("click tap", "#tiles img", function () {
-		var firstTile,
-				secondTile,
-				topadj = 10,
-				leftadj = 10;
+    }
+  })
+  // Handle clicking on a tile
+  .on("click tap", "#tiles img", function () {
+    var firstTile,
+        secondTile,
+        topadj = 10,
+        leftadj = 10;
 
     if ($(this).data("type") === "tab") { return; }
     if (swap) {

@@ -1575,18 +1575,18 @@ table{
 .sprite{
   display:inline-block;
   vertical-align:middle;
-  background-image:url(/images/sprites.png?t=test7);
+  background-image:url(/assets/icons/sprites.png?t=test7);
   background-repeat:no-repeat;
   overflow:hidden;
   text-indent:-10000px;
-  width:26px;
-  height:26px;
+  width:24px;
+  height:24px;
   margin:-1px 0 0 0;
   padding:0;
 }
 .spritePos(@x, @y){
-  @fullX: ((-50px * @x) - 12px);
-  @fullY: ((-50px * @y) - 12px);
+  @fullX: (-24px * @x);
+  @fullY: (-24px * @y);
   background-position:@fullX @fullY;
 }
 .dropradio .sprite{
@@ -1649,10 +1649,10 @@ table{
 
 @media screen and (-webkit-min-device-pixel-ratio:0){
   .sprite{
-    background-image:url(/images/sprites.svg?t=test7);
+    background-image:url(/assets/icons/sprites.svg?t=test7);
   }
   .faildroid .sprite{
-    background-image:url(/images/sprites.png?t=test7) !important;
+    background-image:url(/assets/icons/sprites.png?t=test7) !important;
   }
 }
 

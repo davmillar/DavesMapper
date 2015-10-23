@@ -6,6 +6,16 @@ rm -r ./assets/css/
 mkdir -p ./assets/css/
 rm -r ./assets/js/
 mkdir -p ./assets/js/
+rm -r ./assets/icons/
+mkdir -p ./assets/icons/
+
+echo "Exporting icon Inkscape SVG to PNG and plain SVG...";
+
+inkscape \
+  -y 0 \
+  -f images/sprites.svg \
+  -e assets/icons/sprites.png \
+  -l assets/icons/sprites.svg;
 
 echo "Converting LESS and compressing output CSS...";
 

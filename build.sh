@@ -19,8 +19,11 @@ inkscape \
 
 echo "Converting LESS and compressing output CSS...";
 
+dc="$(md5sum style/style.less | cut -c -5)"
+
 cat \
   style/style.less \
+  | sed "s/dc=0/dc=${dc}/" \
   | lessc --clean-css - \
   | yui-compressor --type=css \
   > ./assets/css/compiled.css;

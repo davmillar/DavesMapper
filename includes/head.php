@@ -1,28 +1,35 @@
 <meta charset="utf-8">
-<meta name="application-name" content="Dave's Mapper">
-<meta name="application-url" content="http://www.davesmapper.com">
 <meta http-equiv="X-UA-Compatible" content="IE=10,chrome=1">
-<meta name="msapplication-starturl" content="http://www.davesmapper.com">
-<meta name="msapplication-tooltip" content="Geomorphic RPG Map Generator">
-<meta name="msapplication-window" content="width=1024;height=768">
-<meta name="msapplication-navbutton-color" content="#666688">
 
+<meta name="application-name" content="Dave's Mapper">
 <meta itemprop="name" content="Dave's Mapper">
+
+<meta name="msapplication-tooltip" content="Geomorphic RPG Map Generator">
 <meta itemprop="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar.">
-<meta itemprop="image" content="http://davesmapper.com/crx/300.png">
-<link rel="apple-touch-icon-precomposed" href="http://davesmapper.com/crx/apple-touch-icon-precomposed.png">
+
+<meta name="application-url" content="http://www.davesmapper.com">
+<meta name="msapplication-starturl" content="http://www.davesmapper.com">
+
+<meta name="msapplication-window" content="width=1024;height=768">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="image_src" href="http://davesmapper.com/crx/300.png">
+
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.2">
+
+<meta name="msapplication-navbutton-color" content="#aa6e33">
 
 <link rel="publisher" href="https://plus.google.com/107206980364478824224">
 <link href="/m_icons/favicon.ico" rel="shortcut icon">
+<meta itemprop="image" content="http://davesmapper.com/assets/images/logo-300.png">
+<link rel="image_src" href="http://davesmapper.com/assets/images/logo-300.png">
+<link rel="shortcut icon" sizes="600x600" href="/assets/images/logo-600.png">
+<link rel="shortcut icon" sizes="300x300" href="/assets/images/logo-300.png">
 <link rel="shortcut icon" sizes="196x196" href="/assets/images/logo-196.png">
-<link rel="shortcut icon" sizes="128x128" href="/assets/images/logo-128.png">
 <link rel="shortcut icon" sizes="48x48" href="/assets/images/logo-48.png">
-<link rel="shortcut icon" sizes="32x32" href="/assets/images/logo-32.png">
 <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->

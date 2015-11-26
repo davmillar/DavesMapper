@@ -1,0 +1,16 @@
+{
+  "name": "Dave's Mapper",
+  "short_name": "Mapper",
+  "lang": "en-US",
+  "start_url": "/?utm_source=web_app_manifest",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#332211",
+  "theme_color": "#aa6e33",
+  "icons": [
+    {
+      "src": "assets/images/logo-300.png",
+      "type": "image/png"
+    }
+  ]
+}

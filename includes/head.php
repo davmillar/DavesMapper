@@ -19,8 +19,10 @@
 
 <link rel="publisher" href="https://plus.google.com/107206980364478824224">
 <link href="/m_icons/favicon.ico" rel="shortcut icon">
-<link href="/m_icons/32.png" rel="icon" sizes="32x32">
-<link href="/m_icons/48.png" rel="icon" sizes="48x48">
+<link rel="shortcut icon" sizes="196x196" href="/assets/images/logo-196.png">
+<link rel="shortcut icon" sizes="128x128" href="/assets/images/logo-128.png">
+<link rel="shortcut icon" sizes="48x48" href="/assets/images/logo-48.png">
+<link rel="shortcut icon" sizes="32x32" href="/assets/images/logo-32.png">
 <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->

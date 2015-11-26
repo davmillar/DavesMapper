@@ -12,6 +12,7 @@
 <meta itemprop="image" content="http://davesmapper.com/crx/300.png">
 <link rel="apple-touch-icon-precomposed" href="http://davesmapper.com/crx/apple-touch-icon-precomposed.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <link rel="image_src" href="http://davesmapper.com/crx/300.png" />
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.2" />

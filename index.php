@@ -109,8 +109,8 @@
 				<h4 class="legend" title="Choose your map's height and width.">Map Size</h4>
 				<input type="number" min="1" max="25" id="width" required/>
 				<input type="number" min="1" max="25" id="height" required /><br/>
-				<label for="width" class="labelTxt" title="Max Map Width">Width</label>
-				<label for="height" class="labelTxt" title="Map Height">Rows</label>
+				<label for="width" class="labelTxt" title="Map size in tiles wide.">Width</label>
+				<label for="height" class="labelTxt" title="Map size in tiles tall.">Height</label>
 			</div><div class="fieldset selectionEdit">
 				<h4 class="legend selHeader" title="Change up the selected tile.">Selection</h4>
 				<input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked/>

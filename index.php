@@ -12,10 +12,10 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 	<head>
-		<title>Dave's Mapper | RPG Map Generator</title>
-		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar."/>
-		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
-		<meta name="wot-verification" content="fb53c891a20198877c5e" />
+		<title>Dave's Mapper</title>
+		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar.">
+		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app">
+		<meta name="wot-verification" content="fb53c891a20198877c5e">
 		<?php include "includes/head.php"; ?>
 		<script src="scripts/jquery.hammer.min.js"></script>
 		<script src="assets/js/compiled_app.js?t=<?php echo filemtime("assets/js/compiled_app.js")?>"></script>
@@ -27,47 +27,47 @@
 				<h4 class="legend" title="Choose between different map types.">Map Type</h4>
 				 <!--[if lte IE 8]>
 					<label for="mt_dun" class="shitblock">
-						<input type="radio" name="maptype" value="1" id="mt_dun" checked/><br/>Dungeons
+						<input type="radio" name="maptype" value="1" id="mt_dun" checked><br>Dungeons
 					</label>
 					<label for="mt_cav" class="shitblock">
-						<input type="radio" name="maptype" value="2" id="mt_cav" /><br/>Caverns
+						<input type="radio" name="maptype" value="2" id="mt_cav"><br>Caverns
 					</label>
 					<label for="mt_mix" class="shitblock">
-						<input type="radio" name="maptype" value="3" id="mt_mix" /><br/>Dun/Cav Mix
+						<input type="radio" name="maptype" value="3" id="mt_mix"><br>Dun/Cav Mix
 					</label>
 					<label for="mt_city" class="shitblock">
-						<input type="radio" name="maptype" value="4" id="mt_city" /><br/>City
+						<input type="radio" name="maptype" value="4" id="mt_city"><br>City
 					</label>
 					<label for="mt_vil" class="shitblock">
-						<input type="radio" name="maptype" value="5" id="mt_vil" /><br/>Village
+						<input type="radio" name="maptype" value="5" id="mt_vil"><br>Village
 					</label>
 					<label for="mt_side" class="shitblock" title="Doesn't work in IE 8 or older.">
-						<input type="radio" name="maptype" value="6" id="mt_side" disabled /><br/>Side View
+						<input type="radio" name="maptype" value="6" id="mt_side" disabled><br>Side View
 					</label>
 					<label for="mt_ship" class="shitblock">
-						<input type="radio" name="maptype" value="7" id="mt_ship" /><br/>SciFi Ship
+						<input type="radio" name="maptype" value="7" id="mt_ship"><br>SciFi Ship
 					</label>
 					<label for="mt_jet" class="shitblock">
-						<input type="radio" name="maptype" value="8" id="mt_jet" /><br/>Boardwalk
+						<input type="radio" name="maptype" value="8" id="mt_jet"><br>Boardwalk
 					</label>
 					<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
 				<div class="dropradio" id="mapTypeDrop"><div>
-					<input type="radio" class="btnDrp mtBtn first" name="maptype" value="1" id="mt_dun" checked/>
+					<input type="radio" class="btnDrp mtBtn first" name="maptype" value="1" id="mt_dun" checked>
 						<label for="mt_dun" class="dropped">Dungeons</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="2" id="mt_cav" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="2" id="mt_cav">
 						<label for="mt_cav" class="dropped">Caverns</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="3" id="mt_mix" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="3" id="mt_mix">
 						<label for="mt_mix" class="dropped">Dun/Cav Mix</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="4" id="mt_city" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="4" id="mt_city">
 						<label for="mt_city" class="dropped">City</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil">
 						<label for="mt_vil" class="dropped">Village</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="6" id="mt_side" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="6" id="mt_side">
 						<label for="mt_side" class="dropped">Side View</label>
-					<input type="radio" class="btnDrp mtBtn" name="maptype" value="7" id="mt_ship" />
+					<input type="radio" class="btnDrp mtBtn" name="maptype" value="7" id="mt_ship">
 						<label for="mt_ship" class="dropped">SciFi Ship</label>
-					<input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet" />
+					<input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet">
 						<label for="mt_jet" class="dropped">Boardwalk</label>
 				</div></div>
 				<!--<![endif]-->
@@ -76,77 +76,77 @@
 				<h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Modes</h4>
 				<!--[if IE 8]>
 					<label for="normal" class="shitblock" title="Normal Map [shift+n]">
-						<input type="radio" name="mode" value="0" id="normal" /><br/>
-						<img src="m_icons/tb_normal.png" alt="Normal" /></label>
+						<input type="radio" name="mode" value="0" id="normal"><br>
+						<img src="m_icons/tb_normal.png" alt="Normal"></label>
 					<label for="stagger" class="shitblock" title="Stagger Map Rows [s]">
-						<input type="radio" name="mode" value="1" id="stagger" /><br/>
-						<img src="m_icons/tb_staggered.png" alt="Stagger" /></label>
+						<input type="radio" name="mode" value="1" id="stagger"><br>
+						<img src="m_icons/tb_staggered.png" alt="Stagger"></label>
 					<label for="stagcap" class="shitblock" title="Stagger Map Rows, Short Rows Capped [shift+s]">
-						<input type="radio" name="mode" value="3" id="stagcap" /><br/>
-						<img src="m_icons/tb_staggeredcap.png" alt="Stagger and Cap" /></label>
+						<input type="radio" name="mode" value="3" id="stagcap"><br>
+						<img src="m_icons/tb_staggeredcap.png" alt="Stagger and Cap"></label>
 					<label for="endBtn" class="shitblock" title="Close Off Dungeon Edges [c]">
-						<input type="radio" name="mode" value="2" id="endBtn" checked /><br/>
-						<img src="m_icons/tb_capped.png" alt="Cap Ends" /></label>
+						<input type="radio" name="mode" value="2" id="endBtn" checked><br>
+						<img src="m_icons/tb_capped.png" alt="Cap Ends"></label>
 					<label for="cubeBtn" class="shitblock" title="Foldable Cube">
-						<input type="radio" name="mode" value="4" id="cubeBtn" /><br/>
-						<img src="m_icons/tb_cube.png" alt="Cube" /></label>
+						<input type="radio" name="mode" value="4" id="cubeBtn"><br>
+						<img src="m_icons/tb_cube.png" alt="Cube"></label>
 				<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
 				<div class="dropradio" id="mapModeDrop"><div>
-					<input type="radio" class="btnDrp first" name="mode" value="0" id="normal" />
+					<input type="radio" class="btnDrp first" name="mode" value="0" id="normal">
 						<label for="normal"><em class="sprite spOrig"></em> Open-Edge</label>
-					<input type="radio" class="btnDrp" name="mode" value="1" id="stagger" />
+					<input type="radio" class="btnDrp" name="mode" value="1" id="stagger">
 						<label for="stagger"><em class="sprite spStag"></em> Staggered</label>
-					<input type="radio" class="btnDrp" name="mode" value="3" id="stagcap" />
+					<input type="radio" class="btnDrp" name="mode" value="3" id="stagcap">
 						<label for="stagcap"><em class="sprite spStagCap"></em> Staggered (Capped)</label>
-					<input type="radio" class="btnDrp" name="mode" value="2" id="endBtn" checked />
+					<input type="radio" class="btnDrp" name="mode" value="2" id="endBtn" checked>
 						<label for="endBtn"><em class="sprite spFull"></em> Closed-Edge</label>
-					<input type="radio" class="btnDrp last" name="mode" value="4" id="cubeBtn" />
+					<input type="radio" class="btnDrp last" name="mode" value="4" id="cubeBtn">
 						<label for="cubeBtn"><em class="sprite spCube"></em> Cube</label>
 				</div></div>
 				<!--<![endif]-->
 			</div><div class="fieldset">
 				<h4 class="legend" title="Choose your map's height and width.">Map Size</h4>
-				<input type="number" min="1" max="25" id="width" required/>
-				<input type="number" min="1" max="25" id="height" required /><br/>
+				<input type="number" min="1" max="25" id="width" required>
+				<input type="number" min="1" max="25" id="height" required><br>
 				<label for="width" class="labelTxt" title="Map size in tiles wide.">Width</label>
 				<label for="height" class="labelTxt" title="Map size in tiles tall.">Height</label>
 			</div><div class="fieldset selectionEdit">
 				<h4 class="legend selHeader" title="Change up the selected tile.">Selection</h4>
-				<input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked/>
+				<input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked>
 					<label for="rotateTile" title="Rotate Tile 90 Degrees" id="rotateBtn"><em class="sprite spRot">Rotate</em></label>
-				<input type="button" class="btnGrp" name="swapTile" value="Swap" id="swapTile" />
+				<input type="button" class="btnGrp" name="swapTile" value="Swap" id="swapTile">
 					<label for="swapTile" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
-				<input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush" />
+				<input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush">
 					<label for="mancrush" title="Build a Map by this Artist"><em class="sprite spCrush">Mancrush</em></label>
-				<input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile" />
+				<input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile">
 					<label for="removeTile" title="Remove Tile and Replace"><em class="sprite spX">Replace Tile</em></label>
-				<input type="button" class="btnGrp last" name="removeTileExit" value="Remove with Exit" id="removeTileExit" />
+				<input type="button" class="btnGrp last" name="removeTileExit" value="Remove with Exit" id="removeTileExit">
 					<label for="removeTileExit" title="Remove Tile and Replace with Entrance/Exit"><em class="sprite spExit">Replace Tile with Exit</em></label>
 			</div><div class="fieldset">
 				<h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">View Options</h4>
 				<!--[if LTE IE 8]>
 					<label for="nogrid" class="shitblock" title="Don't Use a Grid">
-						<input type="radio" name="grid" value="0" id="nogrid" checked/><br/>
+						<input type="radio" name="grid" value="0" id="nogrid" checked><br>
 						<em class="sprite spX">No Grid</em></label>
 					<label for="grid5" class="shitblock" title="Use 5-foot Grid">
-						<input type="radio" name="grid" value="1" id="grid5" /><br/>
+						<input type="radio" name="grid" value="1" id="grid5"><br>
 						<em class="sprite spGrid5">5-foot Grid</em></label>
 					<label for="grid10" class="shitblock" title="Use 10-foot Grid">
-						<input type="radio" name="grid" value="2" id="grid10" /><br/>
+						<input type="radio" name="grid" value="2" id="grid10"><br>
 						<em class="sprite spGrid10">10-foot Grid</em></label>
 					<label for="gridhex" class="shitblock" title="Use 10-foot Grid">
-						<input type="radio" name="grid" value="3" id="gridhex" /><br/>
+						<input type="radio" name="grid" value="3" id="gridhex"><br>
 						<em class="sprite spHex">Hex Grid</em></label>
 				<![endif]-->
 				<!--[if (gt IE 8)|!(IE)]><!-->
-				<input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked/>
+				<input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked>
 					<label for="nogrid" title="Don't Use a Grid"><em class="sprite spX">No Grid</em></label>
-				<input type="radio" class="btnGrp" name="grid" value="1" id="grid5" />
+				<input type="radio" class="btnGrp" name="grid" value="1" id="grid5">
 					<label for="grid5" title="Use 5-foot Grid"><em class="sprite spGrid5">5-foot Grid</em></label>
-				<input type="radio" class="btnGrp" name="grid" value="2" id="grid10" />
+				<input type="radio" class="btnGrp" name="grid" value="2" id="grid10">
 					<label for="grid10" title="Use 10-foot Grid"><em class="sprite spGrid10">10-foot Grid</em></label>
-				<input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex" />
+				<input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex">
 					<label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
 				<!--<![endif]-->
 				<a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>

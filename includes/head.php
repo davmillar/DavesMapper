@@ -30,9 +30,6 @@
 <link rel="shortcut icon" sizes="300x300" href="/assets/images/logo-300.png">
 <link rel="shortcut icon" sizes="196x196" href="/assets/images/logo-196.png">
 <link rel="shortcut icon" sizes="48x48" href="/assets/images/logo-48.png">
-<!--[if lt IE 9]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 
 <link href="http://fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
 <link href="/assets/css/compiled.css?t=<?php echo filemtime(PATH . "/assets/css/compiled.css")?>" rel="stylesheet" media="screen">
@@ -45,8 +42,4 @@
 <script src="/assets/js/compiled.js?t=<?php echo filemtime(PATH . "/assets/js/compiled.js")?>"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen">
-<![endif]-->
-<!--[if lt IE 9]>
-  <link href="style/ie.css" rel="stylesheet" media="screen">
-  <link href="style/ieprint.css" rel="stylesheet" media="print">
 <![endif]-->

@@ -20,9 +20,6 @@
 <link href="/m_icons/favicon.ico" rel="shortcut icon" />
 <link href="/m_icons/32.png" rel="icon" sizes="32x32"/>
 <link href="/m_icons/48.png" rel="icon" sizes="48x48"/>
-<!--[if lt IE 9]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 
 <link href="http://fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
 <link href="/assets/css/compiled.css?t=<?php echo filemtime(PATH . "/assets/css/compiled.css")?>" rel="stylesheet" media="screen" />
@@ -35,8 +32,4 @@
 <script src="/assets/js/compiled.js?t=<?php echo filemtime(PATH . "/assets/js/compiled.js")?>"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen" />
-<![endif]-->
-<!--[if lt IE 9]>
-  <link href="style/ie.css" rel="stylesheet" media="screen" />
-  <link href="style/ieprint.css" rel="stylesheet" media="print" />
 <![endif]-->

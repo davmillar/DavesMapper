@@ -18,7 +18,7 @@
 
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.2">
+<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1">
 
 <meta name="msapplication-navbutton-color" content="#aa6e33">
 

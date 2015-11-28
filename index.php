@@ -90,18 +90,7 @@
 			</div>
 		</form></header>
 		<section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
-		<section id="popup"><div>
-			<h2>New to the Mapper?</h2>
-			<ul>
-				<li><strong>Make maps for tabletop RPGs</strong> including caverns, dungeons, vertical dungeons, towns, and spaceships.</li>
-				<li><strong>Configure your map</strong> using the toolbar above. Choose size, type, layout, and more.</li>
-				<li><strong>Click tiles</strong> and use the handy selection menu to fine-tune your generated map.</li>
-				<li><strong>Choose your map artist(s)</strong> by toggling them on the left-hand panel. Double-click an artist or hit the heart button with a tile selected to switch to a single artist.</li>
-				<li><strong>On multitouch devices</strong> use two-finger twist to rotate tiles.</li>
-				<li><em>Learn more about how to submit your own tiles, who made the tiles here, and more about supporting the mapper using the navigation bar at the top of this app.</em></li>
-			</ul>
-			<p><em>Click anywhere to close.</em></p>
-		</div></section>
+		<section id="popup"><div></div></section>
 		<section id="tilepanel"><form>
 			<h4 class="tilegroup">Artists</h4>
 				<section class="collapse" id="artistsblock">

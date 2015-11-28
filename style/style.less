@@ -207,21 +207,24 @@ a{
 #popup{
   position:fixed;
   display:none;
-  top:96px;
-  bottom:24px;
-  left:200px;
+  top:0;
+  bottom:0;
+  left:0;
   right:0;
   background-color:rgba(0,0,0,0.5);
   color:#fff;
   z-index:200;
   div{
+    .border-box;
     background:#fff;
     color:@litebrown;
-    margin:65px 140px;
-    padding:25px 50px;
+    margin:2em;
+    padding:2em 10%;
     line-height:18px;
     font-size:13px;
     cursor:pointer;
+    width: 80%;
+    overflow: auto;
     .border-radius(20px);
   }
   strong{

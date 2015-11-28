@@ -421,6 +421,198 @@ var createCookie = function (name, value, days) {
       overlayContainer.show();
   },
 
+  // Handler for image dragging to set up for drag/drop tile swapping.
+  onImageDragStart = function (event) {
+    var e = event.originalEvent;
+
+    if (swap || !e) { return; }
+    selectedTile = $(this);
+    $('.selTile').removeClass('selTile');
+    selectedTile.addClass('selTile');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html','Swap');
+    ga('send', 'event', 'Swap', 'Drag Start');
+  },
+
+  onImageDragDrop = function (event) {
+    var firstTile,
+        secondTile;
+
+    event = event.originalEvent;
+    event.preventDefault();
+    if (event.dataTransfer.getData("text/html") == "Swap") {
+      if (selectedTile.data("type") !== $(this).data("type")) {
+        return false;
+      }
+      firstTile = {
+        "image": selectedTile.attr("src"),
+        "id": selectedTile.data("imgid"),
+        "artist": selectedTile.data("artist"),
+        "rotation": selectedTile.data("rot")
+      };
+      secondTile = {
+        "image": $(this).attr("src"),
+        "id": $(this).data("imgid"),
+        "artist": $(this).data("artist"),
+        "rotation": $(this).data("rot")
+      };
+      selectedTile
+        .attr("src", secondTile.image)
+        .data("imgid", secondTile.id)
+        .data("artist", secondTile.artist)
+        .removeClass("swapfirst");
+      $(this)
+        .attr("src", firstTile.image)
+        .data("imgid", firstTile.id)
+        .data("artist", firstTile.artist);
+      if ($(this).data("type") == "tile") {
+        selectedTile
+          .data("rot", secondTile.rotation)
+          .removeClass("rot"+firstTile.rotation)
+          .addClass("rot"+secondTile.rotation);
+        $(this)
+          .data("rot", firstTile.rotation)
+          .removeClass("rot"+secondTile.rotation)
+          .addClass("rot"+firstTile.rotation);
+      }
+      selectedTile = $(this);
+      $(".selTile").removeClass("selTile");
+      selectedTile.addClass("selTile");
+      ga('send', 'event', 'Swap', 'Drop');
+    }
+  },
+
+  onImageClick = function () {
+    var firstTile,
+        secondTile,
+        topadj = 10,
+        leftadj = 10;
+
+    if ($(this).data("type") === "tab") { return; }
+    if (swap) {
+      if (selectedTile.data("type") !== $(this).data("type")) { return false; }
+      firstTile = {"image": selectedTile.attr("src"), "id": selectedTile.data("imgid"), "artist": selectedTile.data("artist"), "rotation": selectedTile.data("rot") };
+      secondTile = {"image": $(this).attr("src"), "id": $(this).data("imgid"), "artist": $(this).data("artist"), "rotation": $(this).data("rot") };
+      selectedTile.attr("src", secondTile.image).data("imgid", secondTile.id).data("artist", secondTile.artist).removeClass("swapfirst");
+      $(this).attr("src", firstTile.image).data("imgid", firstTile.id).data("artist", firstTile.artist);
+      if ($(this).data("type") == "tile") {
+        selectedTile.data("rot", secondTile.rotation).removeClass("rot"+firstTile.rotation).addClass("rot"+secondTile.rotation);
+        $(this).data("rot", firstTile.rotation).removeClass("rot"+secondTile.rotation).addClass("rot"+firstTile.rotation);
+      }
+      swap = false;
+      $("#swapTile").removeClass("down");
+      ga('send', 'event', 'Swap', 'Tool Complete');
+    }
+    selectedTile = $(this);
+    $(".selTile").removeClass("selTile");
+    selectedTile.addClass("selTile");
+    if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) > -1) {
+      $("#rotateBtn").fadeTo("fast", 1);
+    } else {
+      $("#rotateBtn").fadeTo("fast", 0.5);
+    }
+    if ($(this).hasClass("edge") && ($(this).hasClass("rot1") || $(this).hasClass("rot3"))) {
+      leftadj -= 75;
+      if (ua.toLowerCase().indexOf('webkit') > -1) {
+        topadj += 75;
+        leftadj -= 75;
+      }
+      if (ua.toLowerCase().indexOf('opera') > -1) {
+        topadj += 75;
+        leftadj -= 75;
+      }
+    }
+  },
+
+  onTileDoubleClick = function (e) {
+    var $target = $(this),
+        oldRot,
+        newRot;
+
+    if (e.metaKey) {
+      replaceTile($target, $target.data("imgid"), "tile", false);
+      ga('send', 'event', 'Replace', 'Ctrl+DblClick');
+    } else {
+      oldRot = $(this).data("rot");
+      newRot = (oldRot + 1) % 4;
+      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+      ga('send', 'event', 'Rotate', 'DblClick');
+    }
+  },
+
+  onEdgeDoubleClick = function (e) {
+    if (e.metaKey) {
+      var $target = $(this);
+
+      replaceTile($target, $target.data("imgid"), "edge", false);
+    }
+  },
+
+  onCornerDoubleClick = function (e) {
+    if (e.metaKey) {
+      var $target = $(this);
+
+      replaceTile($target, $target.data("imgid"), "corner", false);
+    }
+  },
+
+  onTopDoubleClick = function (e) {
+    var $target = $(this),
+        oldRot,
+        newRot;
+
+    if (e.metaKey) {
+      replaceTile($target, $target.data("imgid"), "top", false);
+    } else {
+      oldRot = $(this).data("rot");
+      newRot = (oldRot + 1) % 2;
+      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+    }
+  },
+
+  onTopCornerDoubleClick = function (e) {
+    if (e.metaKey) {
+      var $target = $(this);
+
+      replaceTile($target, $target.data("imgid"), "tco", false);
+    }
+  },
+
+  onBottomDoubleClick = function (e) {
+    var $target = $(this),
+        oldRot,
+        newRot;
+
+    if (e.metaKey) {
+      replaceTile($target, $target.data("imgid"), "btm", false);
+    } else {
+      oldRot = $(this).data("rot");
+      newRot = (oldRot + 1) % 2;
+      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+    }
+  },
+
+  onBottomCornerDoubleClick = function (e) {
+    if (e.metaKey) {
+      var $target = $(this);
+
+      replaceTile($target, $target.data("imgid"), "bco", false);
+    }
+  },
+
+  onTileBoardClick = function (e) {
+    if ($(this).hasClass("iconmode")) {
+      var offset = $(this).offset(),
+          theX = e.clientX - offset.left - 15,
+          theY = e.clientY - offset.top - 15,
+          garyOak = $("<img />").attr("src","../images/fab.png").css({
+            'top': theY + 'px',
+            'left': theX + 'px',
+            'width': '30px'
+          }).appendTo($(this));
+    }
+  },
+
   /**
    * Setup for the app that is performed when the document is ready.
    */
@@ -429,6 +621,18 @@ var createCookie = function (name, value, days) {
     $("#popup").click(function () {
       $(this).fadeOut("fast");
     });
+
+    // Add listeners to the artist seletion list.
+    $("#artistsblock")
+      .on('change', 'input', function (e) {
+        if (e.metaKey) { $(this).prop("checked", true).siblings("input").prop("checked", false); }
+        selectTileSets();
+      })
+      .on('dblclick', 'label', function () {
+        var $target = $(this).attr("for");
+        $("#" + $target).prop("checked", true).siblings("input").prop("checked", false);
+        selectTileSets();
+      });
 
     // Check if user has seen onboarding popup recently and display it if not.
     if (readCookie("popup") !== "overlay") {
@@ -447,7 +651,6 @@ var createCookie = function (name, value, days) {
       ga('send', 'event', 'New User Overlay');
     }
 
-    imgBoard = $("#tiles");
     $('#newWindowB').click(exportMap);
     artBoard = document.getElementById("drawingboard");
     artMode = artBoard.getContext("2d");
@@ -516,12 +719,75 @@ var createCookie = function (name, value, days) {
       $("#grid").remove();
       $("<div id='grid'></div>").appendTo("#map");
     }
-  };
-$(document)
-  .ready(initApp)
-  // Multitouch goodness
-  .hammer()
-  .on("rotate", function (event) {
+
+    // Add listeners to the tiles holder.
+    imgBoard = $('#tiles');
+    imgBoard
+      // Handle dragging a tile
+      .on('dragstart', 'img', onImageDragStart)
+      // Handle dropping a tile
+      .on("dragover", "img", function (event) {
+        event.originalEvent.preventDefault();
+      })
+      .on("drop", "img", onImageDragDrop)
+      // Handle clicking on a tile
+      .on("click tap", "img", onImageClick)
+      // Handle double-clicks, including modified double-clicks
+      .on("dblclick", "img.tile", onTileDoubleClick)
+      .on("dblclick", "img.edge", onEdgeDoubleClick)
+      .on("dblclick", "img.corner", onCornerDoubleClick)
+      .on("dblclick", "img.top", onTopDoubleClick)
+      .on("dblclick", "img.tco", onTopCornerDoubleClick)
+      .on("dblclick", "img.btm", onBottomDoubleClick)
+      .on("dblclick", "img.bco", onBottomCornerDoubleClick)
+      .on("click", onTileBoardClick);
+
+    // Handle the remove/replace with exit button
+    $("#removeTileExit").on("click tap", function () {
+      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
+      ga('send', 'event', 'Remove Tile', 'Exit');
+      return false;
+    });
+    // Handle swapping button
+    $("#swapTile").on("click tap", function () {
+      if (selectedTile.data("type") === "tab") { return; }
+      selectedTile.addClass("swapfirst");
+      swap = true;
+      $("#swapTile").addClass("down");
+      ga('send', 'event', 'Swap', 'Tool Click');
+      return false;
+    });
+    // Handle mancrush button
+    $("#mancrush").on("click tap", function () {
+      var $target = selectedTile.data("artist");
+
+      $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
+      ga('send', 'event', 'Heart', 'Click');
+      selectTileSets();
+    });
+    // Redraw the map when width or height are changed
+    $("#width, #height").on("change", generateMap);
+    // Stock the room when the room stocker button is clicked
+    $("#roomBtn").on("click tap", roomStock);
+    // Change mode based on radio button value changing
+    $('input:radio[name=mode]').on("click tap change", function () {
+      mapSettings.mode = parseInt($(this).val(), 10);
+      generateMap();
+      ga('send', 'event', 'Mode', 'Change');
+    });
+
+    // Add "Add to Home" hint in appropriate browser settings.
+    if ('standalone' in window.navigator && !window.navigator.standalone && $mobilemode && $issafari) {
+      $('<link rel="stylesheet" href="/style/add2home.css" />').appendTo("body");
+      $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo("body");
+    }
+  },
+
+  /**
+   * Handler for when a detected multitouch performs rotation.
+   * @param  {Object} event The event object
+   */
+  onHammerRotateDetected = function (event) {
     if (selectedTile.data("type") == 'tile') {
       var oldRot = selectedTile.data("rot");
       inrotate = true;
@@ -542,12 +808,17 @@ $(document)
       event.gesture.preventDefault();
       ga('send', 'event', 'Rotate', 'Start Touch');
     }
-  })
-  .on("release", function (event) {
+  },
+
+  /**
+   * Handler for when a detected multitouch is released.
+   * @param  {Object} event The event object
+   */
+  onHammerReleaseDetected = function (event) {
     if (inrotate) {
       inrotate = false;
       var oldRot = selectedTile.data("rot"),
-        newRot = Math.round(detectedrotate / 90) % 4;
+          newRot = Math.round(detectedrotate / 90) % 4;
       selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
         '-webkit-transform' : '',
         '-moz-transform' : '',
@@ -564,237 +835,16 @@ $(document)
       detectedrotate = 0;
       ga('send', 'event', 'Rotate', 'Release Touch');
     }
-  })
-  // Change artists used
-  .on("change", "#artistsblock input", function (e) {
-    if (e.metaKey) { $(this).prop("checked", true).siblings("input").prop("checked", false); alert("Test"); }
-    selectTileSets();
-  })
-  .on("dblclick", "#artistsblock label", function () {
-    var $target = $(this).attr("for");
-    $("#" + $target).prop("checked", true).siblings("input").prop("checked", false);
-    selectTileSets();
-  })
-  // Handle the remove/replace with exit button
-  .on("click tap", "#removeTileExit", function () {
-    replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
-    ga('send', 'event', 'Remove Tile', 'Exit');
-    return false;
-  })
-  // Handle swapping button
-  .on("click tap", "#swapTile", function () {
-    if (selectedTile.data("type") === "tab") { return; }
-    selectedTile.addClass("swapfirst");
-    swap = true;
-    $("#swapTile").addClass("down");
-    ga('send', 'event', 'Swap', 'Tool Click');
-    return false;
-  })
-  // Handle mancrush button
-  .on("click tap", "#mancrush", function () {
-    var $target = selectedTile.data("artist");
+  };
 
-    $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
-    ga('send', 'event', 'Heart', 'Click');
-    selectTileSets();
-  })
-  // Handle dragging a tile
-  .on("dragstart", "#tiles img", function (event) {
-    var e = event.originalEvent;
-
-    if (swap || !e) { return; }
-    selectedTile = $(this);
-    $(".selTile").removeClass("selTile");
-    selectedTile.addClass("selTile");
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html","Swap");
-    ga('send', 'event', 'Swap', 'Drag Start');
-  })
-  // Handle dropping a tile
-  .on("dragover", "#tiles img", function (event) {
-    event.originalEvent.preventDefault();
-  })
-  .on("drop", "#tiles img", function (event) {
-    var firstTile,
-        secondTile;
-
-    event = event.originalEvent;
-    event.preventDefault();
-    if (event.dataTransfer.getData("text/html") == "Swap") {
-      if (selectedTile.data("type") !== $(this).data("type")) {
-        return false;
-      }
-      firstTile = {
-        "image": selectedTile.attr("src"),
-        "id": selectedTile.data("imgid"),
-        "artist": selectedTile.data("artist"),
-        "rotation": selectedTile.data("rot")
-      };
-      secondTile = {
-        "image": $(this).attr("src"),
-        "id": $(this).data("imgid"),
-        "artist": $(this).data("artist"),
-        "rotation": $(this).data("rot")
-      };
-      selectedTile
-        .attr("src", secondTile.image)
-        .data("imgid", secondTile.id)
-        .data("artist", secondTile.artist)
-        .removeClass("swapfirst");
-      $(this)
-        .attr("src", firstTile.image)
-        .data("imgid", firstTile.id)
-        .data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile
-          .data("rot", secondTile.rotation)
-          .removeClass("rot"+firstTile.rotation)
-          .addClass("rot"+secondTile.rotation);
-        $(this)
-          .data("rot", firstTile.rotation)
-          .removeClass("rot"+secondTile.rotation)
-          .addClass("rot"+firstTile.rotation);
-      }
-      selectedTile = $(this);
-      $(".selTile").removeClass("selTile");
-      selectedTile.addClass("selTile");
-      ga('send', 'event', 'Swap', 'Drop');
-    }
-  })
-  // Handle clicking on a tile
-  .on("click tap", "#tiles img", function () {
-    var firstTile,
-        secondTile,
-        topadj = 10,
-        leftadj = 10;
-
-    if ($(this).data("type") === "tab") { return; }
-    if (swap) {
-      if (selectedTile.data("type") !== $(this).data("type")) { return false; }
-      firstTile = {"image": selectedTile.attr("src"), "id": selectedTile.data("imgid"), "artist": selectedTile.data("artist"), "rotation": selectedTile.data("rot") };
-      secondTile = {"image": $(this).attr("src"), "id": $(this).data("imgid"), "artist": $(this).data("artist"), "rotation": $(this).data("rot") };
-      selectedTile.attr("src", secondTile.image).data("imgid", secondTile.id).data("artist", secondTile.artist).removeClass("swapfirst");
-      $(this).attr("src", firstTile.image).data("imgid", firstTile.id).data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile.data("rot", secondTile.rotation).removeClass("rot"+firstTile.rotation).addClass("rot"+secondTile.rotation);
-        $(this).data("rot", firstTile.rotation).removeClass("rot"+secondTile.rotation).addClass("rot"+firstTile.rotation);
-      }
-      swap = false;
-      $("#swapTile").removeClass("down");
-      ga('send', 'event', 'Swap', 'Tool Complete');
-    }
-    selectedTile = $(this);
-    $(".selTile").removeClass("selTile");
-    selectedTile.addClass("selTile");
-    if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) > -1) {
-      $("#rotateBtn").fadeTo("fast", 1);
-    } else {
-      $("#rotateBtn").fadeTo("fast", 0.5);
-    }
-    if ($(this).hasClass("edge") && ($(this).hasClass("rot1") || $(this).hasClass("rot3"))) {
-      leftadj -= 75;
-      if (ua.toLowerCase().indexOf('webkit') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
-      if (ua.toLowerCase().indexOf('opera') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
-    }
-  })
-  // Redraw the map when width or height are changed
-  .on("change", "#width, #height", generateMap)
-  // Stock the room when the room stocker button is clicked
-  .on("click tap", "#roomBtn", roomStock)
-  // Change mode based on radio button value changing
-  .on("click tap change", 'input:radio[name=mode]', function () {
-    mapSettings.mode = parseInt($(this).val(), 10);
-    generateMap();
-    ga('send', 'event', 'Mode', 'Change');
-  })
-  // Handle double-clicks, including modified double-clicks
-  .on("dblclick", "#tiles img.tile", function (e) {
-    var $target = $(this),
-        oldRot,
-        newRot;
-
-    if (e.metaKey) {
-      replaceTile($target, $target.data("imgid"), "tile", false);
-      ga('send', 'event', 'Replace', 'Ctrl+DblClick');
-    } else {
-      oldRot = $(this).data("rot");
-      newRot = (oldRot + 1) % 4;
-      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
-      ga('send', 'event', 'Rotate', 'DblClick');
-    }
-  })
-  .on("dblclick", "#tiles img.edge", function (e) {
-    if (e.metaKey) {
-      var $target = $(this);
-
-      replaceTile($target, $target.data("imgid"), "edge", false);
-    }
-  })
-  .on("dblclick", "#tiles img.corner", function (e) {
-    if (e.metaKey) {
-      var $target = $(this);
-
-      replaceTile($target, $target.data("imgid"), "corner", false);
-    }
-  })
-  .on("dblclick", "#tiles img.top", function (e) {
-    var $target = $(this),
-        oldRot,
-        newRot;
-
-    if (e.metaKey) {
-      replaceTile($target, $target.data("imgid"), "top", false);
-    } else {
-      oldRot = $(this).data("rot");
-      newRot = (oldRot + 1) % 2;
-      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
-    }
-  })
-  .on("dblclick", "#tiles img.tco", function (e) {
-    if (e.metaKey) {
-      var $target = $(this);
-
-      replaceTile($target, $target.data("imgid"), "tco", false);
-    }
-  })
-  .on("dblclick", "#tiles img.btm", function (e) {
-    var $target = $(this),
-        oldRot,
-        newRot;
-
-    if (e.metaKey) {
-      replaceTile($target, $target.data("imgid"), "btm", false);
-    } else {
-      oldRot = $(this).data("rot");
-      newRot = (oldRot + 1) % 2;
-      $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
-    }
-  })
-  .on("dblclick", "#tiles img.bco", function (e) {
-    if (e.metaKey) {
-      var $target = $(this);
-
-      replaceTile($target, $target.data("imgid"), "bco", false);
-    }
-  })
-  .on("click", "#grid", function (e) {
-    if ($(this).hasClass("iconmode")) {
-      var offset = $(this).offset(),
-          theX = e.clientX - offset.left - 15,
-          theY = e.clientY - offset.top - 15,
-          garyOak = $("<img />").attr("src","../images/fab.png").css({
-            'top': theY + 'px',
-            'left': theX + 'px',
-            'width': '30px'
-          }).appendTo($(this));
-    }
-  })
+$(document)
+  // Initialization
+  .ready(initApp)
+  // Multitouch goodness
+  .hammer()
+  // Generic whole-document listeners
+  .on("rotate", onHammerRotateDetected)
+  .on("release", onHammerReleaseDetected)
   // Bind the keydown events for shortcuts
   .bind("keydown", "c", function () {
     $("#endBtn").click();
@@ -827,8 +877,3 @@ $(document)
   .bind("keydown", "shift+c", function () {
     $("span.amt, span.special").slideToggle("slow");
   });
-
-if ('standalone' in window.navigator && !window.navigator.standalone && $mobilemode && $issafari) {
-  $('<link rel="stylesheet" href="/style/add2home.css" />').appendTo("body");
-  $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo("body");
-}

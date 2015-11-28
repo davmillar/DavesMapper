@@ -8,6 +8,8 @@ error_log
 tiles
 tiles/
 tiles/**/*
+google*.html
+*.sql
 
 #################
 ## Eclipse

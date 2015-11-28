@@ -311,13 +311,22 @@ a{
   }
 }
 
+#socialNavBar {
+  display:inline-block;
+  vertical-align:middle;
+  height:30px;
+  line-height:30px;
+  float:right;
+  text-align: right;
+}
+
+
 .social{
   display:inline-block;
   vertical-align:middle;
   height:20px;
   line-height:20px;
   padding:5px;
-  float:right;
 }
 
 h1{
@@ -1578,18 +1587,18 @@ table{
 .sprite{
   display:inline-block;
   vertical-align:middle;
-  background-image:url(/images/sprites.png?t=test7);
+  background-image:url(/assets/icons/sprites.png?dc=0);
   background-repeat:no-repeat;
   overflow:hidden;
   text-indent:-10000px;
-  width:26px;
-  height:26px;
+  width:24px;
+  height:24px;
   margin:-1px 0 0 0;
   padding:0;
 }
 .spritePos(@x, @y){
-  @fullX: ((-50px * @x) - 12px);
-  @fullY: ((-50px * @y) - 12px);
+  @fullX: (-24px * @x);
+  @fullY: (-24px * @y);
   background-position:@fullX @fullY;
 }
 .dropradio .sprite{
@@ -1600,6 +1609,7 @@ table{
 .spNewWin{.spritePos(1,0);}
 .spCube{.spritePos(2,0);}
 .spRot{.spritePos(3,0);}
+.sprite-share{.spritePos(4,0);}
 /* Row 2 */
 .spFull{.spritePos(1,1);}
 .spGrid10{.spritePos(2,1);}
@@ -1648,6 +1658,16 @@ table{
     -webkit-column-count:2 !important;
     column-count:2 !important;
   }
+  #socialNavBar {
+    display:none;
+  }
+}
+
+@media screen and (min-width:1016px){
+  #socialNavBar {
+    display:inline-block;
+  }
+
 }
 
 @media screen and (max-width: 640px) {
@@ -1670,10 +1690,10 @@ table{
 
 @media screen and (-webkit-min-device-pixel-ratio:0){
   .sprite{
-    background-image:url(/images/sprites.svg?t=test7);
+    background-image:url(/assets/icons/sprites.svg?dc=0);
   }
   .faildroid .sprite{
-    background-image:url(/images/sprites.png?t=test7) !important;
+    background-image:url(/assets/icons/sprites.png?dc=0) !important;
   }
 }
 

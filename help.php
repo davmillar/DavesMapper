@@ -122,8 +122,11 @@
               <p>A giant stone fist, or it could be wood, metal &hellip; or living flesh.</p></section>
           </section>
         <h2 id="copy">Copyright/Usage</h2>
-          <p>All tiles are owned by their respective artists and used here with permission from the artist. The tiles were made to be used in maps &#8212; so use them! But don't be a jerk &#8212; if you repost a generated map somewhere, don't claim it as your own work, and think about throwing a backlink here and/or to the tile artist(s).</p>
-          <p>The app was designed and coded by me, <a href="http://www.thegriddle.net" target="_blank">David Millar</a>, with some of the functionality based on the original Morph Mapper and Monkey Mapper written by <a href="http://www.thefreerpgblog.com/" target="_blank">Rob Lang</a>. If you make tiles and want to include them, <a href="mailto:dave@davesmapper.com?subject=Mapper">let me know</a>. If you like the GUI or the app and you're looking for a UI designer with a wealth of print and web design experience, <a href="mailto:dave@davesmapper.com">I'm your guy</a>!</p>
+          <section class="columns">
+            <p>All tiles are owned by their respective artists and used here with permission from the artist. By default, they are licensed for personal use only. For sharing and commercial usage, some artists have provided licenses for their tiles in their profiles. For those that don't &#8212; or to ask for permission beyond what the default licenses allow &#8212; <a href="mailto:dave@davesmapper.com">e-mail Dave</a> and he will put you in contact with the appropriate artist(s).</p>
+            <p>The tiles were made to be used in maps &#8212; so use them! But don't be a jerk &#8212; if you repost a generated map somewhere, don't claim it as your own work, and think about throwing a backlink here and/or to the tile artist(s).</p>
+            <p>The app was designed and coded by me, <a href="http://www.thegriddle.net" target="_blank">David Millar</a>, with some of the functionality based on the original Morph Mapper and Monkey Mapper written by <a href="http://www.thefreerpgblog.com/" target="_blank">Rob Lang</a>. If you make tiles and want to include them, <a href="mailto:dave@davesmapper.com?subject=Mapper">let me know</a>. If you like the GUI or the app and you're looking for a UI designer with a wealth of print and web design experience, <a href="mailto:dave@davesmapper.com">I'm your guy</a>!</p>
+          </section>
         <hr/>
         <?php include "includes/ad_468x60.php"; ?>
       </section>

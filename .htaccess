@@ -22,6 +22,8 @@ RewriteRule ^ibd/?$ /ibd.php [QSA]
 RewriteRule ^supporters/?$ /supporters.php [QSA]
 RewriteRule ^supporters/([^/.]+)/?$ /profile.php?artist=$1 [QSA]
 
+RewriteRule ^(apple-)?touch-icon(.*).png$ assets/logo-optimized.png [L]
+
 RewriteRule ^con/?$ /conv/index.php [QSA]
 
 <Files .htaccess>

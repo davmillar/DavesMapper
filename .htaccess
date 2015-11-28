@@ -32,6 +32,8 @@ RewriteRule ^con/?$ /conv/index.php [QSA]
 </Files>
 
 AddType text/cache-manifest .appcache
+AddType image/svg+xml svg svgz
+AddEncoding gzip svgz
 
 <IfModule mod_expires.c>
   ExpiresActive on

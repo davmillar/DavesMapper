@@ -207,21 +207,24 @@ a{
 #popup{
   position:fixed;
   display:none;
-  top:96px;
-  bottom:24px;
-  left:200px;
+  top:0;
+  bottom:0;
+  left:0;
   right:0;
   background-color:rgba(0,0,0,0.5);
   color:#fff;
   z-index:200;
+  cursor:pointer;
   div{
+    .border-box;
     background:#fff;
     color:@litebrown;
-    margin:65px 140px;
-    padding:25px 50px;
+    margin:4em auto;
+    padding:2em 10%;
     line-height:18px;
     font-size:13px;
-    cursor:pointer;
+    width: 80%;
+    overflow: auto;
     .border-radius(20px);
   }
   strong{
@@ -363,6 +366,7 @@ h4{
     content:"\25bc";
   }
 }
+
 .fieldset{
   position:relative;
   display:inline-block;
@@ -377,7 +381,7 @@ h4{
   border-style:solid;
   border-left-color:rgba(255,255,255,0.15);
   border-right-color:rgba(153,102,51,0.15);
-  h4{
+  h4 {
     position:absolute;
     top:0;
     left:0;
@@ -1549,7 +1553,8 @@ table{
 .ui-tooltip-tipsy .ui-tooltip-titlebar .ui-state-hover{
   border-color:#303030;
 }
-.ui-tooltip-tipped .ui-tooltip-titlebar,.ui-tooltip-tipped .ui-tooltip-content{
+.ui-tooltip-tipped .ui-tooltip-titlebar,
+.ui-tooltip-tipped .ui-tooltip-content{
   border:3px solid #959FA9;
   filter:none;
   -ms-filter:none;
@@ -1576,7 +1581,8 @@ table{
   background-color:#FBFBFB;
   color:#555;
 }
-.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar{
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar{
   filter:none;
   -ms-filter:none;
 }
@@ -1665,6 +1671,28 @@ table{
     display:inline-block;
   }
 
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #newnav,
+  #tilepanel,
+  #site-foot {
+    display: none;
+  }
+
+  #site-head {
+    top:0;
+    overflow-x: scroll;
+  }
+
+  #popup div {
+    margin:2em auto;
+  }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0){

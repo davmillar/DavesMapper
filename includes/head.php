@@ -25,6 +25,8 @@
 <link rel="publisher" href="https://plus.google.com/107206980364478824224">
 <link href="/m_icons/favicon.ico" rel="shortcut icon">
 <meta itemprop="image" content="http://davesmapper.com/assets/images/logo-300.png">
+<link rel="apple-touch-icon-precomposed" href="/assets/images/logo-300.png">
+<link rel="touch-icon-precomposed" href="/assets/images/logo-300.png">
 <link rel="image_src" href="http://davesmapper.com/assets/images/logo-300.png">
 <link rel="shortcut icon" sizes="600x600" href="/assets/images/logo-600.png">
 <link rel="shortcut icon" sizes="300x300" href="/assets/images/logo-300.png">

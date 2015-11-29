@@ -506,9 +506,8 @@ var createCookie = function (name, value, days) {
       }
     }
     if ($appmode) {
-      $("body").css({"margin-bottom": "0"});
+      $("body").addClass('standalone-app');
       $("#map").css({"margin-top": "34px"});
-      $("#tilepanel,#site-head").css({"top": "0"});
       $("#notification,#popup").css({"top": "62px;"});
       $("#newnav,#site-foot").hide();
     }

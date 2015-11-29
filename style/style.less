@@ -408,11 +408,17 @@ h4{
   }
 }
 
-#mapTypeControls { top: 30px; left: 200px; width: 218px; }
-#mapModeControls { top: 30px; left: 418px; width: 174px; }
-#mapSizeControls { top: 30px; left: 592px; width: 116px; }
-#selectionEdit   { top: 30px; left: 708px; width: 162px; }
-#mapViewControls { top: 30px; left: 950px; }
+#mapTypeControls { left: 200px; width: 218px; }
+#mapModeControls { left: 418px; width: 174px; }
+#mapSizeControls { left: 592px; width: 116px; }
+#selectionEdit   { left: 708px; width: 162px; }
+#mapViewControls { left: 870px; width: 212px; }
+
+#mapTypeControls,
+#mapModeControls,
+#mapSizeControls,
+#selectionEdit,
+#mapViewControls { top: 30px; }
 
 input[type=number],input[type=text],input[type=email],input[type=password],select{
   height:16px;
@@ -1644,6 +1650,16 @@ table{
   z-index:@map-icons;
 }
 
+.standalone-app {
+  margin-bottom: 0;
+  #mapTypeControls,
+  #mapModeControls,
+  #mapSizeControls,
+  #selectionEdit,
+  #mapViewControls,
+  #tilepanel { top: 0; }
+}
+
 @media screen and (max-width:1015px){
   #about .columns{
     -moz-column-count:2 !important;
@@ -1670,7 +1686,7 @@ table{
   #mapModeControls { top: 30px; left: 338px; }
   #mapSizeControls { top: 30px; left: 512px; }
   #selectionEdit   { top: 30px; left: 628px; }
-  #mapViewControls { top: 30px; left: 820px; }
+  #mapViewControls { top: 30px; left: 780px; }
 
   #tilepanel {
     width: 120px;

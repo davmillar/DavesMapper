@@ -1652,12 +1652,17 @@ table{
 
 .standalone-app {
   margin-bottom: 0;
+
   #mapTypeControls,
   #mapModeControls,
   #mapSizeControls,
   #selectionEdit,
-  #mapViewControls,
-  #tilepanel { top: 0; }
+  #mapViewControls{ top: 0; }
+
+  #tilepanel {
+    top: 0;
+    bottom: 24px;
+  }
 }
 
 @media screen and (max-width:1015px){

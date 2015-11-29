@@ -407,9 +407,46 @@ var createCookie = function (name, value, days) {
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');
-  };
-$(document)
-  .ready(function () {
+  },
+
+  /**
+   * Displays a popup with the provided content.
+   * @param  {string} overlayContent A string of HTML content.
+   */
+  showOverlay = function (overlayContent) {
+      var overlayContainer = $("#popup"),
+          overlayContentBox = overlayContainer.find('div');
+
+      overlayContentBox.html(overlayContent);
+      overlayContainer.show();
+  },
+
+  /**
+   * Setup for the app that is performed when the document is ready.
+   */
+  initApp = function () {
+    // Initialize click handler for overlay.
+    $("#popup").click(function () {
+      $(this).fadeOut("fast");
+    });
+
+    // Check if user has seen onboarding popup recently and display it if not.
+    if (readCookie("popup") !== "overlay") {
+      showOverlay([
+        '<h2>New to the Mapper?</h2>',
+        '<ul>',
+        '<li><strong>Make maps for tabletop RPGs</strong> including caverns, dungeons, vertical dungeons, towns, and spaceships.</li>',
+        '<li><strong>Configure your map</strong> using the toolbar above. Choose size, type, layout, and more.</li>',
+        '<li><strong>Click tiles</strong> and use the handy selection menu to fine-tune your generated map.</li>',
+        '<li><strong>Choose your map artist(s)</strong> by toggling them on the left-hand panel. Double-click an artist or hit the heart button with a tile selected to switch to a single artist.</li>',
+        '<li><strong>On multitouch devices</strong> use two-finger twist to rotate tiles.</li>',
+        '</ul>',
+        '<p><em>Click anywhere to close.</em></p>'
+      ].join(''));
+      createCookie("popup", "overlay", 90);
+      ga('send', 'event', 'New User Overlay');
+    }
+
     imgBoard = $("#tiles");
     $('#newWindowB').click(exportMap);
     artBoard = document.getElementById("drawingboard");
@@ -449,12 +486,6 @@ $(document)
       return false;
     });
 
-    if (readCookie("popup") !== "original") {
-      $("#popup").show().click(function () {
-        $(this).fadeOut("fast");
-        createCookie("popup", "original", 90);
-      });
-    }
     $("#tilepanel").find(".collapsed").hide();
     $("#width").val(2);
     $("#height").val(2);
@@ -485,7 +516,9 @@ $(document)
       $("#grid").remove();
       $("<div id='grid'></div>").appendTo("#map");
     }
-  })
+  };
+$(document)
+  .ready(initApp)
   // Multitouch goodness
   .hammer()
   .on("rotate", function (event) {
@@ -790,9 +823,6 @@ $(document)
     $("#stagcap").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
     generateMap();
-  })
-  .bind("keydown", "shift+c", function () {
-    $("span.amt, span.special").slideToggle("slow");
   });
 
 if ('standalone' in window.navigator && !window.navigator.standalone && $mobilemode && $issafari) {

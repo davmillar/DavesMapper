@@ -9,6 +9,7 @@ tiles
 tiles/
 tiles/**/*
 google*.html
+*.sql
 
 #################
 ## Eclipse

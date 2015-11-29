@@ -873,7 +873,4 @@ $(document)
     $("#stagcap").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
     generateMap();
-  })
-  .bind("keydown", "shift+c", function () {
-    $("span.amt, span.special").slideToggle("slow");
   });

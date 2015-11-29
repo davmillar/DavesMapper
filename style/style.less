@@ -76,7 +76,7 @@ html,body{
 }
 
 body{
-  margin:30px 0 24px 200px;
+  margin:0;
   padding:0;
   .fancyfonts;
   background:@darkbrown;
@@ -397,6 +397,7 @@ h4{
   background-color:@litetan;
   color:@litebrown;
   z-index:@ui-base;
+  .box-shadow(0 7px 7px -7px rgba(0,0,0,0.5));
   h4 {
     position:absolute;
     top:0;
@@ -411,7 +412,7 @@ h4{
 #mapTypeControls { left: 200px; width: 218px; }
 #mapModeControls { left: 418px; width: 174px; }
 #mapSizeControls { left: 592px; width: 116px; }
-#selectionEdit   { left: 708px; width: 162px; }
+#selectionEdit   { left: 708px; width: 162px; z-index:(@ui-base + 1); }
 #mapViewControls { left: 870px; width: 212px; }
 
 #mapTypeControls,
@@ -1026,12 +1027,7 @@ aside.widget ul li ul.children li a{
   break-inside:avoid-column;
   column-break-inside:avoid;
   -webkit-column-break-inside:avoid !important;
-  background-image:-webkit-gradient(radial,center center,125,center center,250,from(#ffffff),to(@litetan));
-  background-image:-webkit-radial-gradient(center,circle closest-corner,#ffffff,@litetan);
-  background-image:-moz-radial-gradient(center,circle closest-corner,#ffffff,@litetan);
-  background-image:-ms-radial-gradient(center,circle closest-corner,#ffffff,@litetan);
-  background-image:-o-radial-gradient(center,circle closest-corner,#ffffff,@litetan);
-  background-image:radial-gradient(center,circle closest-corner,#ffffff,@litetan);
+  background:@litetan;
   .border-box;
   .border-radius(10px);
   .box-shadow(inset 0 0 5px rgba(0,0,0,0.25));
@@ -1155,7 +1151,7 @@ aside.widget ul li ul.children li a{
   width:900px;
   line-height:1px;
   text-align:center;
-  margin:64px auto 0;
+  margin:0;
   padding:22px;
   background:#fff;
   .border-radius(22px);
@@ -1274,17 +1270,20 @@ aside.widget ul li ul.children li a{
 }
 
 .selHeader{
-  border-right:1px solid rgba(0,125,77,0.15);
-  border-top:1px solid rgba(255,255,255,0.5);
-  border-bottom:1px solid rgba(0,125,77,0.1);
   background:rgba(0,250,154,0.25);
   color:#007d4d;
   text-shadow:0 1px 1px rgba(255,255,255,0.7);
 }
 
 #viewport{
-  display:block;
-  padding:20px;
+  display: block;
+  position: fixed;
+  top: 30px;
+  bottom: 24px;
+  left: 200px;
+  right: 0;
+  padding: 74px 10px 10px;
+  overflow: auto;
   perspective:500px;
 }
 
@@ -1633,12 +1632,6 @@ table{
 .spCrush          {.spritePos(2,3);}
 .spHex            {.spritePos(3,3);}
 
-#tilepanel.wide section{
-  -moz-column-width:150px !important;
-  -webkit-column-width:150px !important;
-  column-width:150px !important;
-}
-
 #drawingboard{
   pointer-events:none;
   opacity:0.1;
@@ -1651,6 +1644,11 @@ table{
 }
 
 .standalone-app {
+  #viewport{
+    top: 0;
+    bottom: 0;
+  }
+
   margin-bottom: 0;
 
   #mapTypeControls,
@@ -1683,15 +1681,15 @@ table{
 }
 
 @media screen and (max-width:800px){
-  body {
-    margin:30px 0 24px 130px;
-  }
+  #mapTypeControls { left: 120px; }
+  #mapModeControls { left: 338px; }
+  #mapSizeControls { left: 512px; }
+  #selectionEdit   { left: 628px; }
+  #mapViewControls { left: 780px; }
 
-  #mapTypeControls { top: 30px; left: 120px; }
-  #mapModeControls { top: 30px; left: 338px; }
-  #mapSizeControls { top: 30px; left: 512px; }
-  #selectionEdit   { top: 30px; left: 628px; }
-  #mapViewControls { top: 30px; left: 780px; }
+  #viewport{
+    left: 120px;
+  }
 
   #tilepanel {
     width: 120px;
@@ -1708,11 +1706,6 @@ table{
 }
 
 @media screen and (max-width: 640px) {
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
   #newnav,
   #tilepanel,
   #site-foot {
@@ -1726,6 +1719,20 @@ table{
 
   #popup div {
     margin:2em auto;
+  }
+
+
+  #viewport{
+    top: 0;
+    left: 0;
+    bottom: 64px;
+  }
+
+  .standalone-app {
+    #viewport{
+      left: 0;
+      bottom: 64px;
+    }
   }
 
 

@@ -708,13 +708,13 @@ var createCookie = function (name, value, days) {
         $("body").addClass("faildroid");
       }
     }
+
     if ($appmode) {
-      $("body").css({"margin-bottom": "0"});
-      $("#map").css({"margin-top": "34px"});
-      $("#tilepanel,#site-head").css({"top": "0"});
-      $("#notification,#popup").css({"top": "62px;"});
+      $("body").addClass('standalone-app');
+      $("#notification").css({"top": "64px;"});
       $("#newnav,#site-foot").hide();
     }
+
     if ($("canvas#grid").length > 0) {
       $("#grid").remove();
       $("<div id='grid'></div>").appendTo("#map");

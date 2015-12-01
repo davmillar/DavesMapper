@@ -407,181 +407,34 @@ var createCookie = function (name, value, days) {
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');
-  };
-$(document)
-  .ready(function () {
-    imgBoard = $("#tiles");
-    $('#newWindowB').click(exportMap);
-    artBoard = document.getElementById("drawingboard");
-    artMode = artBoard.getContext("2d");
-    $("#newBtn").click(generateMap);
-    $("input.mtBtn").click(function () {
-      map_kind = parseInt($(this).val(), 10);
-    });
-    $('input:radio[name=maptype]').click(function () {
-      if ($mobilemode) { $(this).blur(); }
-      maptype = parseInt($(this).val(), 10);
-      $("#artistsblock").load("scripts/load_authors.php", { "map_kind": maptype }, selectTileSets);
-    });
-    $("#site-head")
-      .on("click tap", "#nogrid", function () {
-        applyGridOverlay(0);
-      })
-      .on("click tap", "#grid5", function () {
-        applyGridOverlay(1);
-      })
-      .on("click tap", "#grid10", function () {
-        applyGridOverlay(2);
-      })
-      .on("click tap", "#gridhex", function () {
-        applyGridOverlay(3);
-      });
-    $("#rotateTile").click(function () {
-      if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
-      var oldRot = selectedTile.data("rot"),
-        newRot = (oldRot + 1) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
-      ga('send', 'event', 'Rotate', 'Click');
-      return false;
-    });
-    $("#removeTile").click(function () {
-      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), false);
-      return false;
-    });
+  },
 
-    if (readCookie("popup") !== "original") {
-      $("#popup").show().click(function () {
-        $(this).fadeOut("fast");
-        createCookie("popup", "original", 90);
-      });
-    }
-    $("#tilepanel").find(".collapsed").hide();
-    $("#width").val(2);
-    $("#height").val(2);
-    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
-    applyGridOverlay($('input:radio[name=grid]:checked').val());
-    maptype = parseInt($('input:radio[name=maptype]:checked').val(), 10);
-    $("#artistsblock").load("scripts/load_authors.php", { 'map_kind': maptype }, selectTileSets);
-    if (maptype === 6) {
-      $("#viewport").addClass("sv").removeClass("nm");
-    } else {
-      $("#viewport").addClass("nm").removeClass("sv");
-    }
-    if ($("#fitwidth").is(":checked")) { scaled = true; }
-    if (($mobilemode) && (ua.indexOf("Android") >= 0)) {
-      var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
-      if (androidversion < 3) {
-        $("body").addClass("faildroid");
-      }
-    }
-    if ($appmode) {
-      $("body").css({"margin-bottom": "0"});
-      $("#map").css({"margin-top": "34px"});
-      $("#tilepanel,#site-head").css({"top": "0"});
-      $("#notification,#popup").css({"top": "62px;"});
-      $("#newnav,#site-foot").hide();
-    }
-    if ($("canvas#grid").length > 0) {
-      $("#grid").remove();
-      $("<div id='grid'></div>").appendTo("#map");
-    }
-  })
-  // Multitouch goodness
-  .hammer()
-  .on("rotate", function (event) {
-    if (selectedTile.data("type") == 'tile') {
-      var oldRot = selectedTile.data("rot");
-      inrotate = true;
-      detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
-      selectedTile.removeClass("rot" + oldRot).css({
-        '-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-        '-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-        '-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-        '-o-transform' : 'rotateZ(' + detectedrotate + 'deg)',
-        'transform' : 'rotateZ(' + detectedrotate + 'deg)',
-        '-webkit-transition' : 'none',
-        '-moz-transition' : 'none',
-        '-ms-transition' : 'none',
-        '-o-transition' : 'none',
-        'transition' : 'none',
-        'zoom' : 1
-      });
-      event.gesture.preventDefault();
-      ga('send', 'event', 'Rotate', 'Start Touch');
-    }
-  })
-  .on("release", function (event) {
-    if (inrotate) {
-      inrotate = false;
-      var oldRot = selectedTile.data("rot"),
-        newRot = Math.round(detectedrotate / 90) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
-        '-webkit-transform' : '',
-        '-moz-transform' : '',
-        '-ms-transform' : '',
-        '-o-transform' : '',
-        'transform' : '',
-        '-webkit-transition' : '',
-        '-moz-transition' : '',
-        '-ms-transition' : '',
-        '-o-transition' : '',
-        'transition' : '',
-        'zoom' : 1
-      });
-      detectedrotate = 0;
-      ga('send', 'event', 'Rotate', 'Release Touch');
-    }
-  })
-  // Change artists used
-  .on("change", "#artistsblock input", function (e) {
-    if (e.metaKey) { $(this).prop("checked", true).siblings("input").prop("checked", false); alert("Test"); }
-    selectTileSets();
-  })
-  .on("dblclick", "#artistsblock label", function () {
-    var $target = $(this).attr("for");
-    $("#" + $target).prop("checked", true).siblings("input").prop("checked", false);
-    selectTileSets();
-  })
-  // Handle the remove/replace with exit button
-  .on("click tap", "#removeTileExit", function () {
-    replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
-    ga('send', 'event', 'Remove Tile', 'Exit');
-    return false;
-  })
-  // Handle swapping button
-  .on("click tap", "#swapTile", function () {
-    if (selectedTile.data("type") === "tab") { return; }
-    selectedTile.addClass("swapfirst");
-    swap = true;
-    $("#swapTile").addClass("down");
-    ga('send', 'event', 'Swap', 'Tool Click');
-    return false;
-  })
-  // Handle mancrush button
-  .on("click tap", "#mancrush", function () {
-    var $target = selectedTile.data("artist");
+  /**
+   * Displays a popup with the provided content.
+   * @param  {string} overlayContent A string of HTML content.
+   */
+  showOverlay = function (overlayContent) {
+      var overlayContainer = $("#popup"),
+          overlayContentBox = overlayContainer.find('div');
 
-    $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
-    ga('send', 'event', 'Heart', 'Click');
-    selectTileSets();
-  })
-  // Handle dragging a tile
-  .on("dragstart", "#tiles img", function (event) {
+      overlayContentBox.html(overlayContent);
+      overlayContainer.show();
+  },
+
+  // Handler for image dragging to set up for drag/drop tile swapping.
+  onImageDragStart = function (event) {
     var e = event.originalEvent;
 
     if (swap || !e) { return; }
     selectedTile = $(this);
-    $(".selTile").removeClass("selTile");
-    selectedTile.addClass("selTile");
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/html","Swap");
+    $('.selTile').removeClass('selTile');
+    selectedTile.addClass('selTile');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html','Swap');
     ga('send', 'event', 'Swap', 'Drag Start');
-  })
-  // Handle dropping a tile
-  .on("dragover", "#tiles img", function (event) {
-    event.originalEvent.preventDefault();
-  })
-  .on("drop", "#tiles img", function (event) {
+  },
+
+  onImageDragDrop = function (event) {
     var firstTile,
         secondTile;
 
@@ -627,9 +480,9 @@ $(document)
       selectedTile.addClass("selTile");
       ga('send', 'event', 'Swap', 'Drop');
     }
-  })
-  // Handle clicking on a tile
-  .on("click tap", "#tiles img", function () {
+  },
+
+  onImageClick = function () {
     var firstTile,
         secondTile,
         topadj = 10,
@@ -669,19 +522,9 @@ $(document)
         leftadj -= 75;
       }
     }
-  })
-  // Redraw the map when width or height are changed
-  .on("change", "#width, #height", generateMap)
-  // Stock the room when the room stocker button is clicked
-  .on("click tap", "#roomBtn", roomStock)
-  // Change mode based on radio button value changing
-  .on("click tap change", 'input:radio[name=mode]', function () {
-    mapSettings.mode = parseInt($(this).val(), 10);
-    generateMap();
-    ga('send', 'event', 'Mode', 'Change');
-  })
-  // Handle double-clicks, including modified double-clicks
-  .on("dblclick", "#tiles img.tile", function (e) {
+  },
+
+  onTileDoubleClick = function (e) {
     var $target = $(this),
         oldRot,
         newRot;
@@ -695,22 +538,25 @@ $(document)
       $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
       ga('send', 'event', 'Rotate', 'DblClick');
     }
-  })
-  .on("dblclick", "#tiles img.edge", function (e) {
+  },
+
+  onEdgeDoubleClick = function (e) {
     if (e.metaKey) {
       var $target = $(this);
 
       replaceTile($target, $target.data("imgid"), "edge", false);
     }
-  })
-  .on("dblclick", "#tiles img.corner", function (e) {
+  },
+
+  onCornerDoubleClick = function (e) {
     if (e.metaKey) {
       var $target = $(this);
 
       replaceTile($target, $target.data("imgid"), "corner", false);
     }
-  })
-  .on("dblclick", "#tiles img.top", function (e) {
+  },
+
+  onTopDoubleClick = function (e) {
     var $target = $(this),
         oldRot,
         newRot;
@@ -722,15 +568,17 @@ $(document)
       newRot = (oldRot + 1) % 2;
       $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
     }
-  })
-  .on("dblclick", "#tiles img.tco", function (e) {
+  },
+
+  onTopCornerDoubleClick = function (e) {
     if (e.metaKey) {
       var $target = $(this);
 
       replaceTile($target, $target.data("imgid"), "tco", false);
     }
-  })
-  .on("dblclick", "#tiles img.btm", function (e) {
+  },
+
+  onBottomDoubleClick = function (e) {
     var $target = $(this),
         oldRot,
         newRot;
@@ -742,15 +590,17 @@ $(document)
       newRot = (oldRot + 1) % 2;
       $(this).data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
     }
-  })
-  .on("dblclick", "#tiles img.bco", function (e) {
+  },
+
+  onBottomCornerDoubleClick = function (e) {
     if (e.metaKey) {
       var $target = $(this);
 
       replaceTile($target, $target.data("imgid"), "bco", false);
     }
-  })
-  .on("click", "#grid", function (e) {
+  },
+
+  onTileBoardClick = function (e) {
     if ($(this).hasClass("iconmode")) {
       var offset = $(this).offset(),
           theX = e.clientX - offset.left - 15,
@@ -761,7 +611,240 @@ $(document)
             'width': '30px'
           }).appendTo($(this));
     }
-  })
+  },
+
+  /**
+   * Setup for the app that is performed when the document is ready.
+   */
+  initApp = function () {
+    // Initialize click handler for overlay.
+    $("#popup").click(function () {
+      $(this).fadeOut("fast");
+    });
+
+    // Add listeners to the artist seletion list.
+    $("#artistsblock")
+      .on('change', 'input', function (e) {
+        if (e.metaKey) { $(this).prop("checked", true).siblings("input").prop("checked", false); }
+        selectTileSets();
+      })
+      .on('dblclick', 'label', function () {
+        var $target = $(this).attr("for");
+        $("#" + $target).prop("checked", true).siblings("input").prop("checked", false);
+        selectTileSets();
+      });
+
+    // Check if user has seen onboarding popup recently and display it if not.
+    if (readCookie("popup") !== "overlay") {
+      showOverlay([
+        '<h2>New to the Mapper?</h2>',
+        '<ul>',
+        '<li><strong>Make maps for tabletop RPGs</strong> including caverns, dungeons, vertical dungeons, towns, and spaceships.</li>',
+        '<li><strong>Configure your map</strong> using the toolbar above. Choose size, type, layout, and more.</li>',
+        '<li><strong>Click tiles</strong> and use the handy selection menu to fine-tune your generated map.</li>',
+        '<li><strong>Choose your map artist(s)</strong> by toggling them on the left-hand panel. Double-click an artist or hit the heart button with a tile selected to switch to a single artist.</li>',
+        '<li><strong>On multitouch devices</strong> use two-finger twist to rotate tiles.</li>',
+        '</ul>',
+        '<p><em>Click anywhere to close.</em></p>'
+      ].join(''));
+      createCookie("popup", "overlay", 90);
+      ga('send', 'event', 'New User Overlay');
+    }
+
+    $('#newWindowB').click(exportMap);
+    artBoard = document.getElementById("drawingboard");
+    artMode = artBoard.getContext("2d");
+    $("#newBtn").click(generateMap);
+    $("input.mtBtn").click(function () {
+      map_kind = parseInt($(this).val(), 10);
+    });
+    $('input:radio[name=maptype]').click(function () {
+      if ($mobilemode) { $(this).blur(); }
+      maptype = parseInt($(this).val(), 10);
+      $("#artistsblock").load("scripts/load_authors.php", { "map_kind": maptype }, selectTileSets);
+    });
+    $("#site-head")
+      .on("click tap", "#nogrid", function () {
+        applyGridOverlay(0);
+      })
+      .on("click tap", "#grid5", function () {
+        applyGridOverlay(1);
+      })
+      .on("click tap", "#grid10", function () {
+        applyGridOverlay(2);
+      })
+      .on("click tap", "#gridhex", function () {
+        applyGridOverlay(3);
+      });
+    $("#rotateTile").click(function () {
+      if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
+      var oldRot = selectedTile.data("rot"),
+        newRot = (oldRot + 1) % 4;
+      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+      ga('send', 'event', 'Rotate', 'Click');
+      return false;
+    });
+    $("#removeTile").click(function () {
+      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), false);
+      return false;
+    });
+
+    $("#tilepanel").find(".collapsed").hide();
+    $("#width").val(2);
+    $("#height").val(2);
+    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
+    applyGridOverlay($('input:radio[name=grid]:checked').val());
+    maptype = parseInt($('input:radio[name=maptype]:checked').val(), 10);
+    $("#artistsblock").load("scripts/load_authors.php", { 'map_kind': maptype }, selectTileSets);
+    if (maptype === 6) {
+      $("#viewport").addClass("sv").removeClass("nm");
+    } else {
+      $("#viewport").addClass("nm").removeClass("sv");
+    }
+    if ($("#fitwidth").is(":checked")) { scaled = true; }
+    if (($mobilemode) && (ua.indexOf("Android") >= 0)) {
+      var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
+      if (androidversion < 3) {
+        $("body").addClass("faildroid");
+      }
+    }
+
+    if ($appmode) {
+      $("body").addClass('standalone-app');
+      $("#notification").css({"top": "64px;"});
+      $("#newnav,#site-foot").hide();
+    }
+
+    if ($("canvas#grid").length > 0) {
+      $("#grid").remove();
+      $("<div id='grid'></div>").appendTo("#map");
+    }
+
+    // Add listeners to the tiles holder.
+    imgBoard = $('#tiles');
+    imgBoard
+      // Handle dragging a tile
+      .on('dragstart', 'img', onImageDragStart)
+      // Handle dropping a tile
+      .on("dragover", "img", function (event) {
+        event.originalEvent.preventDefault();
+      })
+      .on("drop", "img", onImageDragDrop)
+      // Handle clicking on a tile
+      .on("click tap", "img", onImageClick)
+      // Handle double-clicks, including modified double-clicks
+      .on("dblclick", "img.tile", onTileDoubleClick)
+      .on("dblclick", "img.edge", onEdgeDoubleClick)
+      .on("dblclick", "img.corner", onCornerDoubleClick)
+      .on("dblclick", "img.top", onTopDoubleClick)
+      .on("dblclick", "img.tco", onTopCornerDoubleClick)
+      .on("dblclick", "img.btm", onBottomDoubleClick)
+      .on("dblclick", "img.bco", onBottomCornerDoubleClick)
+      .on("click", onTileBoardClick);
+
+    // Handle the remove/replace with exit button
+    $("#removeTileExit").on("click tap", function () {
+      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
+      ga('send', 'event', 'Remove Tile', 'Exit');
+      return false;
+    });
+    // Handle swapping button
+    $("#swapTile").on("click tap", function () {
+      if (selectedTile.data("type") === "tab") { return; }
+      selectedTile.addClass("swapfirst");
+      swap = true;
+      $("#swapTile").addClass("down");
+      ga('send', 'event', 'Swap', 'Tool Click');
+      return false;
+    });
+    // Handle mancrush button
+    $("#mancrush").on("click tap", function () {
+      var $target = selectedTile.data("artist");
+
+      $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
+      ga('send', 'event', 'Heart', 'Click');
+      selectTileSets();
+    });
+    // Redraw the map when width or height are changed
+    $("#width, #height").on("change", generateMap);
+    // Stock the room when the room stocker button is clicked
+    $("#roomBtn").on("click tap", roomStock);
+    // Change mode based on radio button value changing
+    $('input:radio[name=mode]').on("click tap change", function () {
+      mapSettings.mode = parseInt($(this).val(), 10);
+      generateMap();
+      ga('send', 'event', 'Mode', 'Change');
+    });
+
+    // Add "Add to Home" hint in appropriate browser settings.
+    if ('standalone' in window.navigator && !window.navigator.standalone && $mobilemode && $issafari) {
+      $('<link rel="stylesheet" href="/style/add2home.css" />').appendTo("body");
+      $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo("body");
+    }
+  },
+
+  /**
+   * Handler for when a detected multitouch performs rotation.
+   * @param  {Object} event The event object
+   */
+  onHammerRotateDetected = function (event) {
+    if (selectedTile.data("type") == 'tile') {
+      var oldRot = selectedTile.data("rot");
+      inrotate = true;
+      detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
+      selectedTile.removeClass("rot" + oldRot).css({
+        '-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+        '-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+        '-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+        '-o-transform' : 'rotateZ(' + detectedrotate + 'deg)',
+        'transform' : 'rotateZ(' + detectedrotate + 'deg)',
+        '-webkit-transition' : 'none',
+        '-moz-transition' : 'none',
+        '-ms-transition' : 'none',
+        '-o-transition' : 'none',
+        'transition' : 'none',
+        'zoom' : 1
+      });
+      event.gesture.preventDefault();
+      ga('send', 'event', 'Rotate', 'Start Touch');
+    }
+  },
+
+  /**
+   * Handler for when a detected multitouch is released.
+   * @param  {Object} event The event object
+   */
+  onHammerReleaseDetected = function (event) {
+    if (inrotate) {
+      inrotate = false;
+      var oldRot = selectedTile.data("rot"),
+          newRot = Math.round(detectedrotate / 90) % 4;
+      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
+        '-webkit-transform' : '',
+        '-moz-transform' : '',
+        '-ms-transform' : '',
+        '-o-transform' : '',
+        'transform' : '',
+        '-webkit-transition' : '',
+        '-moz-transition' : '',
+        '-ms-transition' : '',
+        '-o-transition' : '',
+        'transition' : '',
+        'zoom' : 1
+      });
+      detectedrotate = 0;
+      ga('send', 'event', 'Rotate', 'Release Touch');
+    }
+  };
+
+$(document)
+  // Initialization
+  .ready(initApp)
+  // Multitouch goodness
+  .hammer()
+  // Generic whole-document listeners
+  .on("rotate", onHammerRotateDetected)
+  .on("release", onHammerReleaseDetected)
   // Bind the keydown events for shortcuts
   .bind("keydown", "c", function () {
     $("#endBtn").click();
@@ -790,12 +873,4 @@ $(document)
     $("#stagcap").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
     generateMap();
-  })
-  .bind("keydown", "shift+c", function () {
-    $("span.amt, span.special").slideToggle("slow");
   });
-
-if ('standalone' in window.navigator && !window.navigator.standalone && $mobilemode && $issafari) {
-  $('<link rel="stylesheet" href="/style/add2home.css" />').appendTo("body");
-  $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo("body");
-}

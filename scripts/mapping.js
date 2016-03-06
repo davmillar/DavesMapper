@@ -296,7 +296,11 @@ var createCookie = function (name, value, days) {
   },
   exportMap = function () {
     var imageHolder = new Image();
-    if ((mapSettings.mode === 1) || (mapSettings.mode === 3) || (mapSettings.mode === 4) || (maptype === 6)) {
+    if (mapSettings.mode === 4) {
+      $("#notification span").text("Export for cubes is currently not working. Please try your browser's print option instead.");
+      $("#notification").slideDown("fast");
+      ga('send', 'event', 'Export', 'Failed-Cube');
+    } else if ((mapSettings.mode === 1) || (mapSettings.mode === 3) || (mapSettings.mode === 4) || (maptype === 6)) {
       var dataURL;
       $("#notification").slideUp("fast");
       if ((mapSettings.width * mapSettings.height) > 36) {
@@ -344,27 +348,39 @@ var createCookie = function (name, value, days) {
         artMode.drawImage(imageHolder, -(mywid / 2), -(myhei / 2), mywid, myhei);
         artMode.restore();
       });
-      dataURL = artBoard.toDataURL('image/png');
+      dataURL = artBoard.toDataURL();
+      console.debug(dataURL);
       window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       artBoard.width = artBoard.width * 2 / 2;
       ga('send', 'event', 'Export', 'Canvas');
     } else {
-      var fullMapURL, mapData;
       if ((mapSettings.width * mapSettings.height) > 64) {
         $("#notification span").text("This map looks too big to export to PNG without causing an error. Sorry!");
         $("#notification").slideDown("fast");
         ga('send', 'event', 'Export', 'Failed');
       } else {
+        var fullMapURL, mapData;
         $("#notification").slideUp("fast");
         mapData = {'tiles': [], 'rotation': []};
         $("#tiles img").each(function (i) {
           mapData.tiles[i] = $(this).data("imgid");
           mapData.rotation[i] = $(this).data("rot");
         });
-        fullMapURL = 'fullmap.php?mapData=' + base64_encode(JSON.stringify(mapData)) + '&w=' + mapSettings.width + '&h=' + mapSettings.height;
-        if (mapSettings.hasEndcaps) { fullMapURL += '&e=1'; } else { fullMapURL += '&e=0'; }
-        if (corners) { fullMapURL += '&c=1'; } else { fullMapURL += '&c=0'; }
-        fullMapURL += '&g=' + ((mapSettings.gridType === 0) ? '0' : mapSettings.gridType);
+        fullMapURL = 'fullmap.php?mapData=' +
+          base64_encode(JSON.stringify(mapData)) +
+          '&w=' + mapSettings.width +
+          '&h=' + mapSettings.height;
+        if (mapSettings.hasEndcaps) {
+          fullMapURL += '&e=1';
+        } else {
+          fullMapURL += '&e=0';
+        }
+        if (corners) {
+          fullMapURL += '&c=1';
+        } else {
+          fullMapURL += '&c=0';
+        }
+        fullMapURL += '&g=' + mapSettings.gridType.toString();
         window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       }
       ga('send', 'event', 'Export', 'PHP');

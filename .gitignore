@@ -10,6 +10,7 @@ tiles/
 tiles/**/*
 google*.html
 *.sql
+.vagrant/bootstrap.sh
 
 #################
 ## Eclipse

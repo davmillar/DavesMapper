@@ -19,16 +19,24 @@ inkscape \
 
 cp images/sprites.svg assets/icons/sprites.svg
 
-echo "Converting LESS and compressing output CSS..."
+echo "Converting app LESS and compressing output CSS..."
 
-dc="$(md5sum style/style.less | cut -c -5)"
+spritedc="$(md5sum images/sprites.svg | cut -c -5)"
 
 cat \
   style/style.less \
-  | sed "s/dc=0/dc=${dc}/" \
+  | sed "s/dc=0/dc=${spritedc}/" \
   | lessc --clean-css - \
   | yui-compressor --type=css \
   > ./assets/css/compiled.css
+
+echo "Converting print LESS and compressing output CSS..."
+
+cat \
+  style/print.less \
+  | lessc --clean-css - \
+  | yui-compressor --type=css \
+  > ./assets/css/compiled_print.css
 
 echo "Combining and compressing global JS..."
 

@@ -35,7 +35,7 @@
 
 <link href="http://fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
 <link href="/assets/css/compiled.css?t=<?php echo filemtime(PATH . "/assets/css/compiled.css")?>" rel="stylesheet" media="screen">
-<link href="/style/print.css" rel="stylesheet" media="print">
+<link href="/assets/css/compiled_print.css?t=<?php echo filemtime(PATH . "/assets/css/compiled_print.css")?>" rel="stylesheet" media="print">
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>window.jQuery || document.write("<script src='scripts/jquery.js'>\x3C/script>")</script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+echo "Provisioning virtual machine..."
+export DEBIAN_FRONTEND=noninteractive
+
+echo "Updating apt"
+apt-get update > /dev/null
+
+echo "Installing Apache and linking /vagrant to /var/www"
+apt-get install -y apache2 > /dev/null
+if ! [ -L /var/www ]; then
+  rm -rf /var/www
+  ln -fs /vagrant /var/www
+fi
+
+echo "Installing PHP"
+apt-get install -y php5-common php5-dev php5-cli php5-fpm > /dev/null
+
+echo "Installing PHP extensions"
+apt-get install -y curl php5-curl php5-gd php5-mcrypt php5-mysql > /dev/null
+
+echo "Making PHP and Apache work together"
+sudo apt-get install -y libapache2-mod-php5 # > /dev/null
+sudo a2enmod php5 # > /dev/null
+service apache2 stop # > /dev/null
+echo "listen 4069" | sudo tee --append /etc/apache2/httpd.conf
+echo "ServerName localhost" | sudo tee --append /etc/apache2/httpd.conf
+service apache2 restart # > /dev/null
+
+echo "Preparing MySQL"
+apt-get install debconf-utils -y > /dev/null
+debconf-set-selections <<< "mysql-server mysql-server/root_password password 1234"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password 1234"
+
+echo "Installing MySQL"
+apt-get install mysql-server -y > /dev/null
+
+echo "Setup database"
+mysql -uroot -p1234 -e "DROP DATABASE IF EXISTS ---your-db-name-here---";
+mysql -uroot -p1234 -e "CREATE DATABASE ---your-db-name-here---;"
+
+echo "Make MySQL external accessible"
+mysql -uroot -p1234 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '1234';"
+mysql -uroot -p1234 -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '1234';"
+mysql -uroot -p1234 -e "GRANT ALL PRIVILEGES ON *.* TO 'cartographer'@'localhost' IDENTIFIED BY '1234';"
+
+echo "Import bootstrap SQL"
+mysql -uroot -p1234 ---your-db-name-here--- < /vagrant/---your-db-name-here---.sql
+
+sudo service mysql restart

@@ -1,5 +1,7 @@
 <?php
-  include "../cgi-bin/db_start.php";
+  define('PATH', dirname(__FILE__));
+
+  include PATH . "/../cgi-bin/db_start.php";
   session_start();
 
   $business = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
@@ -112,10 +114,10 @@
   <head>
     <title>Admin Area | Dave's Mapper | RPG Map Generator</title>
     <meta name="robots" content="noindex,nofollow" />
-    <?php include "/home/dmillar/public_html/includes/head.php"; ?>
+    <?php include PATH . "/../includes/head.php"; ?>
   </head>
   <body>
-    <?php include "/home/dmillar/public_html/includes/magic.php"; ?>
+    <?php include PATH . "/../includes/magic.php"; ?>
     <section id="sidepanel">
 
     </section>
@@ -405,4 +407,4 @@
     </script>
   </body>
 </html>
-<?php include "../cgi-bin/db_end.php"; ?>
+<?php include PATH . "/../cgi-bin/db_end.php"; ?>

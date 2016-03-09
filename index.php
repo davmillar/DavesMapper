@@ -33,14 +33,14 @@
           <label for="mt_mix" class="dropped">Dun/Cav Mix</label>
         <input type="radio" class="btnDrp mtBtn" name="maptype" value="4" id="mt_city">
           <label for="mt_city" class="dropped">City</label>
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil">
-          <label for="mt_vil" class="dropped">Village</label>
+        <!--input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil">
+          <label for="mt_vil" class="dropped">Village</label-->
         <input type="radio" class="btnDrp mtBtn" name="maptype" value="6" id="mt_side">
           <label for="mt_side" class="dropped">Side View</label>
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="7" id="mt_ship">
+        <input type="radio" class="btnDrp mtBtn last" name="maptype" value="7" id="mt_ship">
           <label for="mt_ship" class="dropped">SciFi Ship</label>
-        <input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet">
-          <label for="mt_jet" class="dropped">Boardwalk</label>
+        <!--input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet">
+          <label for="mt_jet" class="dropped">Boardwalk</label-->
       </div></div>
       <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New Map</a>
     </div>

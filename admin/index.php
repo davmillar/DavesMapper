@@ -63,6 +63,8 @@
         $result = mysql_insert_id();
         $_SESSION['artist'] = intval($_POST['artist']);
         if ($result) {
+          $_SESSION['last_mtype'] = $_POST['mtype'];
+          $_SESSION['last_tttype'] = $_POST['ttype'];
           $_SESSION['message'] = "<p>Tile successfully added to the site.</p><br/>
             <img src='/tiles/".$upFilename."' alt='Tile Preview' style='width:100px;' />";
         } else {
@@ -168,6 +170,8 @@
               $mmtype = $_POST['mtype'];
             } else if (isset($_POST['mtype_m'])) {
               $mmtype = $_POST['mtype_m'];
+            } else if (isset($_SESSION['last_mtype'])) {
+              $mmtype = $_SESSION['last_mtype'];
             } else {
               $mmtype = 1;
             }
@@ -176,6 +180,8 @@
               $tttype = $_POST['ttype'];
             } else if ($_POST['ttype_m']) {
               $tttype = $_POST['ttype_m'];
+            } else if (isset($_SESSION['last_tttype'])) {
+              $tttype = $_SESSION['last_tttype'];
             } else {
               $tttype = 1;
             }
@@ -337,7 +343,7 @@
                     <input type="text" name="alink" id="alink" autocomplete="off" />
                     <input type="text" name="aicon" id="aicon" class="little" autocomplete="off" /><br/>
                       <label for="alink" class="labelTxt tBox">Link URL</label>
-                      <label for="aicon" class="labelTxt nBox">.png</label>
+                      <label for="aicon" class="labelTxt nBox">(this).png</label>
                   </div>
                   <div class="fieldset">
                     <h4 class="legend">Auth</h4>

@@ -251,7 +251,7 @@ var createCookie = function (name, value, days) {
       appendTile("tile", randInt(0, 3));
       appendTab(2);
       tileDiv.appendChild(document.createElement('br'));
-      let tab_bottom = document.createElement('img');
+      var tab_bottom = document.createElement('img');
       tab_bottom.setAttribute('class','rot0');
       tab_bottom.setAttribute('data-rot','0');
       tab_bottom.setAttribute('data-type','tab');
@@ -425,7 +425,7 @@ var createCookie = function (name, value, days) {
           b = randInt(0, specialContents.length - 1);
           c = "<li>Special: " + specialContents[b] + "</li>";
         }
-        let wrapper = document.createElement('div');
+        var wrapper = document.createElement('div');
         wrapper.innerHTML = c;
         document.getElementById("roomcont").appendChild(wrapper.firstChild);
       }

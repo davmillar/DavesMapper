@@ -70,18 +70,12 @@ header,
   }
   .rot1 {
     .rotate(90deg);
-    -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
   }
   .rot2 {
     .rotate(180deg);
-    -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
   }
   .rot3 {
     .rotate(270deg);
-    -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   }
 }
 
@@ -94,11 +88,9 @@ header,
   .rot1,
   .rot3 {
     .scaleX(-1);
-    filter:fliph;
   }
   .rot0,
   .rot2 {
     .transform(none);
-    filter:none;
   }
 }

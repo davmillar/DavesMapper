@@ -1177,17 +1177,14 @@ aside.widget ul li ul.children li a{
 
   .rot1{
     .rotate(90deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
   }
 
   .rot2{
     .rotate(180deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
   }
 
   .rot3{
     .rotate(270deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   }
 }
 
@@ -1202,11 +1199,9 @@ aside.widget ul li ul.children li a{
   }
   .rot1,.rot3{
     .scaleX(-1);
-    filter:fliph;
   }
   .rot0,.rot2{
     .transform(none);
-    filter:none;
   }
 }
 
@@ -1510,8 +1505,6 @@ table{
 .ui-tooltip-tipped .ui-tooltip-titlebar,
 .ui-tooltip-tipped .ui-tooltip-content{
   border:3px solid #959FA9;
-  filter:none;
-  -ms-filter:none;
 }
 .ui-tooltip-tipped .ui-tooltip-titlebar{
   background:#3A79B8;
@@ -1534,11 +1527,6 @@ table{
 .ui-tooltip-tipped .ui-tooltip-icon .ui-icon{
   background-color:#FBFBFB;
   color:#555;
-}
-.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,
-.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar{
-  filter:none;
-  -ms-filter:none;
 }
 
 .sprite{

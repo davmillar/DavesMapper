@@ -1,0 +1,43 @@
+.transform (@transformation) {
+  -webkit-transform: @transformation;
+  -moz-transform: @transformation;
+  -ms-transform: @transformation;
+  -o-transform: @transformation;
+  transform: @transformation;
+}
+
+.scaleX (@factor) {
+  -webkit-transform: scaleX(@factor);
+  -moz-transform: scaleX(@factor);
+  -ms-transform: scaleX(@factor);
+  -o-transform: scaleX(@factor);
+  transform: scaleX(@factor);
+}
+
+.rotate (@deg) {
+  -webkit-transform: rotate(@deg);
+  -moz-transform: rotate(@deg);
+  -ms-transform: rotate(@deg);
+  -o-transform: rotate(@deg);
+  transform: rotate(@deg);
+}
+
+.box-shadow (@val) {
+  -webkit-box-shadow: @val;
+  -moz-box-shadow: @val;
+  box-shadow: @val;
+}
+
+.border-radius (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.gradient (@color1, @color2 ) {
+  background: -moz-linear-gradient(top, @color1 0%, @color2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@color1), color-stop(100%,@color2));
+  background: -webkit-linear-gradient(top, @color1 0%,@color2 100%);
+  background: -o-linear-gradient(top, @color1 0%,@color2 100%);
+  background: linear-gradient(to bottom, @color1 0%,@color2 100%);
+}

@@ -27,7 +27,7 @@ cat \
   style/style.less \
   | sed "s/dc=0/dc=${spritedc}/" \
   | lessc --clean-css - \
-  | yui-compressor --type=css \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
   > ./assets/css/compiled.css
 
 echo "Converting print LESS and compressing output CSS..."
@@ -35,14 +35,14 @@ echo "Converting print LESS and compressing output CSS..."
 cat \
   style/print.less \
   | lessc --clean-css - \
-  | yui-compressor --type=css \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
   > ./assets/css/compiled_print.css
 
 echo "Combining and compressing global JS..."
 
 cat \
   scripts/global.js \
-  | yui-compressor --type=js \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled.js
 
 echo "Combining and compressing app JS..."
@@ -53,7 +53,7 @@ cat \
   scripts/json2.js \
   scripts/utf8_encode.js \
   scripts/mapping.js \
-  | yui-compressor --type=js \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled_app.js
 
 echo "Build complete!"

@@ -851,7 +851,7 @@ var createCookie = function (name, value, days) {
       detectedrotate = 0;
       ga('send', 'event', 'Rotate', 'Release Touch');
     }
-  };
+  },
 
   // Key Event Handler named functions
   // per https://github.com/davmillar/DavesMapper/issues/40
@@ -859,27 +859,27 @@ var createCookie = function (name, value, days) {
     $("#endBtn").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
     generateMap();
-  };
+  },
 
   fitWidth = function () {
     $("#fitwidth").click();
-  };
+  },
 
   normalMode = function () {
     $("#normal").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
     generateMap();
-  };
+  },
 
   toggleIconMode = function () {
     $("#grid").toggleClass("iconmode");
-  };
+  },
 
   staggeredMode = function () {
     $("#stagger").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
     generateMap();
-  };
+  },
 
   staggeredCappedMode = function () {
     $("#stagcap").click();

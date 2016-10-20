@@ -853,6 +853,40 @@ var createCookie = function (name, value, days) {
     }
   };
 
+  // Key Event Handler named functions
+  // per https://github.com/davmillar/DavesMapper/issues/40
+  cappedEndsMode = function () {
+    $("#endBtn").click();
+    ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
+    generateMap();
+  };
+
+  fitWidth = function () {
+    $("#fitwidth").click();
+  };
+
+  normalMode = function () {
+    $("#normal").click();
+    ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
+    generateMap();
+  };
+
+  toggleIconMode = function () {
+    $("#grid").toggleClass("iconmode");
+  };
+
+  staggeredMode = function () {
+    $("#stagger").click();
+    ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
+    generateMap();
+  };
+
+  staggeredCappedMode = function () {
+    $("#stagcap").click();
+    ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
+    generateMap();
+  };
+
 $(document)
   // Initialization
   .ready(initApp)
@@ -862,31 +896,11 @@ $(document)
   .on("rotate", onHammerRotateDetected)
   .on("release", onHammerReleaseDetected)
   // Bind the keydown events for shortcuts
-  .bind("keydown", "c", function () {
-    $("#endBtn").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
-    generateMap();
-  })
-  .bind("keydown", "f", function () {
-    $("#fitwidth").click();
-  })
+  .bind("keydown", "c", cappedEndsMode)
+  .bind("keydown", "f", fitWidth)
   .bind("keydown", "g", nextGrid)
   .bind("keydown", "n", generateMap)
-  .bind("keydown", "shift+n", function () {
-    $("#normal").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
-    generateMap();
-  })
-  .bind("keydown", "shift+y", function () {
-    $("#grid").toggleClass("iconmode");
-  })
-  .bind("keydown", "s", function () {
-    $("#stagger").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
-    generateMap();
-  })
-  .bind("keydown", "shift+s", function () {
-    $("#stagcap").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
-    generateMap();
-  });
+  .bind("keydown", "shift+n", normalMode)
+  .bind("keydown", "shift+y", toggleIconMode)
+  .bind("keydown", "s", staggeredMode)
+  .bind("keydown", "shift+s", staggeredCappedMode);

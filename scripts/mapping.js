@@ -188,7 +188,7 @@ var createCookie = function (name, value, days) {
       }
     }
     // Prepare Drawing Area
-    tileDiv = document.getElementById("tiles");
+    var tileDiv = document.getElementById("tiles");
     if (mapSettings.mode !== 4) {
       fullWidth = 300 * width + 2;
       if (mapSettings.hasEndcaps) { fullWidth += 300; }
@@ -420,14 +420,14 @@ var createCookie = function (name, value, days) {
         a = randInt(0, 11);
         clear += a;
         if (a < 10) {
-          c = "<li>" + roomContents[a] + "</li>";
+          c = roomContents[a];
         } else {
           b = randInt(0, specialContents.length - 1);
-          c = "<li>Special: " + specialContents[b] + "</li>";
+          c = "Special: " + specialContents[b];
         }
-        var wrapper = document.createElement('div');
-        wrapper.innerHTML = c;
-        document.getElementById("roomcont").appendChild(wrapper.firstChild);
+        var wrapperLI = document.createElement('li');
+        wrapperLI.innerHTML = c;
+        document.getElementById("roomcont").appendChild(wrapperLI);
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');

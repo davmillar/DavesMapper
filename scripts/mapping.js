@@ -192,20 +192,24 @@ var createCookie = function (name, value, days) {
       fullWidth = 300 * width + 2;
       if (mapSettings.hasEndcaps) { fullWidth += 300; }
       $("#map, #tiles").width(fullWidth + "px");
-      $("#tiles").empty();
+
+      var tiles = document.getElementById('tiles');
+
+      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
+
       if (maptype !== 6) {
         if (mapSettings.hasEndcaps) {
           if (corners) { appendTile("corner", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 0); }
           if (corners) { appendTile("corner", 1); }
-          $("#tiles").append('<br/>');
+            tiles.appendChild(document.createElement('br'));
         }
       } else {
         if (tops) {
           if (tcorners) { appendTile("tco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("top", 0); }
           if (tcorners) { appendTile("tco", 1); }
-          $("#tiles").append('<br/>');
+          tiles.appendChild(document.createElement('br'));
         }
       }
       for (i = 0; i < height; i += 1) {
@@ -214,43 +218,63 @@ var createCookie = function (name, value, days) {
         for (j = 0; j < width - stagcount; j += 1) { appendTile("tile", randInt(0, 3)); }
         if (mapSettings.hasEndcaps || (endstag && (stagcount === 1))) { appendTile("edge", 1); }
         if ((mapSettings.mode === 1) || (mapSettings.mode === 3)) { stagcount = 1 - stagcount; }
-        $("#tiles").append('<br/>');
+          tiles.appendChild(document.createElement('br'));
       }
       if (maptype !== 6) {
         if (mapSettings.hasEndcaps) {
           if (corners) { appendTile("corner", 3); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 2); }
           if (corners) { appendTile("corner", 2); }
-          $("#tiles").append('<br/>');
+          tiles.appendChild(document.createElement('br'));
         }
       } else {
         if (btms) {
           if (bcorners) { appendTile("bco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("btm", 0); }
           if (bcorners) { appendTile("bco", 1); }
-          $("#tiles").append('<br/>');
+          tiles.appendChild(document.createElement('br'));
         }
       }
     } else {
       $("#map, #tiles").width("902px");
-      $("#tiles").empty();
+
+      var tiles = document.getElementById('tiles');
+
+      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
+
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
+
+      tiles.appendChild(document.createElement('br'));
+      
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
-      $("#tiles").append('<br/>');
+
+      tiles.appendChild(document.createElement('br'));
+
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
+
+      tiles.appendChild(document.createElement('br'));
+
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
-      $("#tiles").append("<img class='rot0' data-rot='0' data-type='tab' src='../images/tab_bottom.png'/>");
+      
+      tiles.appendChild(document.createElement('br'));
+
+      var img = document.createElement('img');
+
+      img.className = "rot0";
+      img.setAttribute("data-rot", "0")
+        .setAttribute("data-type", "tab")
+        .setAttribute("src", "../images/tab_bottom.png");
+
+      img.appendChild(img);
+
     }
     tilecount = $("#tiles img").length;
   },
@@ -407,19 +431,29 @@ var createCookie = function (name, value, days) {
         c,
         i;
 
+
+
     do {
-      $("#roomcont").empty();
+
+      var roomcont = document.getElementById('roomcont');
+
+      while(roomcont.firstChild) roomcont.removeChild(roomcont.firstChild)
+
       clear = 0;
       for (i = 0; i < 5; i += 1) {
         a = randInt(0, 11);
         clear += a;
+
+        c = document.createElement('li');
+
         if (a < 10) {
-          c = "<li>" + roomContents[a] + "</li>";
+          c.innerHTML = roomContents[a];
         } else {
           b = randInt(0, specialContents.length - 1);
-          c = "<li>Special: " + specialContents[b] + "</li>";
+          c.innerHTML = specialContents[b];
         }
-        $("#roomcont").append(c);
+        
+        roomcont.appendChild(c);
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');

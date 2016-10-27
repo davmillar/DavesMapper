@@ -188,6 +188,7 @@ var createCookie = function (name, value, days) {
       }
     }
     // Prepare Drawing Area
+    var tileDiv = document.getElementById("tiles");
     if (mapSettings.mode !== 4) {
       fullWidth = 300 * width + 2;
       if (mapSettings.hasEndcaps) { fullWidth += 300; }
@@ -198,14 +199,14 @@ var createCookie = function (name, value, days) {
           if (corners) { appendTile("corner", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 0); }
           if (corners) { appendTile("corner", 1); }
-          $("#tiles").append('<br/>');
+          tileDiv.appendChild(document.createElement('br'));
         }
       } else {
         if (tops) {
           if (tcorners) { appendTile("tco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("top", 0); }
           if (tcorners) { appendTile("tco", 1); }
-          $("#tiles").append('<br/>');
+          tileDiv.appendChild(document.createElement('br'));
         }
       }
       for (i = 0; i < height; i += 1) {
@@ -214,21 +215,21 @@ var createCookie = function (name, value, days) {
         for (j = 0; j < width - stagcount; j += 1) { appendTile("tile", randInt(0, 3)); }
         if (mapSettings.hasEndcaps || (endstag && (stagcount === 1))) { appendTile("edge", 1); }
         if ((mapSettings.mode === 1) || (mapSettings.mode === 3)) { stagcount = 1 - stagcount; }
-        $("#tiles").append('<br/>');
+        tileDiv.appendChild(document.createElement('br'));
       }
       if (maptype !== 6) {
         if (mapSettings.hasEndcaps) {
           if (corners) { appendTile("corner", 3); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 2); }
           if (corners) { appendTile("corner", 2); }
-          $("#tiles").append('<br/>');
+          tileDiv.appendChild(document.createElement('br'));
         }
       } else {
         if (btms) {
           if (bcorners) { appendTile("bco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("btm", 0); }
           if (bcorners) { appendTile("bco", 1); }
-          $("#tiles").append('<br/>');
+          tileDiv.appendChild(document.createElement('br'));
         }
       }
     } else {
@@ -237,20 +238,25 @@ var createCookie = function (name, value, days) {
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
+      tileDiv.appendChild(document.createElement('br'));
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
-      $("#tiles").append('<br/>');
+      tileDiv.appendChild(document.createElement('br'));
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
+      tileDiv.appendChild(document.createElement('br'));
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      $("#tiles").append('<br/>');
-      $("#tiles").append("<img class='rot0' data-rot='0' data-type='tab' src='../images/tab_bottom.png'/>");
+      tileDiv.appendChild(document.createElement('br'));
+      var tab_bottom = document.createElement('img');
+      tab_bottom.setAttribute('class','rot0');
+      tab_bottom.setAttribute('data-rot','0');
+      tab_bottom.setAttribute('data-type','tab');
+      tab_bottom.setAttribute('src','../images/tab_bottom.png');
+      tileDiv.appendChild(tab_bottom);
     }
     tilecount = $("#tiles img").length;
   },
@@ -414,12 +420,14 @@ var createCookie = function (name, value, days) {
         a = randInt(0, 11);
         clear += a;
         if (a < 10) {
-          c = "<li>" + roomContents[a] + "</li>";
+          c = roomContents[a];
         } else {
           b = randInt(0, specialContents.length - 1);
-          c = "<li>Special: " + specialContents[b] + "</li>";
+          c = "Special: " + specialContents[b];
         }
-        $("#roomcont").append(c);
+        var wrapperLI = document.createElement('li');
+        wrapperLI.innerHTML = c;
+        document.getElementById("roomcont").appendChild(wrapperLI);
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');

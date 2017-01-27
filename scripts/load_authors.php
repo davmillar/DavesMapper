@@ -15,16 +15,16 @@
       artist_id FROM tiles WHERE map_type ".$map_type_phrase." GROUP BY artist_id) t
     ON a.id = t.artist_id ORDER BY a.name");
 
+  $authorData = Array();
+
   if (mysql_num_rows($data) > 0) {
     while ($author = mysql_fetch_assoc($data)) {
       if (($author['tiles']) > 0) {
-        echo "<input type='checkbox' name='tileset' class='panelChk' id='chk".$author['artist_id']."' value='".$author['artist_id']."' checked />";
-        echo "<label for='chk".$author['artist_id']."' data-artist='".$author['artist_id']."'><img src='../m_icons/".$author['icon'].".png' />";
-        echo "<span class='name'><span class='nick'>".$author['initials']."</span><span class='full'>".$author['name']."</span></span>";
-        echo "</label>";
+        $authorData[] = $author;
       }
     }
   }
+  echo json_encode($authorData);
 
   include PATH . "/cgi-bin/db_end.php";
 ?>

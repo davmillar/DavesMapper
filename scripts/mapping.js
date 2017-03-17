@@ -7,11 +7,13 @@ var TileDeck,
     mywid,
     myhei,
     mapSettings = {
-      mode: 0,
+      mode: -1,
       height: 2,
       width: 2,
       hasEndcaps: false,
-      gridType: 0
+      gridType: 0,
+      lineup: {},
+      roster: []
     },
     corners,
     endstag,
@@ -25,7 +27,6 @@ var TileDeck,
     normalTileCount = 0,
     edgeTileCount = 0,
     detectedrotate = 0,
-    tileSetOptions = "",
     imag = "",
     selectedTile,
     roomContents = [
@@ -56,27 +57,40 @@ var TileDeck,
 TileDeck = function () {
   "use strict";
   this.deck = [];
+  this.dataSource = [];
   this.cursor = 0;
 };
 
 TileDeck.prototype.shuffle = function () {
   "use strict";
+  this.cursor = 0;
   this.deck.sort(function () {
     return Math.round(Math.random()) - 0.5;
   });
 };
 
+TileDeck.prototype.filter = function () {
+  "use strict";
+  this.deck = this.dataSource.filter(function (tile) {
+    return mapSettings.lineup[tile.artist_id];
+  });
+  this.shuffle();
+};
+
 TileDeck.prototype.draw = function () {
   var cardDrawn = this.deck[this.cursor];
+
   this.cursor += 1;
-  if ((this.cursor % this.deck.length) === 0) { this.cursor = 0; this.shuffle(); }
+  if ((this.cursor % this.deck.length) === 0) {
+    this.shuffle();
+  }
+
   return cardDrawn;
 };
 
 TileDeck.prototype.stock = function (stockpile) {
-  this.deck = stockpile || [];
-  this.cursor = 0;
-  this.shuffle();
+  this.dataSource = stockpile || [];
+  this.filter();
 };
 
 tileLibrary = {
@@ -161,13 +175,18 @@ var createCookie = function (name, value, days) {
     }
     ga('send', 'event', 'Grid', 'Type ' + gridType);
   },
-  composeMap = function (width, height) {
-    var tops, btms,
-      tcorners, bcorners,
-      fullWidth,
-      i,
-      j,
-      edgerotationa;
+  composeMap = function () {
+    var width = mapSettings.width,
+        height = mapSettings.height,
+        tops,
+        btms,
+        tcorners,
+        bcorners,
+        fullWidth,
+        i,
+        j,
+        edgerotationa;
+
     endstag = ((tileLibrary['edge'].deck.length > 0) && (mapSettings.mode === 3));
     mapSettings.hasEndcaps = ((tileLibrary['edge'].deck.length > 0) && (mapSettings.mode === 2));
     corners = ((tileLibrary['corner'].deck.length > 0) && (mapSettings.mode === 2));
@@ -188,6 +207,7 @@ var createCookie = function (name, value, days) {
       }
     }
     // Prepare Drawing Area
+    var tileDiv = document.getElementById("tiles");
     if (mapSettings.mode !== 4) {
       fullWidth = 300 * width + 2;
       if (mapSettings.hasEndcaps) { fullWidth += 300; }
@@ -202,14 +222,14 @@ var createCookie = function (name, value, days) {
           if (corners) { appendTile("corner", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 0); }
           if (corners) { appendTile("corner", 1); }
-            tiles.appendChild(document.createElement('br'));
+          tileDiv.appendChild(document.createElement('br'));
         }
       } else {
         if (tops) {
           if (tcorners) { appendTile("tco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("top", 0); }
           if (tcorners) { appendTile("tco", 1); }
-          tiles.appendChild(document.createElement('br'));
+          tileDiv.appendChild(document.createElement('br'));
         }
       }
       for (i = 0; i < height; i += 1) {
@@ -218,21 +238,21 @@ var createCookie = function (name, value, days) {
         for (j = 0; j < width - stagcount; j += 1) { appendTile("tile", randInt(0, 3)); }
         if (mapSettings.hasEndcaps || (endstag && (stagcount === 1))) { appendTile("edge", 1); }
         if ((mapSettings.mode === 1) || (mapSettings.mode === 3)) { stagcount = 1 - stagcount; }
-          tiles.appendChild(document.createElement('br'));
+        tileDiv.appendChild(document.createElement('br'));
       }
       if (maptype !== 6) {
         if (mapSettings.hasEndcaps) {
           if (corners) { appendTile("corner", 3); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 2); }
           if (corners) { appendTile("corner", 2); }
-          tiles.appendChild(document.createElement('br'));
+          tileDiv.appendChild(document.createElement('br'));
         }
       } else {
         if (btms) {
           if (bcorners) { appendTile("bco", 0); }
           for (j = 0; j < width - stagcount; j += 1) { appendTile("btm", 0); }
           if (bcorners) { appendTile("bco", 1); }
-          tiles.appendChild(document.createElement('br'));
+          tileDiv.appendChild(document.createElement('br'));
         }
       }
     } else {
@@ -245,43 +265,83 @@ var createCookie = function (name, value, days) {
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-
-      tiles.appendChild(document.createElement('br'));
-      
+      tileDiv.appendChild(document.createElement('br'));
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
       appendTile("tile", randInt(0, 3));
-
-      tiles.appendChild(document.createElement('br'));
-
+      tileDiv.appendChild(document.createElement('br'));
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-
-      tiles.appendChild(document.createElement('br'));
-
+      tileDiv.appendChild(document.createElement('br'));
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
-      
-      tiles.appendChild(document.createElement('br'));
-
-      var img = document.createElement('img');
-
-      img.className = "rot0";
-      img.setAttribute("data-rot", "0")
-        .setAttribute("data-type", "tab")
-        .setAttribute("src", "../images/tab_bottom.png");
-
-      img.appendChild(img);
-
+      tileDiv.appendChild(document.createElement('br'));
+      var tab_bottom = document.createElement('img');
+      tab_bottom.setAttribute('class','rot0')
+                .setAttribute('data-rot','0')
+                .setAttribute('data-type','tab')
+                .setAttribute('src','../images/tab_bottom.png');
+      tileDiv.appendChild(tab_bottom);
     }
     tilecount = $("#tiles img").length;
   },
+
+  loadRoster = function () {
+    $.post("scripts/load_authors.php", {
+      "map_kind": maptype
+    }, onRosterDataLoaded);
+  },
+
+  onRosterDataLoaded = function (responseString) {
+    var displayHTML = '',
+        data = $.parseJSON(responseString),
+        artistsPresent = data.length,
+        newLineup = {};
+
+    mapSettings.roster = data;
+
+    for (var p = 0; p < artistsPresent; p++) {
+      newLineup[data[p].artist_id] = true;
+      displayHTML += "<input type='checkbox' name='tileset' class='panelChk' " +
+                      " id='chk" + data[p].artist_id + "' value='" + data[p].artist_id + "' checked />" +
+                      "<label for='chk" + data[p].artist_id + "' data-artist='" + data[p].artist_id + "'>" +
+                        "<img src='../m_icons/" + data[p].icon + ".png' />" +
+                        "<span class='name'>" +
+                          "<span class='nick'>" + data[p].initials + "</span>" +
+                          "<span class='full'>" + data[p].name + "</span>" +
+                        "</span>" +
+                      "</label>";
+    }
+
+    mapSettings.lineup = newLineup;
+
+    downloadTileData(selectTileSets);
+
+    $("#artistsblock").html(displayHTML);
+  },
+  downloadTileData = function (callback) {
+    $.post("scripts/load_morphs.php", { "map_kind": maptype }, function (data) {
+      var fulldata = $.parseJSON(data);
+      tileLibrary['tile'].stock(fulldata[1]);
+      tileLibrary['edge'].stock(fulldata[2]);
+      tileLibrary['corner'].stock(fulldata[3]);
+      if (maptype === 6) {
+        tileLibrary['top'].stock(fulldata[4]);
+        tileLibrary['tco'].stock(fulldata[5]);
+        tileLibrary['btm'].stock(fulldata[6]);
+        tileLibrary['bco'].stock(fulldata[7]);
+      }
+      if (callback) {
+        callback();
+      }
+    });
+  },
   generateMap = function () {
+    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
     selectedTile = null;
     swap = false;
-    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
     imag = '';
     stagcount = 0;
     if (mapSettings.mode !== 4) {
@@ -297,26 +357,24 @@ var createCookie = function (name, value, days) {
     } else {
       edgeTileCount = 2 * mapSettings.height;
     }
-    $.post("scripts/load_morphs.php", { "map_kind": maptype, "artists": tileSetOptions }, function (data) {
-      var fulldata = $.parseJSON(data);
-      tileLibrary['tile'].stock(fulldata[1]);
-      tileLibrary['edge'].stock(fulldata[2]);
-      tileLibrary['corner'].stock(fulldata[3]);
-      if (maptype === 6) {
-        tileLibrary['top'].stock(fulldata[4]);
-        tileLibrary['tco'].stock(fulldata[5]);
-        tileLibrary['btm'].stock(fulldata[6]);
-        tileLibrary['bco'].stock(fulldata[7]);
-      }
-      composeMap(mapSettings.width, mapSettings.height);
-    });
+    composeMap();
   },
   selectTileSets = function () {
-    tileSetOptions = "";
-    $("#artistsblock input").filter(":checked").each(function () { tileSetOptions += $(this).val() + ","; });
-    tileSetOptions = tileSetOptions.substr(0, tileSetOptions.length - 1);
+    var newLineup = {};
+    $("#artistsblock input").filter(":checked").each(function () {
+      newLineup[$(this).val()] = true;
+    });
+    mapSettings.lineup = newLineup;
+    tileLibrary['tile'].filter();
+    tileLibrary['edge'].filter();
+    tileLibrary['corner'].filter();
+    if (maptype === 6) {
+      tileLibrary['top'].filter();
+      tileLibrary['tco'].filter();
+      tileLibrary['btm'].filter();
+      tileLibrary['bco'].filter();
+    }
     generateMap();
-    ga('send', 'event', 'Select Artists', tileSetOptions);
   },
   exportMap = function () {
     var imageHolder = new Image();
@@ -373,7 +431,6 @@ var createCookie = function (name, value, days) {
         artMode.restore();
       });
       dataURL = artBoard.toDataURL();
-      console.debug(dataURL);
       window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       artBoard.width = artBoard.width * 2 / 2;
       ga('send', 'event', 'Export', 'Canvas');
@@ -447,13 +504,14 @@ var createCookie = function (name, value, days) {
         c = document.createElement('li');
 
         if (a < 10) {
-          c.innerHTML = roomContents[a];
+          c = roomContents[a];
         } else {
           b = randInt(0, specialContents.length - 1);
-          c.innerHTML = specialContents[b];
+          c = "Special: " + specialContents[b];
         }
-        
-        roomcont.appendChild(c);
+        var wrapperLI = document.createElement('li');
+        wrapperLI.innerHTML = c;
+        document.getElementById("roomcont").appendChild(wrapperLI);
       }
     } while (clear === 0);
     ga('send', 'event', 'Room Stocker', 'Stock');
@@ -711,7 +769,7 @@ var createCookie = function (name, value, days) {
     $('input:radio[name=maptype]').click(function () {
       if ($mobilemode) { $(this).blur(); }
       maptype = parseInt($(this).val(), 10);
-      $("#artistsblock").load("scripts/load_authors.php", { "map_kind": maptype }, selectTileSets);
+      loadRoster();
     });
     $("#site-head")
       .on("click tap", "#nogrid", function () {
@@ -745,7 +803,9 @@ var createCookie = function (name, value, days) {
     mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
     applyGridOverlay($('input:radio[name=grid]:checked').val());
     maptype = parseInt($('input:radio[name=maptype]:checked').val(), 10);
-    $("#artistsblock").load("scripts/load_authors.php", { 'map_kind': maptype }, selectTileSets);
+
+    loadRoster();
+
     if (maptype === 6) {
       $("#viewport").addClass("sv").removeClass("nm");
     } else {

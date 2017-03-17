@@ -1,13 +1,13 @@
 Dave's Mapper
 =============
 
-This is the code behind [Dave's Mapper](http://davesmapper.com). It's based on the Morph Mapper by Rob Lang, but pretty much everything beyond the initial concept stage was written by David Millar. Now it's being open-sourced to make development a bit easier and more betterer.
+This is the code behind [Dave's Mapper](https://davesmapper.com). It's based on the Morph Mapper by Rob Lang, but pretty much everything beyond the initial concept stage was written by David Millar. Now it's being open-sourced to make development a bit easier and more betterer.
 
 License
 -------
 
 		Dave's Mapper
-		Copyright (C) 2010-2015  David Millar
+		Copyright (C) 2010-2017  David Millar
 
 		This program is free software: you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by

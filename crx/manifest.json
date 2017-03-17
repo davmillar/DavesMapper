@@ -1,10 +1,10 @@
 {
   "name": "Dave's Mapper",
   "description": "Generate geomorphic dungeon maps",
-  "version": "1.6",
+  "version": "2.0",
   "app": {
     "launch": {
-      "web_url": "http://www.thegriddle.net/mapper"
+      "web_url": "https://davesmapper.com"
     }
   },
   "icons": {

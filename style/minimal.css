@@ -1,8 +1,8 @@
 html { overflow:auto; margin:0 0 40px; padding:0; }
 #map { display:block; position:relative; margin:0 auto; padding:0; line-height:1px; text-align:center; z-index:0; }
 #grid { position:absolute; top:0; left:0; right:0; bottom:0; z-index:1;
-  background: transparent url(http://www.thegriddle.net/mapper/grid_15.png) top left; }
-  #grid.g30 { background: transparent url(http://www.thegriddle.net/mapper/grid_30.png); }
+  background: transparent url(https://www.thegriddle.net/mapper/grid_15.png) top left; }
+  #grid.g30 { background: transparent url(https://www.thegriddle.net/mapper/grid_30.png); }
   
 #map img { display:inline; vertical-align:middle; }
 #map img.tile { width:300px; height:300px; }

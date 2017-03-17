@@ -26,7 +26,7 @@
     }
   }
 
-  function bounceOut(){ header("Location: http://davesmapper.com/admin"); exit; }
+  function bounceOut(){ header("Location: https://davesmapper.com/admin"); exit; }
 
   if ($_GET['action'] == 'log_me_out') {
     session_destroy();

@@ -7,8 +7,8 @@
 <meta name="msapplication-tooltip" content="Geomorphic RPG Map Generator">
 <meta itemprop="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar.">
 
-<meta name="application-url" content="http://www.davesmapper.com">
-<meta name="msapplication-starturl" content="http://www.davesmapper.com">
+<meta name="application-url" content="https://davesmapper.com">
+<meta name="msapplication-starturl" content="https://davesmapper.com">
 
 <meta name="msapplication-window" content="width=1024;height=768">
 
@@ -24,21 +24,21 @@
 
 <link rel="publisher" href="https://plus.google.com/107206980364478824224">
 <link href="/m_icons/favicon.ico" rel="shortcut icon">
-<meta itemprop="image" content="http://davesmapper.com/assets/images/logo-300.png">
+<meta itemprop="image" content="https://davesmapper.com/assets/images/logo-300.png">
 <link rel="apple-touch-icon-precomposed" href="/assets/images/logo-300.png">
 <link rel="touch-icon-precomposed" href="/assets/images/logo-300.png">
-<link rel="image_src" href="http://davesmapper.com/assets/images/logo-300.png">
+<link rel="image_src" href="https://davesmapper.com/assets/images/logo-300.png">
 <link rel="shortcut icon" sizes="600x600" href="/assets/images/logo-600.png">
 <link rel="shortcut icon" sizes="300x300" href="/assets/images/logo-300.png">
 <link rel="shortcut icon" sizes="196x196" href="/assets/images/logo-196.png">
 <link rel="shortcut icon" sizes="48x48" href="/assets/images/logo-48.png">
 
-<link href="http://fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
 <link href="/assets/css/compiled.css?t=<?php echo filemtime(PATH . "/assets/css/compiled.css")?>" rel="stylesheet" media="screen">
 <link href="/assets/css/compiled_print.css?t=<?php echo filemtime(PATH . "/assets/css/compiled_print.css")?>" rel="stylesheet" media="print">
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>window.jQuery || document.write("<script src='scripts/jquery.js'>\x3C/script>")</script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="/scripts/jquery.qtip.min.js"></script>
 <script src="/scripts/jquery.hotkeys.js"></script>
 <script src="/assets/js/compiled.js?t=<?php echo filemtime(PATH . "/assets/js/compiled.js")?>"></script>

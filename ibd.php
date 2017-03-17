@@ -1,6 +1,6 @@
 <?php include "/home/dmillar/public_html/cgi-bin/db_start.php"; ?>
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<html lang="en" itemscope itemtype="https://schema.org/WebPage">
 	<head>
 		<title>IBD Tile Drive | Dave's Mapper | RPG Map Generator</title>
 		<meta name="description" content="The mapper's IBD tile drive landing page. RPG cartographers pledge to add new mapper tiles in exchange for fans donating to Crohn's and colitis research."/>
@@ -28,7 +28,7 @@
 					</section>
 				<h2 id="y2012">2012: Tile Drive</h2>
 					<section class="columns">
-						<p>As the anniversary of my hopsital stay approaches, I decided I wanted to do a project to benefit an organization that helps those affected by Inflammatory Bowel Disease (IBD). As new advancements continue to be made in the medical field, it's more important than ever to support organizations like the <a href="http://ccfa.org">Crohn's and Colitis Foundation of America (CCFA)</a>.</p>
+						<p>As the anniversary of my hopsital stay approaches, I decided I wanted to do a project to benefit an organization that helps those affected by Inflammatory Bowel Disease (IBD). As new advancements continue to be made in the medical field, it's more important than ever to support organizations like the <a href="https://ccfa.org">Crohn's and Colitis Foundation of America (CCFA)</a>.</p>
 						<p>From September 14-25, many of your favorite RPG cartographers will be pledging new tiles for the mapper based on your donations. A donation as simple as $5 means $5 closer to curing IBD, and 5 or more tiles added to the mapper to boot.</p>
 						<h3>Contributors</h3>
 						<p>Here are the lovely, awesome contributors pledging their tile-making talent to help IBD:</p>
@@ -44,15 +44,15 @@
 						</ul>
 						<h3>Donate!</h3>
 						<p>Participating is a simple two-step process!</p>
-						<a class="button" href="http://online.ccfa.org/site/Donation2?df_id=1782&1782.donation=form1">1: Donate to the CCFA</a>
-						<a class="button" href="http://facebook.com/davesmapper">2a: Post a Screenshot on Our FB Page *</a>
+						<a class="button" href="https://online.ccfa.org/site/Donation2?df_id=1782&1782.donation=form1">1: Donate to the CCFA</a>
+						<a class="button" href="https://facebook.com/davesmapper">2a: Post a Screenshot on Our FB Page *</a>
 						<a class="button" href="mailto:dave@davesmapper.com">2b: Email the Screen Capture to Dave</a>
 						<p><em>* With your personal info blurred or blacked out!</em></p>
 						<p>Here are the current standings, in all their Google Docs glory:</p>
 						<a class="button" href="https://docs.google.com/spreadsheet/ccc?key=0AmG7xYESttRfdERwcGNtR3YzTWtPOGowRThhWUs0c2c">2012 Pledges</a>
 						<hr/>
-						<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://davesmapper.com/ibd" layout="button_count" show_faces="false" width="90" font=""></fb:like>
-						<g:plusone href="http://davesmapper.com/ibd"></g:plusone>
+						<script src="https://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="https://davesmapper.com/ibd" layout="button_count" show_faces="false" width="90" font=""></fb:like>
+						<g:plusone href="https://davesmapper.com/ibd"></g:plusone>
 					</section>
 				<hr/>
 				<?php include "includes/ad_468x60.php"; ?>

@@ -46,7 +46,7 @@
     </section>
     <section>
       <h2>Dave's Mapper</h2>
-      <p>Never heard of the mapper? Head to <a href="http://davesmapper.com">davesmapper.com</a> and you can generate quick random maps for dungeons, caverns, cities, and more.</p>
+      <p>Never heard of the mapper? Head to <a href="https://davesmapper.com">davesmapper.com</a> and you can generate quick random maps for dungeons, caverns, cities, and more.</p>
       <p>It's simple, quick, and free &#8212; made by awesome people who like you and want you to have nice things.</p>
     </section>
     <footer>&copy; 2011 David Millar for Dave's Mapper</footer>

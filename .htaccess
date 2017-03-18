@@ -4,6 +4,9 @@ RewriteEngine on
 
 RewriteBase /
 
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 RewriteCond %{HTTP_HOST} ^www\.davesmapper\.com [NC]
 RewriteRule ^(.*)$ http://davesmapper.com/$1 [R=301,QSA]
 

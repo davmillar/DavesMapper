@@ -41,7 +41,7 @@
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="/scripts/jquery.qtip.min.js"></script>
 <script src="/scripts/jquery.hotkeys.js"></script>
-<script src="/assets/js/compiled.js?t=<?php echo filemtime(PATH . "/assets/js/compiled.js")?>"></script>
+<script src="/assets/js/global.js?t=<?php echo filemtime(PATH . "/assets/js/global.js")?>"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen">
 <![endif]-->

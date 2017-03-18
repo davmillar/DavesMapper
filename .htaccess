@@ -16,6 +16,8 @@ RewriteRule ^about/? /help [R=301,QSA]
 RewriteRule ^key/?$ /help#what [R=301,QSA]
 RewriteRule ^contribute/?$ /submit [R=301,QSA]
 
+RewriteRule ^sw.js$ /assets/service-worker.js [QSA]
+
 RewriteRule ^submit/?$ /contribute.php [QSA]
 RewriteRule ^help/?$ /help.php [QSA]
 RewriteRule ^ibd/?$ /ibd.php [QSA]

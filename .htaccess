@@ -8,7 +8,7 @@ RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{HTTP_HOST} ^www\.davesmapper\.com [NC]
-RewriteRule ^(.*)$ http://davesmapper.com/$1 [R=301,QSA]
+RewriteRule ^(.*)$ https://davesmapper.com/$1 [R=301,QSA]
 
 RewriteCond %{QUERY_STRING} fb_xd_fragment=
 RewriteRule (.*) $1? [R=301]

@@ -21,6 +21,7 @@
 <meta name="viewport" content="user-scalable=no, maximum-scale=1, minimum-scale=1, initial-scale=1, width=device-width">
 
 <meta name="msapplication-navbutton-color" content="#aa6e33">
+<meta name="theme-color" content="#aa6e33">
 
 <link rel="publisher" href="https://plus.google.com/107206980364478824224">
 <link href="/m_icons/favicon.ico" rel="shortcut icon">

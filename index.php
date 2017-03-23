@@ -23,25 +23,7 @@
 	<body>
 		<?php include "includes/magic.php"; ?>
     <div class="fieldset" id="mapTypeControls">
-      <h4 class="legend" title="Choose between different map types.">Map Type</h4>
-      <div class="dropradio" id="mapTypeDrop"><div>
-        <input type="radio" class="btnDrp mtBtn first" name="maptype" value="1" id="mt_dun" checked>
-          <label for="mt_dun" class="dropped">Dungeons</label>
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="2" id="mt_cav">
-          <label for="mt_cav" class="dropped">Caverns</label>
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="3" id="mt_mix">
-          <label for="mt_mix" class="dropped">Dun/Cav Mix</label>
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="4" id="mt_city">
-          <label for="mt_city" class="dropped">City</label>
-        <!--input type="radio" class="btnDrp mtBtn" name="maptype" value="5" id="mt_vil">
-          <label for="mt_vil" class="dropped">Village</label-->
-        <input type="radio" class="btnDrp mtBtn" name="maptype" value="6" id="mt_side">
-          <label for="mt_side" class="dropped">Side View</label>
-        <input type="radio" class="btnDrp mtBtn last" name="maptype" value="7" id="mt_ship">
-          <label for="mt_ship" class="dropped">SciFi Ship</label>
-        <!--input type="radio" class="btnDrp mtBtn last" name="maptype" value="8" id="mt_jet">
-          <label for="mt_jet" class="dropped">Boardwalk</label-->
-      </div></div>
+      <h4 class="legend" title="Commands to perform.">Options</h4>
       <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New Map</a>
     </div>
     <div class="fieldset" id="mapModeControls">
@@ -94,6 +76,41 @@
 		<section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
 		<section id="popup"><div></div></section>
 		<section id="tilepanel"><form>
+      <h4 class="tilegroup">Map Mode</h4>
+        <section class="collapse">
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="1" id="mt_dun" checked>
+            <label for="mt_dun">
+              <em class="sprite sprite-maptype-dungeon"></em> Dungeons
+            </label>
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="2" id="mt_cav">
+            <label for="mt_cav">
+              <em class="sprite sprite-maptype-cavern"></em> Caverns
+            </label>
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="3" id="mt_mix">
+            <label for="mt_mix">
+              <em class="sprite sprite-maptype-hybrid"></em> Dungeons &amp; Caverns
+            </label>
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="4" id="mt_city">
+            <label for="mt_city">
+              <em class="sprite sprite-maptype-city"></em> City
+            </label>
+          <!--input type="radio" class="panelChk mtBtn" name="maptype" value="5" id="mt_vil">
+            <label for="mt_vil">
+              <em class="sprite sprite-maptype-village"></em> Village
+            </label-->
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="6" id="mt_side">
+            <label for="mt_side">
+              <em class="sprite sprite-maptype-sideview"></em> Side-View Dungeon
+            </label>
+          <input type="radio" class="panelChk mtBtn" name="maptype" value="7" id="mt_ship">
+            <label for="mt_ship">
+              <em class="sprite sprite-maptype-spaceship"></em> Sci-Fi Ship
+            </label>
+          <!--input type="radio" class="panelChk mtBtn" name="maptype" value="8" id="mt_jet">
+            <label for="mt_jet">
+              <em class="sprite sprite-maptype-boardwalk"></em> Boardwalk
+            </label-->
+        </section>
 			<h4 class="tilegroup">Artists</h4>
 				<section class="collapse" id="artistsblock">
 				</section>

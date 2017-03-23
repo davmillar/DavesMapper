@@ -606,10 +606,6 @@ a.button{
   }
 }
 
-#mapTypeDrop{
-  width:105px;
-}
-
 #mapModeDrop{
   width:155px;
 }
@@ -670,6 +666,7 @@ a.button{
     vertical-align:middle;
     cursor:pointer;
     background:#fff;
+    color:#8a8a8a;
     border:1px solid rgba(0,0,0,0.1);
     border-width:1px 0 0;
     font-size:11px;
@@ -688,11 +685,19 @@ a.button{
       line-height:18px;
       text-align:right;
     }
+    em{
+      position:absolute;
+      top:2px;
+      left:7px;
+      width:24px;
+      height:24px;
+    }
     img{
       position:absolute;
       top:6px;
       left:8px;
       width:22px;
+      height:15px;
     }
     .name{
       font-weight:700;
@@ -702,11 +707,13 @@ a.button{
       }
     }
     &:hover{
-      background:#f2ecda;
+      background:@litetan;
+      color:#963;
     }
   }
   &:checked + label{
     background:@litetan;
+    color:#963;
     &:after{
       display:block;
     }
@@ -1533,6 +1540,7 @@ table{
   display:inline-block;
   vertical-align:middle;
   background-image:url(/assets/icons/sprites.png?dc=0);
+  background-size:168px 144px;
   background-repeat:no-repeat;
   overflow:hidden;
   text-indent:-10000px;
@@ -1569,6 +1577,24 @@ table{
 .spX              {.spritePos(1,3);}
 .spCrush          {.spritePos(2,3);}
 .spHex            {.spritePos(3,3);}
+/* Row 5 */
+.sprite-maptype-dungeon   {.spritePos(0,4);}
+.sprite-maptype-cavern    {.spritePos(1,4);}
+.sprite-maptype-hybrid    {.spritePos(2,4);}
+.sprite-maptype-city      {.spritePos(3,4);}
+.sprite-maptype-spaceship {.spritePos(4,4);}
+.sprite-maptype-sideview  {.spritePos(5,4);}
+/* Row 6 */
+label:hover,
+&:checked + label {
+  .sprite-maptype-dungeon   {.spritePos(0,5);}
+  .sprite-maptype-cavern    {.spritePos(1,5);}
+  .sprite-maptype-hybrid    {.spritePos(2,5);}
+  .sprite-maptype-city      {.spritePos(3,5);}
+  .sprite-maptype-spaceship {.spritePos(4,5);}
+  .sprite-maptype-sideview  {.spritePos(5,5);}
+}
+
 
 #drawingboard{
   pointer-events:none;

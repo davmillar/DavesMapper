@@ -17,7 +17,7 @@ var $appmode = window.navigator.standalone,
 		};
 
 $(document)
-	.on("click", "#tilepanel h4", function(event){
+	.on("click", "#sideBar h4", function(event){
 		$(this).next().slideToggle("fast");
 	})
 	.on("click", "#clearNoti", function(event){
@@ -71,7 +71,7 @@ $(document)
 				}
 			});
 
-			$('#tilepanel a').qtip({
+			$('#sideBar a').qtip({
 				position: {
 					my: 'center left',
 					at: 'center right',

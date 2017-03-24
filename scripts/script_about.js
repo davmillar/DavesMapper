@@ -1,3 +1,3 @@
 $(document).ready(function(){
-  $("#tilepanel section.collapsed").hide();
+  $("#sideBar section.collapsed").hide();
 });

@@ -1,4 +1,4 @@
-header, footer, #tilepanel { -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#dddddd)"; }
+header, footer, #sideBar { -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#dddddd)"; }
 a.button, a.widebutton, #imgMenu input { -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#8888aa, endColorstr=#666688)"; }
 #imgMenu input {
   cursor:pointer; background-color:#557; color:#fff; border:1px solid #447;
@@ -10,7 +10,7 @@ input.panelChk { display:block !important; position:relative; top: 3px; left:165
 input.panelChk + label { z-index: 3; margin-top:-24px !important; }
 #imgMenu label { display:none; }
 h4 { background:#dadadf !important; border-bottom: 1px solid #aad; }
-#tilepanel { border-right: 2px solid #668; }
+#sideBar { border-right: 2px solid #668; }
 #width, #height {   height:16px; width:48px; padding:4px; vertical-align:middle;
   background:#fff; color:#668; border:1px solid rgba(102,102,136,0.5);
   font-family: Arial, sans-serif; font-size:16px; line-height:16px; font-weight:700; text-align:center; }

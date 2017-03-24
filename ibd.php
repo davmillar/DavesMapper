@@ -10,7 +10,7 @@
 	</head>
 	<body>
     <?php include "includes/magic.php"; ?>		
-		<section id="tilepanel"><form>
+		<section id="sideBar"><form>
 			<h4>Quick Links</h4>
 			<section class="collapse">
 				<h5>Jump to a Section</h5>

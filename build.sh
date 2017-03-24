@@ -58,11 +58,11 @@ cat \
 echo "Combining and compressing app JS..."
 
 cat \
-  scripts/base64_encode.js \
-  scripts/jquery.hotkeys.js \
-  scripts/json2.js \
-  scripts/utf8_encode.js \
-  scripts/mapping.js \
+  assets-src/js/base64_encode.js \
+  assets-src/js/jquery.hotkeys.js \
+  assets-src/js/json2.js \
+  assets-src/js/utf8_encode.js \
+  assets-src/js/mapping.js \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled_app.js
 

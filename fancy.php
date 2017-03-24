@@ -70,7 +70,7 @@
   <body>
     <?php include "includes/magic.php"; ?>
     <section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
-    <section id="tilepanel"><form>
+    <section id="sideBar"><form>
       <a class="widebutton large" href="/" id="newBtn" title="Back to the Mapper">Dave's Mapper</a>
       <?php include "/home/dmillar/public_html/includes/nav.php"; ?>
       <!--h4>FB News Feed</h4>

@@ -713,6 +713,9 @@ var createCookie = function (name, value, days) {
       $(this).fadeOut("fast");
     });
 
+    // Initialize click handler for mobile button.
+    $("#mapTypeMenuBtn").click(toggleMobileMenu);
+
     // Add listeners to the artist seletion list.
     $("#artistsblock")
       .on('change', 'input', function (e) {
@@ -780,7 +783,7 @@ var createCookie = function (name, value, days) {
       return false;
     });
 
-    $("#tilepanel").find(".collapsed").hide();
+    $("#sideBar").find(".collapsed").hide();
     $("#width").val(2);
     $("#height").val(2);
     mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
@@ -962,6 +965,10 @@ var createCookie = function (name, value, days) {
     $("#stagcap").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
     generateMap();
+  },
+
+  toggleMobileMenu = function () {
+    $('#sideBar').toggleClass('shown');
   };
 
 $(document)

@@ -17,9 +17,6 @@ var $appmode = window.navigator.standalone,
 		};
 
 $(document)
-	.on("click", "#sideBar h4", function(event){
-		$(this).next().slideToggle("fast");
-	})
 	.on("click", "#clearNoti", function(event){
 		$("#notification").slideUp("fast");
 	})

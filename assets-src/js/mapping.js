@@ -716,6 +716,13 @@ var createCookie = function (name, value, days) {
     // Initialize click handler for mobile button.
     $("#mapTypeMenuBtn").click(toggleMobileMenu);
 
+    // Close side panel when clicking off of the main content area.
+    $("#sideBar").on('click tap', function (e) {
+      if (e.target.tagName === 'FORM' || e.target.tagName === 'SECTION') {
+        $("#sideBar").removeClass('shown');
+      }
+    });
+
     // Add listeners to the artist seletion list.
     $("#artistsblock")
       .on('change', 'input', function (e) {
@@ -752,7 +759,7 @@ var createCookie = function (name, value, days) {
     $("input.mtBtn").click(function () {
       map_kind = parseInt($(this).val(), 10);
     });
-    $('input:radio[name=maptype]').click(function () {
+    $('#mapTypeSelector').on('click tap', 'input:radio[name=maptype]', function () {
       if ($mobilemode) { $(this).blur(); }
       maptype = parseInt($(this).val(), 10);
       loadRoster();
@@ -783,7 +790,6 @@ var createCookie = function (name, value, days) {
       return false;
     });
 
-    $("#sideBar").find(".collapsed").hide();
     $("#width").val(2);
     $("#height").val(2);
     mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);

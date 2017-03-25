@@ -44,6 +44,7 @@ cat \
 echo "Combining and compressing global JS..."
 
 cat \
+  assets-src/js/jquery-1.12.4.js \
   assets-src/js/global.js \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/global.js

@@ -12,7 +12,6 @@ include PATH . "/cgi-bin/db_start.php";
 		<meta name="description" content="Information on the people supporting the Dave's Mapper web app for role-playing enthusiasts. Includes information on the tile artists and mapper contributors."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
 		<?php include "includes/head.php"; ?>
-		<script src="scripts/script_about.js"></script>
 	</head>
 	<body class="single">
     <?php include "includes/magic.php"; ?>

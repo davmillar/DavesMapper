@@ -6,7 +6,6 @@
 		<meta name="description" content="The mapper's IBD tile drive landing page. RPG cartographers pledge to add new mapper tiles in exchange for fans donating to Crohn's and colitis research."/>
 		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app,IBD,Crohn's,ulcerative colitis" />
 		<?php include "includes/head.php"; ?>
-		<script type="text/javascript" src="scripts/script_about.js"></script>
 	</head>
 	<body>
     <?php include "includes/magic.php"; ?>		

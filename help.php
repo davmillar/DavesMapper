@@ -5,7 +5,6 @@
     <meta name="description" content="Information, help, and tips about the Dave's Mapper web app for role-playing enthusiasts."/>
     <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
     <?php include "includes/head.php"; ?>
-    <script src="scripts/script_about.js"></script>
   </head>
   <body class="single">
     <?php include "includes/magic.php"; ?>

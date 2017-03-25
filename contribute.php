@@ -12,7 +12,6 @@ include PATH . "/cgi-bin/db_start.php";
     <meta name="description" content="Information on how to contribute to the mapper, including tile contribution specs."/>
     <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
     <?php include "includes/head.php"; ?>
-    <script type="text/javascript" src="scripts/script_about.js"></script>
   </head>
   <body class="single">
     <?php include "includes/magic.php"; ?>

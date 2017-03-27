@@ -20,7 +20,7 @@ $(document)
 	.on("click", "#clearNoti", function(event){
 		$("#notification").slideUp("fast");
 	})
-	.on("click", "a[href*=#]", function(event){
+	.on("click", "a[href*=\\#]", function(event){
 		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
 			var $target = $(this.hash);
 			$target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');

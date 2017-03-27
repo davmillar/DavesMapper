@@ -61,12 +61,27 @@ TileDeck = function () {
   this.cursor = 0;
 };
 
+/**
+ * Shuffles the deck of tiles using Durstenfeld shuffle, as suggested on StackOverflow:
+ * http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+ */
 TileDeck.prototype.shuffle = function () {
   "use strict";
+  var deck = this.deck,
+      temp,
+      i,
+      j;
+
   this.cursor = 0;
-  this.deck.sort(function () {
-    return Math.round(Math.random()) - 0.5;
-  });
+
+  for (i = deck.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = deck[i];
+      deck[i] = deck[j];
+      deck[j] = temp;
+  }
+
+  this.deck = deck;
 };
 
 TileDeck.prototype.filter = function () {

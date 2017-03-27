@@ -488,32 +488,6 @@ var createCookie = function (name, value, days) {
     applyGridOverlay((mapSettings.gridType + 1) % 4);
     ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
   },
-  roomStock = function () {
-    var clear,
-        a,
-        b,
-        c,
-        i;
-
-    do {
-      $("#roomcont").empty();
-      clear = 0;
-      for (i = 0; i < 5; i += 1) {
-        a = randInt(0, 11);
-        clear += a;
-        if (a < 10) {
-          c = roomContents[a];
-        } else {
-          b = randInt(0, specialContents.length - 1);
-          c = "Special: " + specialContents[b];
-        }
-        var wrapperLI = document.createElement('li');
-        wrapperLI.innerHTML = c;
-        document.getElementById("roomcont").appendChild(wrapperLI);
-      }
-    } while (clear === 0);
-    ga('send', 'event', 'Room Stocker', 'Stock');
-  },
 
   /**
    * Displays a popup with the provided content.
@@ -884,8 +858,6 @@ var createCookie = function (name, value, days) {
     });
     // Redraw the map when width or height are changed
     $("#width, #height").on("change", generateMap);
-    // Stock the room when the room stocker button is clicked
-    $("#roomBtn").on("click tap", roomStock);
     // Change mode based on radio button value changing
     $('input:radio[name=mode]').on("click tap change", function () {
       mapSettings.mode = parseInt($(this).val(), 10);

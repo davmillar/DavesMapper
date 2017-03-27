@@ -718,7 +718,7 @@ var createCookie = function (name, value, days) {
 
     // Close side panel when clicking off of the main content area.
     $("#sideBar").on('click tap', function (e) {
-      if (e.target.tagName === 'FORM' || e.target.tagName === 'SECTION') {
+      if (e.target.tagName === 'SECTION') {
         $("#sideBar").removeClass('shown');
       }
     });

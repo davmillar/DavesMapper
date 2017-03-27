@@ -25,7 +25,6 @@ fi
 echo "Converting app LESS and compressing output CSS..."
 
 spritedc="$(md5sum assets-src/icons/sprites.svg | cut -c -5)"
-
 cat \
   assets-src/css/style.less \
   | sed "s/dc=0/dc=${spritedc}/" \
@@ -49,13 +48,6 @@ cat \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/global.js
 
-echo "Combining and compressing service worker JS..."
-
-cat \
-  assets-src/js/service-worker.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
-  > ./assets/js/service-worker.js
-
 echo "Combining and compressing app JS..."
 
 cat \
@@ -66,5 +58,18 @@ cat \
   assets-src/js/mapping.js \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled_app.js
+
+echo "Updating and compressing service worker JS..."
+
+jssum1="$(md5sum assets/js/compiled_app.js | cut -c -5)"
+jssum2="$(md5sum assets/js/global.js | cut -c -5)"
+csssum1="$(md5sum assets/css/compiled.css | cut -c -5)"
+csssum2="$(md5sum assets/css/compiled_print.css | cut -c -5)"
+
+cat \
+  assets-src/js/service-worker.js \
+  | sed "s/my-site-cache-v1/${jssum1}-${jssum2}-${csssum1}-${csssum2}/" \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  > ./assets/js/service-worker.js
 
 echo "Build complete!"

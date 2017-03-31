@@ -50,7 +50,6 @@ var $appmode = window.navigator.standalone,
         var refreshing;
 
         navigator.serviceWorker.addEventListener('controllerchange', function() {
-          console.log('controller change', refreshing);
           if (refreshing) return;
           window.location.reload();
           refreshing = true;

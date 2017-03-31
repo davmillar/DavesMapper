@@ -4,11 +4,11 @@ RewriteEngine on
 
 RewriteBase /
 
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-RewriteCond %{HTTP_HOST} ^www\.davesmapper\.com [NC]
-RewriteRule ^(.*)$ https://davesmapper.com/$1 [R=301,QSA]
+#RewriteCond %{HTTP_HOST} ^www\.davesmapper\.com [NC]
+#RewriteRule ^(.*)$ https://davesmapper.com/$1 [R=301,QSA]
 
 RewriteCond %{QUERY_STRING} fb_xd_fragment=
 RewriteRule (.*) $1? [R=301]
@@ -19,7 +19,7 @@ RewriteRule ^about/? /help [R=301,QSA]
 RewriteRule ^key/?$ /help#what [R=301,QSA]
 RewriteRule ^contribute/?$ /submit [R=301,QSA]
 
-RewriteRule ^sw.js /assets/js/service-worker.js [QSA]
+RewriteRule ^sw.js$ /assets/js/service-worker.js [QSA]
 
 RewriteRule ^submit/?$ /contribute.php [QSA]
 RewriteRule ^help/?$ /help.php [QSA]

@@ -6,6 +6,9 @@ export DEBIAN_FRONTEND=noninteractive
 echo "Updating apt"
 apt-get update > /dev/null
 
+echo "Installing vim"
+apt-get install -y vim > /dev/null
+
 echo "Installing Apache and linking /vagrant to /var/www"
 apt-get install -y apache2 > /dev/null
 if ! [ -L /var/www ]; then
@@ -25,6 +28,8 @@ sudo a2enmod php5 # > /dev/null
 service apache2 stop # > /dev/null
 echo "listen 4069" | sudo tee --append /etc/apache2/httpd.conf
 echo "ServerName localhost" | sudo tee --append /etc/apache2/httpd.conf
+sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
+sed -i "s|AllowOverride None|AllowOverride All|g" /etc/apache2/sites-available/default
 service apache2 restart # > /dev/null
 
 echo "Preparing MySQL"

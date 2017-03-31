@@ -124,4 +124,5 @@
 		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
+
 <?php include PATH . "/cgi-bin/db_end.php"; ?>

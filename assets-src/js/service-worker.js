@@ -1,13 +1,16 @@
-var CACHE_NAME = 'my-site-cache-v1';
-var urlsToCache = [
-  '/',
-  '/assets/css/compiled.css',
-  '/assets/css/compiled_print.css',
-  '/assets/icons/sprites.png',
-  '/assets/icons/sprites.svg',
-  '/assets/js/compiled_app.js',
-  '/assets/js/global.js'
-];
+var CACHE_NAME = 'my-site-cache-v1',
+    now = Date.now(),
+    urlsToCache = [
+      '/',
+      '/assets/css/compiled.css',
+      '/assets/css/compiled_print.css',
+      '/assets/icons/sprites.png',
+      '/assets/icons/sprites.svg',
+      '/assets/js/compiled_app.js',
+      '/assets/js/global.js'
+    ].map(function (resourceURL) {
+      return resourceURL + '?cache-bust=' + now
+    });
 
 self.addEventListener('install', function(event) {
   // Perform install steps
@@ -46,4 +49,10 @@ self.addEventListener('activate', function(event) {
       );
     })
   );
+});
+
+self.addEventListener('message', function(event) {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });

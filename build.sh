@@ -61,7 +61,7 @@ cat \
 
 echo "Updating and compressing service worker JS..."
 
-assetssum="$(tar -cf - assets | md5sum | cut -c -10)"
+assetssum="$(tar -cf - assets-src | md5sum | cut -c -10)"
 indexsum="$(md5sum index.php | cut -c -5)"
 
 cat \

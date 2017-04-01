@@ -259,7 +259,6 @@ var createCookie = function (name, value, days) {
     tilesElement.appendChild(newTileImage);
   },
   applyGridOverlay = function (gridType) {
-    console.debug('applyGridOverlay', gridType);
     var gridElement = document.getElementById('grid');
 
     mapSettings.gridType = parseInt(gridType, 10);

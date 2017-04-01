@@ -19,8 +19,6 @@ var TileDeck,
     endstag,
     map_kind,
     scaled = false,
-    swap = false,
-    inrotate = false,
     maptype = 1,
     stagcount = 0,
     tilecount = 0,
@@ -28,7 +26,6 @@ var TileDeck,
     edgeTileCount = 0,
     detectedrotate = 0,
     imag = "",
-    selectedTile,
     roomContents = [
       "Empty",
       "Monster(s) and Treasure",
@@ -52,7 +49,98 @@ var TileDeck,
     ],
     $issafari = ((/Safari/i).test(window.navigator.appVersion)),
     ua = window.navigator.userAgent,
-    tileLibrary = {};
+    tileLibrary = {},
+    MAPPER;
+
+(function(mapper){
+  mapper.isRotating = false;
+  mapper.isSwapping = false;
+  mapper.selectedTile = undefined;
+
+  mapper.selectTile = function (tile) {
+    var me = this;
+
+    // Unselect old selection.
+    if (me.selectedTile) {
+      me.selectedTile.removeClass("selected-tile");
+    }
+
+    me.selectedTile = tile;
+
+    if (me.selectedTile) {
+      me.selectedTile.addClass("selected-tile");
+
+      // Visually disable rotate tool for tile types that don't support it.
+      // @TODO: Link appearance with enabled/disabled status.
+      if (jQuery.inArray(MAPPER.selectedTile.data("type"), ["tile","top","btm"]) > -1) {
+        $("#rotateBtn").fadeTo("fast", 1);
+      } else {
+        $("#rotateBtn").fadeTo("fast", 0.5);
+      }
+    }
+  };
+
+  /**
+   * Swap the location and rotation of two tiles.
+   * 
+   * @param  {DOMElement} targetTile
+   *     Target tile for swap.
+   */
+  mapper.performSwap = function (targetTile) {
+    var tileA = this.selectedTile,
+        tileB = targetTile,
+        tileAData,
+        tileBData;
+
+    // Tiles must be same type to swap.
+    if (tileA.data("type") !== tileB.data("type")) {
+      return false;
+    }
+
+    tileAData = {
+      image: tileA.attr("src"),
+      id: tileA.data("imgid"),
+      artist: tileA.data("artist"),
+      rotation: tileA.data("rot")
+    };
+
+    tileBData = {
+      image: tileB.attr("src"),
+      id: tileB.data("imgid"),
+      artist: tileB.data("artist"),
+      rotation: tileB.data("rot")
+    };
+
+    tileA
+      .attr("src", tileBData.image)
+      .data("imgid", tileBData.id)
+      .data("artist", tileBData.artist)
+      .removeClass("swapfirst");
+
+    tileB
+      .attr("src", tileAData.image)
+      .data("imgid", tileAData.id)
+      .data("artist", tileAData.artist);
+
+    if (tileB.data("type") === "tile") {
+      tileA
+        .data("rot", tileBData.rotation)
+        .removeClass("rot"+tileAData.rotation)
+        .addClass("rot"+tileBData.rotation);
+
+      tileB
+        .data("rot", tileAData.rotation)
+        .removeClass("rot"+tileBData.rotation)
+        .addClass("rot"+tileAData.rotation);
+    }
+
+    this.isSwapping = false;
+
+    $("#swapTileBtn").removeClass("down");
+  };
+})(window.MAPPER = window.MAPPER || {});
+
+MAPPER = window.MAPPER;
 
 TileDeck = function () {
   "use strict";
@@ -348,8 +436,8 @@ var createCookie = function (name, value, days) {
   },
   generateMap = function () {
     mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
-    selectedTile = null;
-    swap = false;
+    MAPPER.selectTile();
+    MAPPER.isSwapping = false;
     imag = '';
     stagcount = 0;
     if (mapSettings.mode !== 4) {
@@ -492,7 +580,9 @@ var createCookie = function (name, value, days) {
 
   /**
    * Displays a popup with the provided content.
-   * @param  {string} overlayContent A string of HTML content.
+   * 
+   * @param  {string} overlayContent
+   *     A string of HTML content.
    */
   showOverlay = function (overlayContent) {
       var overlayContainer = $("#popup"),
@@ -502,106 +592,51 @@ var createCookie = function (name, value, days) {
       overlayContainer.show();
   },
 
-  // Handler for image dragging to set up for drag/drop tile swapping.
+  /**
+   * Handler for image dragging to set up for drag/drop tile swapping.
+   * 
+   * @param  {jQuery Event} event
+   *     jQuery event for the start of the drag.
+   */
   onImageDragStart = function (event) {
-    var e = event.originalEvent;
-
-    if (swap || !e) { return; }
-    selectedTile = $(this);
-    $('.selTile').removeClass('selTile');
-    selectedTile.addClass('selTile');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html','Swap');
+    event = event.originalEvent;
+    if (MAPPER.isSwapping || !event) { return; }
+    MAPPER.selectTile($(this));
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/html','Swap');
     ga('send', 'event', 'Swap', 'Drag Start');
   },
 
+  /**
+   * Handler for image drop after dragging.
+   * 
+   * @param  {jQuery Event} event
+   *     jQuery event for the drop after dragging.
+   */
   onImageDragDrop = function (event) {
-    var firstTile,
-        secondTile;
-
     event = event.originalEvent;
     event.preventDefault();
     if (event.dataTransfer.getData("text/html") == "Swap") {
-      if (selectedTile.data("type") !== $(this).data("type")) {
-        return false;
-      }
-      firstTile = {
-        "image": selectedTile.attr("src"),
-        "id": selectedTile.data("imgid"),
-        "artist": selectedTile.data("artist"),
-        "rotation": selectedTile.data("rot")
-      };
-      secondTile = {
-        "image": $(this).attr("src"),
-        "id": $(this).data("imgid"),
-        "artist": $(this).data("artist"),
-        "rotation": $(this).data("rot")
-      };
-      selectedTile
-        .attr("src", secondTile.image)
-        .data("imgid", secondTile.id)
-        .data("artist", secondTile.artist)
-        .removeClass("swapfirst");
-      $(this)
-        .attr("src", firstTile.image)
-        .data("imgid", firstTile.id)
-        .data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile
-          .data("rot", secondTile.rotation)
-          .removeClass("rot"+firstTile.rotation)
-          .addClass("rot"+secondTile.rotation);
-        $(this)
-          .data("rot", firstTile.rotation)
-          .removeClass("rot"+secondTile.rotation)
-          .addClass("rot"+firstTile.rotation);
-      }
-      selectedTile = $(this);
-      $(".selTile").removeClass("selTile");
-      selectedTile.addClass("selTile");
+      MAPPER.performSwap($(this));
       ga('send', 'event', 'Swap', 'Drop');
     }
   },
 
+  /**
+   * Handler for clicking an image on the map.
+   */
   onImageClick = function () {
-    var firstTile,
-        secondTile,
-        topadj = 10,
-        leftadj = 10;
+    // Ignore tabs from cube mode.
+    if ($(this).data("type") === "tab") {
+      return;
+    }
 
-    if ($(this).data("type") === "tab") { return; }
-    if (swap) {
-      if (selectedTile.data("type") !== $(this).data("type")) { return false; }
-      firstTile = {"image": selectedTile.attr("src"), "id": selectedTile.data("imgid"), "artist": selectedTile.data("artist"), "rotation": selectedTile.data("rot") };
-      secondTile = {"image": $(this).attr("src"), "id": $(this).data("imgid"), "artist": $(this).data("artist"), "rotation": $(this).data("rot") };
-      selectedTile.attr("src", secondTile.image).data("imgid", secondTile.id).data("artist", secondTile.artist).removeClass("swapfirst");
-      $(this).attr("src", firstTile.image).data("imgid", firstTile.id).data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile.data("rot", secondTile.rotation).removeClass("rot"+firstTile.rotation).addClass("rot"+secondTile.rotation);
-        $(this).data("rot", firstTile.rotation).removeClass("rot"+secondTile.rotation).addClass("rot"+firstTile.rotation);
-      }
-      swap = false;
-      $("#swapTile").removeClass("down");
+    // Perform swap if using swap tool, otherwise select tile.
+    if (MAPPER.isSwapping) {
+      MAPPER.performSwap($(this));
       ga('send', 'event', 'Swap', 'Tool Complete');
-    }
-    selectedTile = $(this);
-    $(".selTile").removeClass("selTile");
-    selectedTile.addClass("selTile");
-    if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) > -1) {
-      $("#rotateBtn").fadeTo("fast", 1);
     } else {
-      $("#rotateBtn").fadeTo("fast", 0.5);
-    }
-    if ($(this).hasClass("edge") && ($(this).hasClass("rot1") || $(this).hasClass("rot3"))) {
-      leftadj -= 75;
-      if (ua.toLowerCase().indexOf('webkit') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
-      if (ua.toLowerCase().indexOf('opera') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
+      MAPPER.selectTile($(this));
     }
   },
 
@@ -768,15 +803,15 @@ var createCookie = function (name, value, days) {
         applyGridOverlay(3);
       });
     $("#rotateTile").click(function () {
-      if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
-      var oldRot = selectedTile.data("rot"),
+      if (jQuery.inArray(MAPPER.selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
+      var oldRot = MAPPER.selectedTile.data("rot"),
         newRot = (oldRot + 1) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+      MAPPER.selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
       ga('send', 'event', 'Rotate', 'Click');
       return false;
     });
     $("#removeTile").click(function () {
-      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), false);
+      replaceTile(MAPPER.selectedTile, MAPPER.selectedTile.data("imgid"), MAPPER.selectedTile.data("type"), false);
       return false;
     });
 
@@ -836,22 +871,22 @@ var createCookie = function (name, value, days) {
 
     // Handle the remove/replace with exit button
     $("#removeTileExit").on("click tap", function () {
-      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
+      replaceTile(MAPPER.selectedTile, MAPPER.selectedTile.data("imgid"), MAPPER.selectedTile.data("type"), true);
       ga('send', 'event', 'Remove Tile', 'Exit');
       return false;
     });
     // Handle swapping button
-    $("#swapTile").on("click tap", function () {
-      if (selectedTile.data("type") === "tab") { return; }
-      selectedTile.addClass("swapfirst");
-      swap = true;
-      $("#swapTile").addClass("down");
+    $("#swapTileBtn").on("click tap", function () {
+      if (MAPPER.selectedTile.data("type") === "tab") { return; }
+      MAPPER.selectedTile.addClass("swapfirst");
+      MAPPER.isSwapping = true;
+      $("#swapTileBtn").addClass("down");
       ga('send', 'event', 'Swap', 'Tool Click');
       return false;
     });
     // Handle mancrush button
     $("#mancrush").on("click tap", function () {
-      var $target = selectedTile.data("artist");
+      var $target = MAPPER.selectedTile.data("artist");
 
       $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
       ga('send', 'event', 'Heart', 'Click');
@@ -878,11 +913,11 @@ var createCookie = function (name, value, days) {
    * @param  {Object} event The event object
    */
   onHammerRotateDetected = function (event) {
-    if (selectedTile.data("type") == 'tile') {
-      var oldRot = selectedTile.data("rot");
-      inrotate = true;
+    if (MAPPER.selectedTile.data("type") == 'tile') {
+      var oldRot = MAPPER.selectedTile.data("rot");
+      MAPPER.isRotating = true;
       detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
-      selectedTile.removeClass("rot" + oldRot).css({
+      MAPPER.selectedTile.removeClass("rot" + oldRot).css({
         '-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
         '-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
         '-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
@@ -905,11 +940,11 @@ var createCookie = function (name, value, days) {
    * @param  {Object} event The event object
    */
   onHammerReleaseDetected = function (event) {
-    if (inrotate) {
-      inrotate = false;
-      var oldRot = selectedTile.data("rot"),
+    if (MAPPER.isRotating) {
+      MAPPER.isRotating = false;
+      var oldRot = MAPPER.selectedTile.data("rot"),
           newRot = Math.round(detectedrotate / 90) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
+      MAPPER.selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
         '-webkit-transform' : '',
         '-moz-transform' : '',
         '-ms-transform' : '',

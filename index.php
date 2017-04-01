@@ -54,7 +54,7 @@
       <input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked>
         <label for="rotateTile" title="Rotate Tile 90 Degrees" id="rotateBtn"><em class="sprite spRot">Rotate</em></label>
       <input type="button" class="btnGrp" name="swapTile" value="Swap" id="swapTile">
-        <label for="swapTile" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
+        <label for="swapTileBtn" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
       <input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush">
         <label for="mancrush" title="Build a Map by this Artist"><em class="sprite spCrush">Mancrush</em></label>
       <input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile">

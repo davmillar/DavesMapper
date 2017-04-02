@@ -315,7 +315,11 @@ var createCookie = function (name, value, days) {
       fullWidth = 300 * width + 2;
       if (mapSettings.hasEndcaps) { fullWidth += 300; }
       $("#map, #tiles").width(fullWidth + "px");
-      $("#tiles").empty();
+
+      var tiles = document.getElementById('tiles');
+
+      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
+
       if (maptype !== 6) {
         if (mapSettings.hasEndcaps) {
           if (corners) { appendTile("corner", 0); }
@@ -356,7 +360,11 @@ var createCookie = function (name, value, days) {
       }
     } else {
       $("#map, #tiles").width("902px");
-      $("#tiles").empty();
+
+      var tiles = document.getElementById('tiles');
+
+      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
+
       appendTab(0);
       appendTile("tile", randInt(0, 3));
       appendTab(2);
@@ -374,10 +382,10 @@ var createCookie = function (name, value, days) {
       appendTab(2);
       tileDiv.appendChild(document.createElement('br'));
       var tab_bottom = document.createElement('img');
-      tab_bottom.setAttribute('class','rot0');
-      tab_bottom.setAttribute('data-rot','0');
-      tab_bottom.setAttribute('data-type','tab');
-      tab_bottom.setAttribute('src','../images/tab_bottom.png');
+      tab_bottom.setAttribute('class','rot0')
+                .setAttribute('data-rot','0')
+                .setAttribute('data-type','tab')
+                .setAttribute('src','../images/tab_bottom.png');
       tileDiv.appendChild(tab_bottom);
     }
     tilecount = $("#tiles img").length;

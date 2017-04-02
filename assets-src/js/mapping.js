@@ -176,13 +176,13 @@ var createCookie = function (name, value, days) {
     mapSettings.gridType = parseInt(gridType, 10);
     switch (mapSettings.gridType) {
       case 1:
-        gridElement.style.background = "url(../grid_15.png)";
+        gridElement.style.background = "url(/grid_15.png)";
         break;
       case 2:
-        gridElement.style.background = "url(../grid_30.png)";
+        gridElement.style.background = "url(/grid_30.png)";
         break;
       case 3:
-        gridElement.style.background = "url(../images/hex.png)";
+        gridElement.style.background = "url(/images/hex.png)";
         break;
       default:
         gridElement.style.background = "transparent";
@@ -761,7 +761,7 @@ var createCookie = function (name, value, days) {
       maptype = parseInt($(this).val(), 10);
       loadRoster();
     });
-    $("#site-head")
+    $("#mapViewControls")
       .on("click tap", "#nogrid", function () {
         applyGridOverlay(0);
       })

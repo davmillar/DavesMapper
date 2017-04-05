@@ -62,9 +62,6 @@ if ('serviceWorker' in navigator) {
 }
 
 $(document)
-  .on("click", "#clearNoti", function(event){
-    $("#notification").slideUp("fast");
-  })
   .on("click", "a[href*=\\#]", function(event){
     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
       var $target = $(this.hash);

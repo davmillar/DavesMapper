@@ -2,57 +2,362 @@ var TileDeck,
     artBoard,
     artMode,
     imgBoard,
-    mypos,
-    myrot,
-    mywid,
-    myhei,
-    mapSettings = {
-      mode: -1,
-      height: 2,
-      width: 2,
-      hasEndcaps: false,
-      gridType: 0,
-      lineup: {},
-      roster: []
-    },
     corners,
-    endstag,
-    map_kind,
-    scaled = false,
-    swap = false,
-    inrotate = false,
-    maptype = 1,
-    stagcount = 0,
     tilecount = 0,
-    normalTileCount = 0,
-    edgeTileCount = 0,
     detectedrotate = 0,
-    imag = "",
-    selectedTile,
-    roomContents = [
-      "Empty",
-      "Monster(s) and Treasure",
-      "Monster(s) and Treasure",
-      "Empty, Hidden Treasure",
-      "Trap, Treasure",
-      "Trap",
-      "Monster(s)",
-      "Monster(s)",
-      "Monster(s)",
-      "Monster(s)"
-    ],
-    specialContents = [
-      "Hindrance",
-      "Danger",
-      "Advantage",
-      "Mystery",
-      "Special Creature",
-      "Odor",
-      "Power"
-    ],
     $issafari = ((/Safari/i).test(window.navigator.appVersion)),
     ua = window.navigator.userAgent,
-    tileLibrary = {};
+    tileLibrary = {},
+    MAPPER,
+    GUI;
+
+(function(mapper){
+  mapper.isRotating = false;
+  mapper.isSwapping = false;
+  mapper.selectedTile = undefined;
+  mapper.staggeredCappedMode = undefined;
+  mapper.settings = {
+    structure: -1,
+    theme: 1,
+    height: 2,
+    width: 2,
+    hasEndcaps: false,
+    gridType: 0,
+    /**
+     * @type {Object}
+     * The lineup is an object containing boolean flags
+     * indicating which roster members are currently selected.
+     */
+    lineup: {},
+    /**
+     * @type {Array}
+     * The roster is the list of all artists available
+     * for the current map theme.
+     */
+    roster: []
+  };
+
+  /**
+   * Selects a tile by setting the selectedTile of this class
+   * to the tile and managing the selected-tile class that
+   * visibly indicates the selected tile.
+   * 
+   * @param  {DOMElement} tile
+   *    Newly-selected tile.
+   */
+  mapper.selectTile = function (tile) {
+    var me = mapper;
+
+    // Unselect old selection.
+    if (me.selectedTile) {
+      me.selectedTile.removeClass("selected-tile");
+    }
+
+    me.selectedTile = tile;
+
+    if (me.selectedTile) {
+      me.selectedTile.addClass("selected-tile");
+
+      // Visually disable rotate tool for tile types that don't support it.
+      // @TODO: Link appearance with enabled/disabled status.
+      if (jQuery.inArray(MAPPER.selectedTile.data("type"), ["tile","top","btm"]) > -1) {
+        $("#rotateBtn").fadeTo("fast", 1);
+      } else {
+        $("#rotateBtn").fadeTo("fast", 0.5);
+      }
+    }
+  };
+
+  /**
+   * Swap the location and rotation of two tiles.
+   * 
+   * @param  {DOMElement} targetTile
+   *     Target tile for swap.
+   */
+  mapper.performSwap = function (targetTile) {
+    var tileA = this.selectedTile,
+        tileB = targetTile,
+        tileAData,
+        tileBData;
+
+    // Tiles must be same type to swap.
+    if (tileA.data("type") !== tileB.data("type")) {
+      return false;
+    }
+
+    tileAData = {
+      image: tileA.attr("src"),
+      id: tileA.data("imgid"),
+      artist: tileA.data("artist"),
+      rotation: tileA.data("rot")
+    };
+
+    tileBData = {
+      image: tileB.attr("src"),
+      id: tileB.data("imgid"),
+      artist: tileB.data("artist"),
+      rotation: tileB.data("rot")
+    };
+
+    tileA
+      .attr("src", tileBData.image)
+      .data("imgid", tileBData.id)
+      .data("artist", tileBData.artist)
+      .removeClass("swapfirst");
+
+    tileB
+      .attr("src", tileAData.image)
+      .data("imgid", tileAData.id)
+      .data("artist", tileAData.artist);
+
+    if (tileB.data("type") === "tile") {
+      tileA
+        .data("rot", tileBData.rotation)
+        .removeClass("rot"+tileAData.rotation)
+        .addClass("rot"+tileBData.rotation);
+
+      tileB
+        .data("rot", tileAData.rotation)
+        .removeClass("rot"+tileBData.rotation)
+        .addClass("rot"+tileAData.rotation);
+    }
+
+    this.isSwapping = false;
+
+    $("#swapTileBtn").removeClass("down");
+  };
+
+  /**
+   * Detects the user's selected map structure and returns it,
+   * as well as caching it in the settings object.
+   * 
+   * @return {Number}
+   *     Map structure number.
+   *
+   * @todo Deprecate this and rely on changes bubbling from user action.
+   */
+  mapper.detectStructure = function () {
+    var me = mapper;
+
+    me.settings.structure = parseInt($('input:radio[name=mode]:checked').val(), 10);
+
+    return me.settings.structure;
+  };
+
+  /**
+   * Create a new map based on the current user settings.
+   */
+  mapper.newMap = function () {
+    var me = mapper,
+        tileDiv = document.getElementById("tiles"),
+        requestedStructure = me.detectStructure(),
+        usedStructure = requestedStructure,
+        settings = me.settings,
+        staggeredRow = 0,
+        height,
+        width,
+        tops,
+        btms,
+        topCorners,
+        bottomCorners,
+        fullWidth,
+        i,
+        j,
+        edgerotationa;
+
+    me.selectTile();
+    me.isSwapping = false;
+
+    if (requestedStructure !== 4) {
+      height = parseInt($("#height").val(), 10);
+      width = parseInt($("#width").val(), 10);
+    } else {
+      height = 4;
+      width = 3;
+    }
+    
+    settings.width = width;
+    settings.height = height;
+
+    me.staggeredCappedMode = ((tileLibrary['edge'].deck.length > 0) && (requestedStructure === 3));
+    settings.hasEndcaps = ((tileLibrary['edge'].deck.length > 0) && (requestedStructure === 2));
+    corners = ((tileLibrary['corner'].deck.length > 0) && (requestedStructure === 2));
+
+    if (settings.theme === 6) {
+      tops = ((tileLibrary['top'].deck.length > 0) && (requestedStructure === 2));
+      topCorners = ((tileLibrary['tco'].deck.length > 0) && (requestedStructure === 2));
+      btms = ((tileLibrary['btm'].deck.length > 0) && (requestedStructure === 2));
+      bottomCorners = ((tileLibrary['bco'].deck.length > 0) && (requestedStructure === 2));
+      $("#viewport").removeClass("nm").addClass("sv");
+      GUI.hideNotification();
+    } else {
+      $("#viewport").removeClass("sv").addClass("nm");
+      if (((requestedStructure === 2) || (requestedStructure === 3)) &&
+          ((tileLibrary['edge'].deck.length === 0) || (tileLibrary['corner'].deck.length === 0))) {
+        GUI.showNotification('The tile sets you selected do not contain the right tile mix for your selected map structure. Falling back to the closest possible map structure.');
+      } else {
+        GUI.hideNotification();
+      }
+    }
+
+    // Prepare Drawing Area
+    if (requestedStructure !== 4) {
+      fullWidth = 300 * width + 2;
+      if (settings.hasEndcaps) { fullWidth += 300; }
+      $("#map, #tiles").width(fullWidth + "px");
+
+      while(tileDiv.firstChild) {
+        tileDiv.removeChild(tileDiv.firstChild);
+      }
+
+      if (settings.theme !== 6) {
+        if (settings.hasEndcaps) {
+          if (corners) { appendTile("corner", 0); }
+          for (j = 0; j < width - staggeredRow; j += 1) { appendTile("edge", 0); }
+          if (corners) { appendTile("corner", 1); }
+          tileDiv.appendChild(document.createElement('br'));
+        }
+      } else {
+        if (tops) {
+          if (topCorners) { appendTile("tco", 0); }
+          for (j = 0; j < width - staggeredRow; j += 1) { appendTile("top", 0); }
+          if (topCorners) { appendTile("tco", 1); }
+          tileDiv.appendChild(document.createElement('br'));
+        }
+      }
+      for (i = 0; i < height; i += 1) {
+        edgerotationa = (settings.theme === 6) ? 0 : 3;
+        if (settings.hasEndcaps || (mapper.staggeredCappedMode && (staggeredRow === 1))) { appendTile("edge", edgerotationa); }
+        for (j = 0; j < width - staggeredRow; j += 1) { appendTile("tile", randInt(0, 3)); }
+        if (settings.hasEndcaps || (mapper.staggeredCappedMode && (staggeredRow === 1))) { appendTile("edge", 1); }
+        if ((requestedStructure === 1) || (requestedStructure === 3)) { staggeredRow = 1 - staggeredRow; }
+        tileDiv.appendChild(document.createElement('br'));
+      }
+      if (settings.theme !== 6) {
+        if (settings.hasEndcaps) {
+          if (corners) { appendTile("corner", 3); }
+          for (j = 0; j < width - staggeredRow; j += 1) { appendTile("edge", 2); }
+          if (corners) { appendTile("corner", 2); }
+          tileDiv.appendChild(document.createElement('br'));
+        }
+      } else {
+        if (btms) {
+          if (bottomCorners) { appendTile("bco", 0); }
+          for (j = 0; j < width - staggeredRow; j += 1) { appendTile("btm", 0); }
+          if (bottomCorners) { appendTile("bco", 1); }
+          tileDiv.appendChild(document.createElement('br'));
+        }
+      }
+    } else {
+      $("#map, #tiles").width("902px");
+
+      var tiles = document.getElementById('tiles');
+
+      while (tiles.firstChild) {
+        tiles.removeChild(tiles.firstChild);
+      } 
+
+      appendTab(0);
+      appendTile("tile", randInt(0, 3));
+      appendTab(2);
+      tileDiv.appendChild(document.createElement('br'));
+      appendTile("tile", randInt(0, 3));
+      appendTile("tile", randInt(0, 3));
+      appendTile("tile", randInt(0, 3));
+      tileDiv.appendChild(document.createElement('br'));
+      appendTab(0);
+      appendTile("tile", randInt(0, 3));
+      appendTab(2);
+      tileDiv.appendChild(document.createElement('br'));
+      appendTab(0);
+      appendTile("tile", randInt(0, 3));
+      appendTab(2);
+      tileDiv.appendChild(document.createElement('br'));
+      var tab_bottom = document.createElement('img');
+      tab_bottom.setAttribute('class','rot0');
+      tab_bottom.setAttribute('data-rot','0');
+      tab_bottom.setAttribute('data-type','tab');
+      tab_bottom.setAttribute('src','../images/tab_bottom.png');
+      tileDiv.appendChild(tab_bottom);
+    }
+    tilecount = $("#tiles img").length;
+  };
+
+  /**
+   * Applies detects the grid setting selected by the user
+   * and applies it to the grid element.
+   * 
+   * @param  {Number} gridType
+   *     Grid setting selected. `0` is no grid, `1` is a
+   *     square grid at 15px size, `2` is a square grid
+   *     at 30px size, and `3` is a hex grid with roughly
+   *     30px wide irregular hexagons.
+   */
+  mapper.applyGridOverlay = function (gridType) {
+    var me = mapper,
+        gridElement = document.getElementById('grid'),
+        gridBackgrounds = {
+          0: "transparent",
+          1: "url(/grid_15.png)",
+          2: "url(/grid_30.png)",
+          3: "url(/images/hex.png)"
+        };
+
+    me.settings.gridType = parseInt(gridType, 10);
+    gridElement.style.background = gridBackgrounds[me.settings.gridType] || 'transparent';
+
+    ga('send', 'event', 'Grid', 'Type ' + gridType);
+  };
+
+  /**
+   * Switches the grid overlay to the next style in the order displayed in the
+   * applyGridOverlay method.
+   */
+  mapper.nextGrid = function () {
+    mapper.applyGridOverlay((mapper.settings.gridType + 1) % 4);
+    ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
+  };
+})(window.MAPPER = window.MAPPER || {});
+
+MAPPER = window.MAPPER;
+
+(function(gui){
+  gui.init = function () {
+    gui.notificationHolder = $("#notification");
+    gui.notificationTextHolder = gui.notificationHolder.find('span');
+    gui.notificationHolder.on("click", "#clearNotificationButton", gui.hideNotification);
+
+    gui.modalContainer = $("#popup");
+    gui.modalContentContainer = gui.modalContainer.find('div');
+
+    // Initialize click handler for overlay.
+    gui.modalContainer.click(function () {
+      $(this).fadeOut("fast");
+    });
+  };
+
+  gui.showNotification = function (notificationText) {
+    gui.notificationTextHolder.text(notificationText);
+    gui.notificationHolder.slideDown("fast");
+  };
+
+  gui.hideNotification = function () {
+    gui.notificationHolder.slideUp("fast");
+  };
+
+  /**
+   * Displays a modal with the provided content.
+   * 
+   * @param  {string} overlayContent
+   *     A string of HTML content.
+   */
+  gui.showModal = function (overlayContent) {
+    gui.modalContentContainer.html(overlayContent);
+    gui.modalContainer.show();
+  };
+})(window.GUI = window.GUI || {});
+
+GUI = window.GUI;
 
 TileDeck = function () {
   "use strict";
@@ -87,7 +392,7 @@ TileDeck.prototype.shuffle = function () {
 TileDeck.prototype.filter = function () {
   "use strict";
   this.deck = this.dataSource.filter(function (tile) {
-    return mapSettings.lineup[tile.artist_id];
+    return MAPPER.settings.lineup[tile.artist_id];
   });
   this.shuffle();
 };
@@ -129,6 +434,7 @@ var createCookie = function (name, value, days) {
     }
     document.cookie = name + "=" + value + expires + "; path=/";
   },
+
   readCookie = function (name) {
     var nameEQ = name + "=",
       ca = document.cookie.split(';'),
@@ -141,20 +447,25 @@ var createCookie = function (name, value, days) {
     }
     return null;
   },
+
   eraseCookie = function (name) {
     createCookie(name, "", -1);
   },
+
   appendTab = function (rotation) {
     var newTab = document.createElement('img'),
         tilesElement = document.getElementById('tiles');
 
     newTab.classList.add('tab');
     newTab.classList.add('rot' + rotation);
+
     newTab.setAttribute('data-rot', rotation);
     newTab.setAttribute('data-type', 'tab');
     newTab.setAttribute('src', '../images/tab.png');
+
     tilesElement.appendChild(newTab);
   },
+
   appendTile = function (type, rotation) {
     var newTile = tileLibrary[type].draw(),
         newTileImage = document.createElement('img'),
@@ -162,160 +473,39 @@ var createCookie = function (name, value, days) {
 
     newTileImage.classList.add(type);
     newTileImage.classList.add('rot' + rotation);
+
     newTileImage.setAttribute('data-rot', rotation);
     newTileImage.setAttribute('data-type', type);
     newTileImage.setAttribute('data-imgid', newTile.id);
     newTileImage.setAttribute('data-artist', newTile.artist_id);
     newTileImage.setAttribute('src', '../tiles/' + newTile.image);
     newTileImage.setAttribute('draggable', 'true');
+
     tilesElement.appendChild(newTileImage);
-  },
-  applyGridOverlay = function (gridType) {
-    var gridElement = document.getElementById('grid');
-
-    mapSettings.gridType = parseInt(gridType, 10);
-    switch (mapSettings.gridType) {
-      case 1:
-        gridElement.style.background = "url(/grid_15.png)";
-        break;
-      case 2:
-        gridElement.style.background = "url(/grid_30.png)";
-        break;
-      case 3:
-        gridElement.style.background = "url(/images/hex.png)";
-        break;
-      default:
-        gridElement.style.background = "transparent";
-        break;
-    }
-    ga('send', 'event', 'Grid', 'Type ' + gridType);
-  },
-  composeMap = function () {
-    var width = mapSettings.width,
-        height = mapSettings.height,
-        tops,
-        btms,
-        tcorners,
-        bcorners,
-        fullWidth,
-        i,
-        j,
-        edgerotationa;
-
-    endstag = ((tileLibrary['edge'].deck.length > 0) && (mapSettings.mode === 3));
-    mapSettings.hasEndcaps = ((tileLibrary['edge'].deck.length > 0) && (mapSettings.mode === 2));
-    corners = ((tileLibrary['corner'].deck.length > 0) && (mapSettings.mode === 2));
-    if (maptype === 6) {
-      tops = ((tileLibrary['top'].deck.length > 0) && (mapSettings.mode === 2));
-      tcorners = ((tileLibrary['tco'].deck.length > 0) && (mapSettings.mode === 2));
-      btms = ((tileLibrary['btm'].deck.length > 0) && (mapSettings.mode === 2));
-      bcorners = ((tileLibrary['bco'].deck.length > 0) && (mapSettings.mode === 2));
-      $("#viewport").removeClass("nm").addClass("sv");
-      $("#notification").slideUp("fast");
-    } else {
-      $("#viewport").removeClass("sv").addClass("nm");
-      if (((mapSettings.mode === 2) || (mapSettings.mode === 3)) && ((tileLibrary['edge'].deck.length === 0) || (tileLibrary['corner'].deck.length === 0))) {
-        $("#notification span").text("The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.");
-        $("#notification").slideDown("fast");
-      } else {
-        $("#notification").slideUp("fast");
-      }
-    }
-    // Prepare Drawing Area
-    var tileDiv = document.getElementById("tiles");
-    if (mapSettings.mode !== 4) {
-      fullWidth = 300 * width + 2;
-      if (mapSettings.hasEndcaps) { fullWidth += 300; }
-      $("#map, #tiles").width(fullWidth + "px");
-
-      var tiles = document.getElementById('tiles');
-
-      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
-
-      if (maptype !== 6) {
-        if (mapSettings.hasEndcaps) {
-          if (corners) { appendTile("corner", 0); }
-          for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 0); }
-          if (corners) { appendTile("corner", 1); }
-          tileDiv.appendChild(document.createElement('br'));
-        }
-      } else {
-        if (tops) {
-          if (tcorners) { appendTile("tco", 0); }
-          for (j = 0; j < width - stagcount; j += 1) { appendTile("top", 0); }
-          if (tcorners) { appendTile("tco", 1); }
-          tileDiv.appendChild(document.createElement('br'));
-        }
-      }
-      for (i = 0; i < height; i += 1) {
-        edgerotationa = (maptype === 6) ? 0 : 3;
-        if (mapSettings.hasEndcaps || (endstag && (stagcount === 1))) { appendTile("edge", edgerotationa); }
-        for (j = 0; j < width - stagcount; j += 1) { appendTile("tile", randInt(0, 3)); }
-        if (mapSettings.hasEndcaps || (endstag && (stagcount === 1))) { appendTile("edge", 1); }
-        if ((mapSettings.mode === 1) || (mapSettings.mode === 3)) { stagcount = 1 - stagcount; }
-        tileDiv.appendChild(document.createElement('br'));
-      }
-      if (maptype !== 6) {
-        if (mapSettings.hasEndcaps) {
-          if (corners) { appendTile("corner", 3); }
-          for (j = 0; j < width - stagcount; j += 1) { appendTile("edge", 2); }
-          if (corners) { appendTile("corner", 2); }
-          tileDiv.appendChild(document.createElement('br'));
-        }
-      } else {
-        if (btms) {
-          if (bcorners) { appendTile("bco", 0); }
-          for (j = 0; j < width - stagcount; j += 1) { appendTile("btm", 0); }
-          if (bcorners) { appendTile("bco", 1); }
-          tileDiv.appendChild(document.createElement('br'));
-        }
-      }
-    } else {
-      $("#map, #tiles").width("902px");
-
-      var tiles = document.getElementById('tiles');
-
-      while(tiles.firstChild) tiles.removeChild(tiles.firstChild)
-
-      appendTab(0);
-      appendTile("tile", randInt(0, 3));
-      appendTab(2);
-      tileDiv.appendChild(document.createElement('br'));
-      appendTile("tile", randInt(0, 3));
-      appendTile("tile", randInt(0, 3));
-      appendTile("tile", randInt(0, 3));
-      tileDiv.appendChild(document.createElement('br'));
-      appendTab(0);
-      appendTile("tile", randInt(0, 3));
-      appendTab(2);
-      tileDiv.appendChild(document.createElement('br'));
-      appendTab(0);
-      appendTile("tile", randInt(0, 3));
-      appendTab(2);
-      tileDiv.appendChild(document.createElement('br'));
-      var tab_bottom = document.createElement('img');
-      tab_bottom.setAttribute('class','rot0')
-                .setAttribute('data-rot','0')
-                .setAttribute('data-type','tab')
-                .setAttribute('src','../images/tab_bottom.png');
-      tileDiv.appendChild(tab_bottom);
-    }
-    tilecount = $("#tiles img").length;
   },
 
   loadRoster = function () {
     $.post("scripts/load_authors.php", {
-      "map_kind": maptype
+      "map_kind": MAPPER.settings.theme
     }, onRosterDataLoaded);
   },
 
+  /**
+   * Callback for roster data being loaded, which parses it and uses it to
+   * populate the settings for roster and lineup as well as generating the
+   * artist selection GUI.
+   * 
+   * @param  {String} responseString
+   *     Response data as a string.
+   */
   onRosterDataLoaded = function (responseString) {
     var displayHTML = '',
         data = $.parseJSON(responseString),
         artistsPresent = data.length,
         newLineup = {};
 
-    mapSettings.roster = data;
+    // The roster is the list of all artists available for the current map theme.
+    MAPPER.settings.roster = data;
 
     for (var p = 0; p < artistsPresent; p++) {
       newLineup[data[p].artist_id] = true;
@@ -330,19 +520,30 @@ var createCookie = function (name, value, days) {
                       "</label>";
     }
 
-    mapSettings.lineup = newLineup;
+    // The lineup is the list of selected artists for the current map being made.
+    MAPPER.settings.lineup = newLineup;
 
     downloadTileData(selectTileSets);
 
     $("#artistsblock").html(displayHTML);
   },
+
+  /**
+   * Requests the tile data for the app and stocks the tile library classes
+   * with it. Also calls a callback if one is provided.
+   * 
+   * @param  {Function} [callback]
+   *     Optional callback.
+   */
   downloadTileData = function (callback) {
-    $.post("scripts/load_morphs.php", { "map_kind": maptype }, function (data) {
+    $.post("scripts/load_morphs.php", {
+      "map_kind": MAPPER.settings.theme
+    }, function (data) {
       var fulldata = $.parseJSON(data);
       tileLibrary['tile'].stock(fulldata[1]);
       tileLibrary['edge'].stock(fulldata[2]);
       tileLibrary['corner'].stock(fulldata[3]);
-      if (maptype === 6) {
+      if (MAPPER.settings.theme === 6) {
         tileLibrary['top'].stock(fulldata[4]);
         tileLibrary['tco'].stock(fulldata[5]);
         tileLibrary['btm'].stock(fulldata[6]);
@@ -353,96 +554,81 @@ var createCookie = function (name, value, days) {
       }
     });
   },
-  generateMap = function () {
-    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
-    selectedTile = null;
-    swap = false;
-    imag = '';
-    stagcount = 0;
-    if (mapSettings.mode !== 4) {
-      mapSettings.height = parseInt($("#height").val(), 10);
-      mapSettings.width = parseInt($("#width").val(), 10);
-    } else {
-      mapSettings.height = 4;
-      mapSettings.width = 3;
-    }
-    normalTileCount = mapSettings.height * mapSettings.width;
-    if (maptype !== 6) {
-      edgeTileCount = 2 * (mapSettings.height + mapSettings.width);
-    } else {
-      edgeTileCount = 2 * mapSettings.height;
-    }
-    composeMap();
-  },
+
   selectTileSets = function () {
     var newLineup = {};
     $("#artistsblock input").filter(":checked").each(function () {
       newLineup[$(this).val()] = true;
     });
-    mapSettings.lineup = newLineup;
+    MAPPER.settings.lineup = newLineup;
     tileLibrary['tile'].filter();
     tileLibrary['edge'].filter();
     tileLibrary['corner'].filter();
-    if (maptype === 6) {
+    if (MAPPER.settings.theme === 6) {
       tileLibrary['top'].filter();
       tileLibrary['tco'].filter();
       tileLibrary['btm'].filter();
       tileLibrary['bco'].filter();
     }
-    generateMap();
+    MAPPER.newMap();
   },
+
   exportMap = function () {
-    var imageHolder = new Image();
-    if (mapSettings.mode === 4) {
-      $("#notification span").text("Export for cubes is currently not working. Please try your browser's print option instead.");
-      $("#notification").slideDown("fast");
+    var imageHolder = new Image(),
+        tilePosition,
+        tileRotation,
+        tileHeight,
+        tileWidth;
+
+    if (MAPPER.settings.mode === 4) {
+      GUI.showNotification('Export for cubes is currently not working. Please try your browser\'s print option instead.');
       ga('send', 'event', 'Export', 'Failed-Cube');
-    } else if ((mapSettings.mode === 1) || (mapSettings.mode === 3) || (mapSettings.mode === 4) || (maptype === 6)) {
+    } else if ((MAPPER.settings.mode === 1) || (MAPPER.settings.mode === 3) || (MAPPER.settings.mode === 4) || (MAPPER.settings.theme === 6)) {
       var dataURL;
-      $("#notification").slideUp("fast");
-      if ((mapSettings.width * mapSettings.height) > 36) {
+      GUI.hideNotification();
+      if ((MAPPER.settings.width * MAPPER.settings.height) > 36) {
         if (!confirm("Whoa there! Your browser might choke on saving a map of this size and crash the tab and/or window. Are you sure you want to let it run?")) { return false; }
       }
       //artMode.clearRect(0,0,artBoard.width,artBoard.height);
       artBoard.width = imgBoard.width() - 2;
       artBoard.height = imgBoard.height();
-      if (mapSettings.mode === 4) {
+      if (MAPPER.settings.mode === 4) {
         artBoard.width = "900px";
         artBoard.height = "1235px";
       }
       $("#tiles").find("img").each(function () {
         artMode.save();
-        mypos = $(this).position();
-        myrot = $(this).data("rot");
-        mywid = $(this).width();
-        myhei = $(this).height();
+        tilePosition = $(this).position();
+        tileRotation = $(this).data("rot");
+        tileWidth = $(this).width();
+        tileHeight = $(this).height();
         imageHolder.src = $(this).attr("src");
-        mypos.left -= 22;
-        mypos.top -= 22;
-        if (maptype === 6) {
-          artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-          if ((myrot % 2) === 1) {
+        tilePosition.left -= 22;
+        tilePosition.top -= 22;
+        if (MAPPER.settings.theme === 6) {
+          artMode.translate(tilePosition.left + (tileWidth / 2), tilePosition.top + (tileHeight / 2));
+          if ((tileRotation % 2) === 1) {
             artMode.scale(-1, 1);
           }
         } else {
-          if ((myrot % 2) === 1 && mywid > 150 && myhei < 300) {
-            mypos.left -= 150;
-            mypos.top += 75;
+          if ((tileRotation % 2) === 1 && tileWidth > 150 && tileHeight < 300) {
+            tilePosition.left -= 150;
+            tilePosition.top += 75;
           }
-          artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-          artMode.rotate(myrot * Math.PI / 2);
+          artMode.translate(tilePosition.left + (tileWidth / 2), tilePosition.top + (tileHeight / 2));
+          artMode.rotate(tileRotation * Math.PI / 2);
         }
-        artMode.drawImage(imageHolder, -(mywid / 2), -(myhei / 2), mywid, myhei);
+        artMode.drawImage(imageHolder, -(tileWidth / 2), -(tileHeight / 2), tileWidth, tileHeight);
         artMode.restore();
       });
       $("#grid").find("img").each(function () {
         artMode.save();
-        mypos = $(this).position();
-        mywid = $(this).width();
-        myhei = $(this).height();
+        tilePosition = $(this).position();
+        tileWidth = $(this).width();
+        tileHeight = $(this).height();
         imageHolder.src = $(this).attr("src");
-        artMode.translate(mypos.left + (mywid / 2), mypos.top + (myhei / 2));
-        artMode.drawImage(imageHolder, -(mywid / 2), -(myhei / 2), mywid, myhei);
+        artMode.translate(tilePosition.left + (tileWidth / 2), tilePosition.top + (tileHeight / 2));
+        artMode.drawImage(imageHolder, -(tileWidth / 2), -(tileHeight / 2), tileWidth, tileHeight);
         artMode.restore();
       });
       dataURL = artBoard.toDataURL();
@@ -450,13 +636,12 @@ var createCookie = function (name, value, days) {
       artBoard.width = artBoard.width * 2 / 2;
       ga('send', 'event', 'Export', 'Canvas');
     } else {
-      if ((mapSettings.width * mapSettings.height) > 64) {
-        $("#notification span").text("This map looks too big to export to PNG without causing an error. Sorry!");
-        $("#notification").slideDown("fast");
+      if ((MAPPER.settings.width * MAPPER.settings.height) > 64) {
+        GUI.showNotification('This map looks too big to export to PNG without causing an error. Sorry!');
         ga('send', 'event', 'Export', 'Failed');
       } else {
         var fullMapURL, mapData;
-        $("#notification").slideUp("fast");
+        GUI.hideNotification();
         mapData = {'tiles': [], 'rotation': []};
         $("#tiles img").each(function (i) {
           mapData.tiles[i] = $(this).data("imgid");
@@ -464,9 +649,9 @@ var createCookie = function (name, value, days) {
         });
         fullMapURL = 'fullmap.php?mapData=' +
           base64_encode(JSON.stringify(mapData)) +
-          '&w=' + mapSettings.width +
-          '&h=' + mapSettings.height;
-        if (mapSettings.hasEndcaps) {
+          '&w=' + MAPPER.settings.width +
+          '&h=' + MAPPER.settings.height;
+        if (MAPPER.settings.hasEndcaps) {
           fullMapURL += '&e=1';
         } else {
           fullMapURL += '&e=0';
@@ -476,12 +661,13 @@ var createCookie = function (name, value, days) {
         } else {
           fullMapURL += '&c=0';
         }
-        fullMapURL += '&g=' + mapSettings.gridType.toString();
+        fullMapURL += '&g=' + MAPPER.settings.gridType.toString();
         window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       }
       ga('send', 'event', 'Export', 'PHP');
     }
   },
+
   replaceTile = function ($image, oldtile, type, hasexit) {
     var tileimg = tileLibrary[type].draw();
 
@@ -492,123 +678,52 @@ var createCookie = function (name, value, days) {
     $image.attr("src", "../tiles/" + tileimg.image).data("imgid", tileimg.id).data("artist", tileimg.artist_id);
     ga('send', 'event', 'Replace Tile', type);
   },
-  nextGrid = function () {
-    applyGridOverlay((mapSettings.gridType + 1) % 4);
-    ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
-  },
 
   /**
-   * Displays a popup with the provided content.
-   * @param  {string} overlayContent A string of HTML content.
+   * Handler for image dragging to set up for drag/drop tile swapping.
+   * 
+   * @param  {jQuery Event} event
+   *     jQuery event for the start of the drag.
    */
-  showOverlay = function (overlayContent) {
-      var overlayContainer = $("#popup"),
-          overlayContentBox = overlayContainer.find('div');
-
-      overlayContentBox.html(overlayContent);
-      overlayContainer.show();
-  },
-
-  // Handler for image dragging to set up for drag/drop tile swapping.
   onImageDragStart = function (event) {
-    var e = event.originalEvent;
-
-    if (swap || !e) { return; }
-    selectedTile = $(this);
-    $('.selTile').removeClass('selTile');
-    selectedTile.addClass('selTile');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html','Swap');
+    event = event.originalEvent;
+    if (MAPPER.isSwapping || !event) { return; }
+    MAPPER.selectTile($(this));
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/html','Swap');
     ga('send', 'event', 'Swap', 'Drag Start');
   },
 
+  /**
+   * Handler for image drop after dragging.
+   * 
+   * @param  {jQuery Event} event
+   *     jQuery event for the drop after dragging.
+   */
   onImageDragDrop = function (event) {
-    var firstTile,
-        secondTile;
-
     event = event.originalEvent;
     event.preventDefault();
     if (event.dataTransfer.getData("text/html") == "Swap") {
-      if (selectedTile.data("type") !== $(this).data("type")) {
-        return false;
-      }
-      firstTile = {
-        "image": selectedTile.attr("src"),
-        "id": selectedTile.data("imgid"),
-        "artist": selectedTile.data("artist"),
-        "rotation": selectedTile.data("rot")
-      };
-      secondTile = {
-        "image": $(this).attr("src"),
-        "id": $(this).data("imgid"),
-        "artist": $(this).data("artist"),
-        "rotation": $(this).data("rot")
-      };
-      selectedTile
-        .attr("src", secondTile.image)
-        .data("imgid", secondTile.id)
-        .data("artist", secondTile.artist)
-        .removeClass("swapfirst");
-      $(this)
-        .attr("src", firstTile.image)
-        .data("imgid", firstTile.id)
-        .data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile
-          .data("rot", secondTile.rotation)
-          .removeClass("rot"+firstTile.rotation)
-          .addClass("rot"+secondTile.rotation);
-        $(this)
-          .data("rot", firstTile.rotation)
-          .removeClass("rot"+secondTile.rotation)
-          .addClass("rot"+firstTile.rotation);
-      }
-      selectedTile = $(this);
-      $(".selTile").removeClass("selTile");
-      selectedTile.addClass("selTile");
+      MAPPER.performSwap($(this));
       ga('send', 'event', 'Swap', 'Drop');
     }
   },
 
+  /**
+   * Handler for clicking an image on the map.
+   */
   onImageClick = function () {
-    var firstTile,
-        secondTile,
-        topadj = 10,
-        leftadj = 10;
+    // Ignore tabs from cube mode.
+    if ($(this).data("type") === "tab") {
+      return;
+    }
 
-    if ($(this).data("type") === "tab") { return; }
-    if (swap) {
-      if (selectedTile.data("type") !== $(this).data("type")) { return false; }
-      firstTile = {"image": selectedTile.attr("src"), "id": selectedTile.data("imgid"), "artist": selectedTile.data("artist"), "rotation": selectedTile.data("rot") };
-      secondTile = {"image": $(this).attr("src"), "id": $(this).data("imgid"), "artist": $(this).data("artist"), "rotation": $(this).data("rot") };
-      selectedTile.attr("src", secondTile.image).data("imgid", secondTile.id).data("artist", secondTile.artist).removeClass("swapfirst");
-      $(this).attr("src", firstTile.image).data("imgid", firstTile.id).data("artist", firstTile.artist);
-      if ($(this).data("type") == "tile") {
-        selectedTile.data("rot", secondTile.rotation).removeClass("rot"+firstTile.rotation).addClass("rot"+secondTile.rotation);
-        $(this).data("rot", firstTile.rotation).removeClass("rot"+secondTile.rotation).addClass("rot"+firstTile.rotation);
-      }
-      swap = false;
-      $("#swapTile").removeClass("down");
+    // Perform swap if using swap tool, otherwise select tile.
+    if (MAPPER.isSwapping) {
+      MAPPER.performSwap($(this));
       ga('send', 'event', 'Swap', 'Tool Complete');
-    }
-    selectedTile = $(this);
-    $(".selTile").removeClass("selTile");
-    selectedTile.addClass("selTile");
-    if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) > -1) {
-      $("#rotateBtn").fadeTo("fast", 1);
     } else {
-      $("#rotateBtn").fadeTo("fast", 0.5);
-    }
-    if ($(this).hasClass("edge") && ($(this).hasClass("rot1") || $(this).hasClass("rot3"))) {
-      leftadj -= 75;
-      if (ua.toLowerCase().indexOf('webkit') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
-      if (ua.toLowerCase().indexOf('opera') > -1) {
-        topadj += 75;
-        leftadj -= 75;
-      }
+      MAPPER.selectTile($(this));
     }
   },
 
@@ -705,10 +820,7 @@ var createCookie = function (name, value, days) {
    * Setup for the app that is performed when the document is ready.
    */
   initApp = function () {
-    // Initialize click handler for overlay.
-    $("#popup").click(function () {
-      $(this).fadeOut("fast");
-    });
+    GUI.init();
 
     // Initialize click handler for mobile button.
     $("#mapTypeMenuBtn").click(toggleMobileMenu);
@@ -734,7 +846,7 @@ var createCookie = function (name, value, days) {
 
     // Check if user has seen onboarding popup recently and display it if not.
     if (readCookie("popup") !== "overlay") {
-      showOverlay([
+      GUI.showModal([
         '<h2>New to the Mapper?</h2>',
         '<ul>',
         '<li><strong>Make maps for tabletop RPGs</strong> including caverns, dungeons, vertical dungeons, towns, and spaceships.</li>',
@@ -752,55 +864,51 @@ var createCookie = function (name, value, days) {
     $('#newWindowB').click(exportMap);
     artBoard = document.getElementById("drawingboard");
     artMode = artBoard.getContext("2d");
-    $("#newBtn").click(generateMap);
-    $("input.mtBtn").click(function () {
-      map_kind = parseInt($(this).val(), 10);
-    });
+    $("#newBtn").click(MAPPER.newMap);
     $('#mapTypeSelector').on('click tap', 'input:radio[name=maptype]', function () {
       if ($mobilemode) { $(this).blur(); }
-      maptype = parseInt($(this).val(), 10);
+      MAPPER.settings.theme = parseInt($(this).val(), 10);
       loadRoster();
     });
     $("#mapViewControls")
       .on("click tap", "#nogrid", function () {
-        applyGridOverlay(0);
+        MAPPER.applyGridOverlay(0);
       })
       .on("click tap", "#grid5", function () {
-        applyGridOverlay(1);
+        MAPPER.applyGridOverlay(1);
       })
       .on("click tap", "#grid10", function () {
-        applyGridOverlay(2);
+        MAPPER.applyGridOverlay(2);
       })
       .on("click tap", "#gridhex", function () {
-        applyGridOverlay(3);
+        MAPPER.applyGridOverlay(3);
       });
     $("#rotateTile").click(function () {
-      if (jQuery.inArray(selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
-      var oldRot = selectedTile.data("rot"),
+      if (jQuery.inArray(MAPPER.selectedTile.data("type"), ["tile","top","btm"]) < 0) { return false; }
+      var oldRot = MAPPER.selectedTile.data("rot"),
         newRot = (oldRot + 1) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
+      MAPPER.selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot);
       ga('send', 'event', 'Rotate', 'Click');
       return false;
     });
     $("#removeTile").click(function () {
-      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), false);
+      replaceTile(MAPPER.selectedTile, MAPPER.selectedTile.data("imgid"), MAPPER.selectedTile.data("type"), false);
       return false;
     });
 
     $("#width").val(2);
     $("#height").val(2);
-    mapSettings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
-    applyGridOverlay($('input:radio[name=grid]:checked').val());
-    maptype = parseInt($('input:radio[name=maptype]:checked').val(), 10);
+    MAPPER.settings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
+    MAPPER.settings.theme = parseInt($('input:radio[name=maptype]:checked').val(), 10);
+    MAPPER.applyGridOverlay($('input:radio[name=grid]:checked').val());
 
     loadRoster();
 
-    if (maptype === 6) {
+    if (MAPPER.settings.theme === 6) {
       $("#viewport").addClass("sv").removeClass("nm");
     } else {
       $("#viewport").addClass("nm").removeClass("sv");
     }
-    if ($("#fitwidth").is(":checked")) { scaled = true; }
     if (($mobilemode) && (ua.indexOf("Android") >= 0)) {
       var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
       if (androidversion < 3) {
@@ -810,6 +918,7 @@ var createCookie = function (name, value, days) {
 
     if ($appmode) {
       $("body").addClass('standalone-app');
+      // @TODO Find a way to include this in the CSS or GUI module.
       $("#notification").css({"top": "64px;"});
       $("#newnav,#site-foot").hide();
     }
@@ -843,33 +952,33 @@ var createCookie = function (name, value, days) {
 
     // Handle the remove/replace with exit button
     $("#removeTileExit").on("click tap", function () {
-      replaceTile(selectedTile, selectedTile.data("imgid"), selectedTile.data("type"), true);
+      replaceTile(MAPPER.selectedTile, MAPPER.selectedTile.data("imgid"), MAPPER.selectedTile.data("type"), true);
       ga('send', 'event', 'Remove Tile', 'Exit');
       return false;
     });
     // Handle swapping button
-    $("#swapTile").on("click tap", function () {
-      if (selectedTile.data("type") === "tab") { return; }
-      selectedTile.addClass("swapfirst");
-      swap = true;
-      $("#swapTile").addClass("down");
+    $("#swapTileBtn").on("click tap", function () {
+      if (MAPPER.selectedTile.data("type") === "tab") { return; }
+      MAPPER.selectedTile.addClass("swapfirst");
+      MAPPER.isSwapping = true;
+      $("#swapTileBtn").addClass("down");
       ga('send', 'event', 'Swap', 'Tool Click');
       return false;
     });
     // Handle mancrush button
     $("#mancrush").on("click tap", function () {
-      var $target = selectedTile.data("artist");
+      var $target = MAPPER.selectedTile.data("artist");
 
       $("#chk" + $target).prop("checked", true).siblings("input").prop("checked", false);
       ga('send', 'event', 'Heart', 'Click');
       selectTileSets();
     });
     // Redraw the map when width or height are changed
-    $("#width, #height").on("change", generateMap);
+    $("#width, #height").on("change", MAPPER.newMap);
     // Change mode based on radio button value changing
     $('input:radio[name=mode]').on("click tap change", function () {
-      mapSettings.mode = parseInt($(this).val(), 10);
-      generateMap();
+      MAPPER.settings.mode = parseInt($(this).val(), 10);
+      MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Change');
     });
 
@@ -885,11 +994,11 @@ var createCookie = function (name, value, days) {
    * @param  {Object} event The event object
    */
   onHammerRotateDetected = function (event) {
-    if (selectedTile.data("type") == 'tile') {
-      var oldRot = selectedTile.data("rot");
-      inrotate = true;
+    if (MAPPER.selectedTile.data("type") == 'tile') {
+      var oldRot = MAPPER.selectedTile.data("rot");
+      MAPPER.isRotating = true;
       detectedrotate = ((oldRot * 90) + Math.round(event.gesture.rotation) + 360) % 360;
-      selectedTile.removeClass("rot" + oldRot).css({
+      MAPPER.selectedTile.removeClass("rot" + oldRot).css({
         '-webkit-transform' : 'rotateZ(' + detectedrotate + 'deg)',
         '-moz-transform' : 'rotateZ(' + detectedrotate + 'deg)',
         '-ms-transform' : 'rotateZ(' + detectedrotate + 'deg)',
@@ -912,11 +1021,11 @@ var createCookie = function (name, value, days) {
    * @param  {Object} event The event object
    */
   onHammerReleaseDetected = function (event) {
-    if (inrotate) {
-      inrotate = false;
-      var oldRot = selectedTile.data("rot"),
+    if (MAPPER.isRotating) {
+      MAPPER.isRotating = false;
+      var oldRot = MAPPER.selectedTile.data("rot"),
           newRot = Math.round(detectedrotate / 90) % 4;
-      selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
+      MAPPER.selectedTile.data("rot", newRot).removeClass("rot" + oldRot).addClass("rot" + newRot).css({
         '-webkit-transform' : '',
         '-moz-transform' : '',
         '-ms-transform' : '',
@@ -939,17 +1048,13 @@ var createCookie = function (name, value, days) {
   cappedEndsMode = function () {
     $("#endBtn").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
-    generateMap();
-  },
-
-  fitWidth = function () {
-    $("#fitwidth").click();
+    MAPPER.newMap();
   },
 
   normalMode = function () {
     $("#normal").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
-    generateMap();
+    MAPPER.newMap();
   },
 
   toggleIconMode = function () {
@@ -959,13 +1064,13 @@ var createCookie = function (name, value, days) {
   staggeredMode = function () {
     $("#stagger").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
-    generateMap();
+    MAPPER.newMap();
   },
 
   staggeredCappedMode = function () {
     $("#stagcap").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
-    generateMap();
+    MAPPER.newMap();
   },
 
   toggleMobileMenu = function () {
@@ -982,9 +1087,8 @@ $(document)
   .on("release", onHammerReleaseDetected)
   // Bind the keydown events for shortcuts
   .bind("keydown", "c", cappedEndsMode)
-  .bind("keydown", "f", fitWidth)
-  .bind("keydown", "g", nextGrid)
-  .bind("keydown", "n", generateMap)
+  .bind("keydown", "g", MAPPER.nextGrid)
+  .bind("keydown", "n", MAPPER.newMap)
   .bind("keydown", "shift+n", normalMode)
   .bind("keydown", "shift+y", toggleIconMode)
   .bind("keydown", "s", staggeredMode)

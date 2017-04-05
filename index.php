@@ -28,7 +28,7 @@
       <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New Map</a>
     </div>
     <div class="fieldset" id="mapModeControls">
-      <h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Modes</h4>
+      <h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Structure</h4>
       <div class="dropradio" id="mapModeDrop"><div>
         <input type="radio" class="btnDrp first" name="mode" value="0" id="normal">
           <label for="normal"><em class="sprite spOrig"></em> Open-Edge</label>
@@ -53,8 +53,8 @@
       <h4 class="legend selHeader" title="Change up the selected tile.">Selection</h4>
       <input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked>
         <label for="rotateTile" title="Rotate Tile 90 Degrees" id="rotateBtn"><em class="sprite spRot">Rotate</em></label>
-      <input type="button" class="btnGrp" name="swapTile" value="Swap" id="swapTile">
-        <label for="swapTile" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
+      <input type="button" class="btnGrp" name="swapTileBtn" value="Swap" id="swapTileBtn">
+        <label for="swapTileBtn" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
       <input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush">
         <label for="mancrush" title="Build a Map by this Artist"><em class="sprite spCrush">Mancrush</em></label>
       <input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile">
@@ -74,39 +74,39 @@
         <label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
       <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
-		<section id="notification"><span>The tile sets you selected do not contain the right tile mix for your selected map mode. Falling back to the closest possible map mode.</span> <a id="clearNoti" title="Clear this notification.">OK</a></section>
+		<section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
 		<section id="popup"><div></div></section>
 		<section id="sideBar"><form>
       <section id="mapTypeSelector">
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="1" id="mt_dun" checked>
+        <input type="radio" class="panelChk" name="maptype" value="1" id="mt_dun" checked>
           <label for="mt_dun">
             <em class="sprite sprite-maptype-dungeon"></em> Dungeons
           </label>
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="2" id="mt_cav">
+        <input type="radio" class="panelChk" name="maptype" value="2" id="mt_cav">
           <label for="mt_cav">
             <em class="sprite sprite-maptype-cavern"></em> Caverns
           </label>
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="3" id="mt_mix">
+        <input type="radio" class="panelChk" name="maptype" value="3" id="mt_mix">
           <label for="mt_mix">
             <em class="sprite sprite-maptype-hybrid"></em> Dungeons &amp; Caverns
           </label>
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="4" id="mt_city">
+        <input type="radio" class="panelChk" name="maptype" value="4" id="mt_city">
           <label for="mt_city">
             <em class="sprite sprite-maptype-city"></em> City
           </label>
-        <!--input type="radio" class="panelChk mtBtn" name="maptype" value="5" id="mt_vil">
+        <!--input type="radio" class="panelChk" name="maptype" value="5" id="mt_vil">
           <label for="mt_vil">
             <em class="sprite sprite-maptype-village"></em> Village
           </label-->
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="6" id="mt_side">
+        <input type="radio" class="panelChk" name="maptype" value="6" id="mt_side">
           <label for="mt_side">
             <em class="sprite sprite-maptype-sideview"></em> Side-View Dungeon
           </label>
-        <input type="radio" class="panelChk mtBtn" name="maptype" value="7" id="mt_ship">
+        <input type="radio" class="panelChk" name="maptype" value="7" id="mt_ship">
           <label for="mt_ship">
             <em class="sprite sprite-maptype-spaceship"></em> Sci-Fi Ship
           </label>
-        <!--input type="radio" class="panelChk mtBtn" name="maptype" value="8" id="mt_jet">
+        <!--input type="radio" class="panelChk" name="maptype" value="8" id="mt_jet">
           <label for="mt_jet">
             <em class="sprite sprite-maptype-boardwalk"></em> Boardwalk
           </label-->

@@ -3,7 +3,6 @@ var TileDeck,
     artMode,
     imgBoard,
     corners,
-    scaled = false,
     tilecount = 0,
     detectedrotate = 0,
     $issafari = ((/Safari/i).test(window.navigator.appVersion)),
@@ -309,6 +308,15 @@ var TileDeck,
 
     ga('send', 'event', 'Grid', 'Type ' + gridType);
   };
+
+  /**
+   * Switches the grid overlay to the next style in the order displayed in the
+   * applyGridOverlay method.
+   */
+  mapper.nextGrid = function () {
+    mapper.applyGridOverlay((mapper.settings.gridType + 1) % 4);
+    ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
+  };
 })(window.MAPPER = window.MAPPER || {});
 
 MAPPER = window.MAPPER;
@@ -329,13 +337,11 @@ MAPPER = window.MAPPER;
   };
 
   gui.showNotification = function (notificationText) {
-    console.log('gui.showNotification');
     gui.notificationTextHolder.text(notificationText);
     gui.notificationHolder.slideDown("fast");
   };
 
   gui.hideNotification = function () {
-    console.log('gui.hideNotification');
     gui.notificationHolder.slideUp("fast");
   };
 
@@ -346,7 +352,6 @@ MAPPER = window.MAPPER;
    *     A string of HTML content.
    */
   gui.showModal = function (overlayContent) {
-    console.log('gui.showModal');
     gui.modalContentContainer.html(overlayContent);
     gui.modalContainer.show();
   };
@@ -674,11 +679,6 @@ var createCookie = function (name, value, days) {
     ga('send', 'event', 'Replace Tile', type);
   },
 
-  nextGrid = function () {
-    MAPPER.applyGridOverlay((MAPPER.settings.gridType + 1) % 4);
-    ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
-  },
-
   /**
    * Handler for image dragging to set up for drag/drop tile swapping.
    * 
@@ -909,7 +909,6 @@ var createCookie = function (name, value, days) {
     } else {
       $("#viewport").addClass("nm").removeClass("sv");
     }
-    if ($("#fitwidth").is(":checked")) { scaled = true; }
     if (($mobilemode) && (ua.indexOf("Android") >= 0)) {
       var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
       if (androidversion < 3) {
@@ -1052,10 +1051,6 @@ var createCookie = function (name, value, days) {
     MAPPER.newMap();
   },
 
-  fitWidth = function () {
-    $("#fitwidth").click();
-  },
-
   normalMode = function () {
     $("#normal").click();
     ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
@@ -1092,8 +1087,7 @@ $(document)
   .on("release", onHammerReleaseDetected)
   // Bind the keydown events for shortcuts
   .bind("keydown", "c", cappedEndsMode)
-  .bind("keydown", "f", fitWidth)
-  .bind("keydown", "g", nextGrid)
+  .bind("keydown", "g", MAPPER.nextGrid)
   .bind("keydown", "n", MAPPER.newMap)
   .bind("keydown", "shift+n", normalMode)
   .bind("keydown", "shift+y", toggleIconMode)

@@ -122,6 +122,7 @@
 			</section>
 		</section>
 		<?php include "includes/footer.php"; ?>
+    <script src="assets/js/keyboard.js?t=<?php echo filemtime("assets/js/keyboard.js")?>"></script>
 	</body>
 </html>
 

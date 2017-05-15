@@ -315,7 +315,6 @@ var TileDeck,
    */
   mapper.nextGrid = function () {
     mapper.applyGridOverlay((mapper.settings.gridType + 1) % 4);
-    ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
   };
 })(window.MAPPER = window.MAPPER || {});
 
@@ -1043,17 +1042,13 @@ var createCookie = function (name, value, days) {
     }
   },
 
-  // Key Event Handler named functions
-  // per https://github.com/davmillar/DavesMapper/issues/40
   cappedEndsMode = function () {
     $("#endBtn").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
     MAPPER.newMap();
   },
 
   normalMode = function () {
     $("#normal").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
     MAPPER.newMap();
   },
 
@@ -1063,13 +1058,11 @@ var createCookie = function (name, value, days) {
 
   staggeredMode = function () {
     $("#stagger").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
     MAPPER.newMap();
   },
 
   staggeredCappedMode = function () {
     $("#stagcap").click();
-    ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
     MAPPER.newMap();
   },
 
@@ -1084,12 +1077,4 @@ $(document)
   .hammer()
   // Generic whole-document listeners
   .on("rotate", onHammerRotateDetected)
-  .on("release", onHammerReleaseDetected)
-  // Bind the keydown events for shortcuts
-  .bind("keydown", "c", cappedEndsMode)
-  .bind("keydown", "g", MAPPER.nextGrid)
-  .bind("keydown", "n", MAPPER.newMap)
-  .bind("keydown", "shift+n", normalMode)
-  .bind("keydown", "shift+y", toggleIconMode)
-  .bind("keydown", "s", staggeredMode)
-  .bind("keydown", "shift+s", staggeredCappedMode);
+  .on("release", onHammerReleaseDetected);

@@ -52,12 +52,18 @@ echo "Combining and compressing app JS..."
 
 cat \
   assets-src/js/base64_encode.js \
-  assets-src/js/jquery.hotkeys.js \
   assets-src/js/json2.js \
   assets-src/js/utf8_encode.js \
   assets-src/js/mapping.js \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled_app.js
+
+echo "Combining and compressing keyboard shortcut JS..."
+
+cat \
+  assets-src/js/keyboard.js \
+  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  > ./assets/js/keyboard.js
 
 echo "Updating and compressing service worker JS..."
 

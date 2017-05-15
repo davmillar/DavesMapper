@@ -27,9 +27,22 @@ document.addEventListener('keydown', function (keyEvent) {
       ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
       break;
     case 'Y':
-      if (shiftPressed) {
-        toggleIconMode();
+      toggleIconMode();
+      break;
+    case '?':
+      if (GUI.modalVisible()) {
+        GUI.hideModal();
+      } else {
+        GUI.loadExternalModal('keyboard');
+      }
+      ga('send', 'event', 'Mode', 'Keyboard', 'HelpModal');
+      break;
+    case 'Enter':
+    case 'Escape':
+      if (GUI.modalVisible()) {
+        GUI.hideModal();
       }
       break;
   }
 }, false);
+

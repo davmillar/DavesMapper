@@ -330,9 +330,7 @@ MAPPER = window.MAPPER;
     gui.modalContentContainer = gui.modalContainer.find('div');
 
     // Initialize click handler for overlay.
-    gui.modalContainer.click(function () {
-      $(this).fadeOut("fast");
-    });
+    gui.modalContainer.click(gui.hideModal);
   };
 
   gui.showNotification = function (notificationText) {
@@ -352,7 +350,36 @@ MAPPER = window.MAPPER;
    */
   gui.showModal = function (overlayContent) {
     gui.modalContentContainer.html(overlayContent);
-    gui.modalContainer.show();
+    gui.modalContainer.fadeIn('fast');
+  };
+
+  /**
+   * Returns whether or not the modal is visible.
+   * 
+   * @return {Boolean}
+   *     True when a modal is visible.
+   */
+  gui.modalVisible = function () {
+    return gui.modalContainer.is(':visible');
+  };
+
+  /**
+   * Displays a modal with the provided content.
+   * 
+   * @param  {string} contentName
+   *     Name of file from which to load external content.
+   */
+  gui.loadExternalModal = function (contentName) {
+    gui.modalContentContainer.load('/content/' + contentName + '.html', function () {
+      gui.modalContainer.fadeIn('fast');
+    });
+  };
+
+  /**
+   * Hides an active modal.
+   */
+  gui.hideModal = function () {
+    gui.modalContainer.fadeOut('fast');
   };
 })(window.GUI = window.GUI || {});
 

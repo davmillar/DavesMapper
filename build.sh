@@ -67,12 +67,13 @@ cat \
 
 echo "Updating and compressing service worker JS..."
 
+contentsum="$(tar -cf - content | md5sum | cut -c -10)"
 assetssum="$(tar -cf - assets-src | md5sum | cut -c -10)"
 indexsum="$(md5sum index.php | cut -c -5)"
 
 cat \
   assets-src/js/service-worker.js \
-  | sed "s/my-site-cache-v1/${assetssum}-${indexsum}/" \
+  | sed "s/my-site-cache-v1/${contentsum}-${assetssum}-${indexsum}/" \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/service-worker.js
 

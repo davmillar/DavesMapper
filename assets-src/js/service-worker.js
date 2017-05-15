@@ -9,6 +9,7 @@ var CACHE_NAME = 'my-site-cache-v1',
       '/assets/js/compiled_app.js',
       '/assets/js/global.js',
       '/assets/js/keyboard.js',
+      '/content/keyboard.html',
       '/grid_15.png',
       '/grid_30.png',
       '/images/hex.png'

@@ -10,17 +10,6 @@
     <?php include "includes/magic.php"; ?>
     <section id="viewport">
       <section id="about">
-        <h3>Keyboard Shortcuts</h3>
-          <section id="shortcuts" class="columns">
-            <span class="keyboard"><span class="key">n</span> New Map</span>
-            <span class="keyboard"><span class="key">shift</span>+<span class="key">n</span> Normal Mode</span>
-            <span class="keyboard"><span class="key">s</span> Staggered Mode</span>
-            <span class="keyboard"><span class="key">shift</span>+<span class="key">s</span> Staggered and Capped Mode</span>
-            <span class="keyboard"><span class="key">c</span> Capped Ends Mode</span>
-            <span class="keyboard"><span class="key">g</span> Toggle Grid Mode</span>
-            <!--span class="keyboard"><span class="key">?</span> Toggle this Help Page</span-->
-            <span class="keyboard"><span class="key">shift</span>+<span class="key">c</span> Toggle Tile Count Display</span>
-          </section>
         <h1>Dave's Mapper</h1>
           <p>Dave's Mapper is a tool that allows <abbr title="Game Masters">GMs</abbr>/<abbr title="Dungeon Masters">DMs</abbr> to generate random maps from a variety of map tiles created by artists in the gaming community.</p>
           <p>To begin, simply click the "Dave's Mapper" button at the top left of this page to go back to the app, and your first generated map will be waiting! To generate another map, simply click "New Map". Changing most settings will also generate a new map automatically.</p>

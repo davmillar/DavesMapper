@@ -1,27 +1,27 @@
 <?php
   define('PATH', dirname(__FILE__));
 
-	include PATH . "/cgi-bin/db_start.php";
+  include PATH . "/cgi-bin/db_start.php";
 
-	$iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
-	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
-	$iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
-	$Android= stripos($_SERVER['HTTP_USER_AGENT'],"Android");
-	$webOS= stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
+  $iPod = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
+  $iPhone = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
+  $iPad = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
+  $Android= stripos($_SERVER['HTTP_USER_AGENT'],"Android");
+  $webOS= stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
 ?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-	<head>
-		<title>Dave's Mapper</title>
-		<meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar.">
-		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app">
-		<meta name="wot-verification" content="fb53c891a20198877c5e">
-		<?php include "includes/head.php"; ?>
-		<script src="scripts/jquery.hammer.min.js"></script>
-		<script src="assets/js/compiled_app.js?t=<?php echo filemtime("assets/js/compiled_app.js")?>"></script>
-	</head>
-	<body>
-		<?php include "includes/magic.php"; ?>
+  <head>
+    <title>Dave's Mapper</title>
+    <meta name="description" content="Geomorphic map generator web app for role-playing enthusiasts. Created by web designer and puzzle author David Millar.">
+    <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app">
+    <meta name="wot-verification" content="fb53c891a20198877c5e">
+    <?php include "includes/head.php"; ?>
+    <script src="scripts/jquery.hammer.min.js"></script>
+    <script src="assets/js/compiled_app.js?t=<?php echo filemtime("assets/js/compiled_app.js")?>"></script>
+  </head>
+  <body>
+    <?php include "includes/magic.php"; ?>
     <div class="fieldset" id="actionButtons">
       <h4 class="legend" title="Commands to perform.">Options</h4>
       <a class="button" id="mapTypeMenuBtn" title="Change Map Type"><em class="sprite sprite-map-options"></em> Map Type</a>
@@ -74,9 +74,9 @@
         <label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
       <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
-		<section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
-		<section id="popup"><div></div></section>
-		<section id="sideBar"><form>
+    <section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
+    <section id="popup"><div></div></section>
+    <section id="sideBar"><form>
       <section id="mapTypeSelector">
         <input type="radio" class="panelChk" name="maptype" value="1" id="mt_dun" checked>
           <label for="mt_dun">
@@ -111,18 +111,19 @@
             <em class="sprite sprite-maptype-boardwalk"></em> Boardwalk
           </label-->
       </section>
-  		<section id="artistsblock">
-  		</section>
-		</form></section>
-		<section id="viewport">
-			<section id="map">
-				<canvas id="drawingboard"></canvas>
-				<div id="grid"></div>
-				<div id="tiles"></div>
-			</section>
-		</section>
-		<?php include "includes/footer.php"; ?>
-	</body>
+      <section id="artistsblock">
+      </section>
+    </form></section>
+    <section id="viewport">
+      <section id="map">
+        <canvas id="drawingboard"></canvas>
+        <div id="grid"></div>
+        <div id="tiles"></div>
+      </section>
+    </section>
+    <?php include "includes/footer.php"; ?>
+    <script src="assets/js/keyboard.js?t=<?php echo filemtime("assets/js/keyboard.js")?>"></script>
+  </body>
 </html>
 
 <?php include PATH . "/cgi-bin/db_end.php"; ?>

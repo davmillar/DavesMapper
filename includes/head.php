@@ -49,9 +49,9 @@
 
 <!-- Assets -->
 <link href="//fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
-<link href="/assets/css/compiled.css?t=<?php echo filemtime(PATH . "/assets/css/compiled.css")?>" rel="stylesheet" media="screen">
-<link href="/assets/css/compiled_print.css?t=<?php echo filemtime(PATH . "/assets/css/compiled_print.css")?>" rel="stylesheet" media="print">
-<script src="/assets/js/global.js?t=<?php echo filemtime(PATH . "/assets/js/global.js")?>"></script>
+<link href="/assets/css/compiled.css" rel="stylesheet" media="screen">
+<link href="/assets/css/compiled_print.css" rel="stylesheet" media="print">
+<script src="/assets/js/global.js"></script>
 <script src="/scripts/jquery.qtip.min.js"></script>
 <!--[if IE]>
   <link href="style/ie9.css" rel="stylesheet" media="screen">

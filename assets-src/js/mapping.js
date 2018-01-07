@@ -1,443 +1,7 @@
-(function(mapper){
-  mapper.isRotating = false;
-  mapper.isSwapping = false;
-  mapper.selectedTile = undefined;
-  mapper.staggeredCappedMode = undefined;
-  mapper.settings = {
-    structure: -1,
-    theme: 1,
-    height: 2,
-    width: 2,
-    hasEndcaps: false,
-    hasCorners: false,
-    gridType: 0,
-    /**
-     * @type {Object}
-     * The lineup is an object containing boolean flags
-     * indicating which roster members are currently selected.
-     */
-    lineup: {},
-    /**
-     * @type {Array}
-     * The roster is the list of all artists available
-     * for the current map theme.
-     */
-    roster: []
-  };
-
-  /**
-   * Selects a tile by setting the selectedTile of this class
-   * to the tile and managing the selected-tile class that
-   * visibly indicates the selected tile.
-   *
-   * @param  {DOMElement} tile
-   *    Newly-selected tile.
-   */
-  mapper.selectTile = function (tile) {
-    var me = mapper;
-
-    // Unselect old selection.
-    if (me.selectedTile) {
-      me.selectedTile.removeClass('selected-tile');
-    }
-
-    me.selectedTile = tile;
-
-    if (me.selectedTile) {
-      me.selectedTile.addClass('selected-tile');
-
-      // Visually disable rotate tool for tile types that don't support it.
-      // @TODO: Link appearance with enabled/disabled status.
-      if (jQuery.inArray(MAPPER.selectedTile.data('type'), ['tile', 'top', 'btm']) > -1) {
-        $('#rotateBtn').fadeTo('fast', 1);
-      } else {
-        $('#rotateBtn').fadeTo('fast', 0.5);
-      }
-    }
-  };
-
-  /**
-   * Swap the location and rotation of two tiles.
-   *
-   * @param  {DOMElement} targetTile
-   *     Target tile for swap.
-   */
-  mapper.performSwap = function (targetTile) {
-    var tileA = this.selectedTile,
-        tileB = targetTile,
-        tileAData,
-        tileBData;
-
-    // Tiles must be same type to swap.
-    if (tileA.data('type') !== tileB.data('type')) {
-      return false;
-    }
-
-    tileAData = {
-      image: tileA.attr('src'),
-      id: tileA.data('imgid'),
-      artist: tileA.data('artist'),
-      rotation: tileA.data('rot')
-    };
-
-    tileBData = {
-      image: tileB.attr('src'),
-      id: tileB.data('imgid'),
-      artist: tileB.data('artist'),
-      rotation: tileB.data('rot')
-    };
-
-    tileA
-      .attr('src', tileBData.image)
-      .data('imgid', tileBData.id)
-      .data('artist', tileBData.artist)
-      .removeClass('swapfirst');
-
-    tileB
-      .attr('src', tileAData.image)
-      .data('imgid', tileAData.id)
-      .data('artist', tileAData.artist);
-
-    if (tileB.data('type') === 'tile') {
-      tileA
-        .data('rot', tileBData.rotation)
-        .removeClass('rot'+tileAData.rotation)
-        .addClass('rot'+tileBData.rotation);
-
-      tileB
-        .data('rot', tileAData.rotation)
-        .removeClass('rot'+tileBData.rotation)
-        .addClass('rot'+tileAData.rotation);
-    }
-
-    this.isSwapping = false;
-
-    $('#swapTileBtn').removeClass('down');
-  };
-
-  /**
-   * Detects the user's selected map structure and returns it,
-   * as well as caching it in the settings object.
-   *
-   * @return {Number}
-   *     Map structure number.
-   *
-   * @todo Deprecate this and rely on changes bubbling from user action.
-   */
-  mapper.detectStructure = function () {
-    var me = mapper;
-
-    me.settings.structure = parseInt($('input:radio[name=mode]:checked').val(), 10);
-
-    return me.settings.structure;
-  };
-
-  mapper.appendTab = function (rotation) {
-    var newTab = document.createElement('img'),
-        tilesElement = document.getElementById('tiles');
-
-    newTab.classList.add('tab');
-    newTab.classList.add('rot' + rotation);
-
-    newTab.setAttribute('data-rot', rotation);
-    newTab.setAttribute('data-type', 'tab');
-    newTab.setAttribute('src', '../images/tab.png');
-
-    tilesElement.appendChild(newTab);
-  };
-
-  mapper.appendTile = function (type, rotation) {
-    var newTile = DM_TileLibrary.draw(type),
-        newTileImage = document.createElement('img'),
-        tilesElement = document.getElementById('tiles');
-
-    newTileImage.classList.add(type);
-    newTileImage.classList.add('rot' + rotation);
-
-    newTileImage.setAttribute('data-rot', rotation);
-    newTileImage.setAttribute('data-type', type);
-    newTileImage.setAttribute('data-imgid', newTile.id);
-    newTileImage.setAttribute('data-artist', newTile.artist_id);
-    newTileImage.setAttribute('src', '../tiles/' + newTile.image);
-    newTileImage.setAttribute('draggable', 'true');
-
-    tilesElement.appendChild(newTileImage);
-  };
-
-  /**
-   * Create a new map based on the current user settings.
-   */
-  mapper.newMap = function () {
-    var me = mapper,
-        doc = document,
-        tileDiv = doc.getElementById('tiles'),
-        requestedStructure = me.detectStructure(),
-        settings = me.settings,
-        staggeredRow = 0,
-        bottomCorners,
-        topCorners,
-        fullWidth,
-        height,
-        width,
-        tops,
-        btms,
-        i,
-        j,
-        edgerotationa;
-
-    me.selectTile();
-    me.isSwapping = false;
-
-    // Cube maps are always this size.
-    if (requestedStructure === 4) {
-      height = 4;
-      width = 3;
-    } else {
-      height = parseInt($('#height').val(), 10);
-      width = parseInt($('#width').val(), 10);
-    }
-
-    settings.width = width;
-    settings.height = height;
-
-    me.staggeredCappedMode = ((DM_TileLibrary.has('edge')) && (requestedStructure === 3));
-    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (requestedStructure === 2));
-    settings.hasCorners = ((DM_TileLibrary.has('corner')) && (requestedStructure === 2));
-
-    if (settings.theme === 6) {
-      // Side-view maps have additional requirements.
-      tops = ((DM_TileLibrary.has('top')) && (requestedStructure === 2));
-      topCorners = ((DM_TileLibrary.has('tco')) && (requestedStructure === 2));
-      btms = ((DM_TileLibrary.has('btm')) && (requestedStructure === 2));
-      bottomCorners = ((DM_TileLibrary.has('bco')) && (requestedStructure === 2));
-      $('#viewport').removeClass('nm').addClass('sv');
-      GUI.hideNotification();
-    } else {
-      // Top-down maps.
-      $('#viewport').removeClass('sv').addClass('nm');
-      if (((requestedStructure === 2) || (requestedStructure === 3)) &&
-          ((!DM_TileLibrary.has('edge')) || (!DM_TileLibrary.has('corner')))) {
-        GUI.showNotification(
-          'The tile sets you selected do not contain the right tile mix for your selected map ' +
-          'structure. Falling back to the closest possible map structure.');
-      } else {
-        GUI.hideNotification();
-      }
-    }
-
-    // Prepare Drawing Area
-    if (requestedStructure !== 4) {
-      fullWidth = 300 * width + 2;
-      if (settings.hasEndcaps) { fullWidth += 300; }
-      $('#map, #tiles').width(fullWidth + 'px');
-
-      while(tileDiv.firstChild) {
-        tileDiv.removeChild(tileDiv.firstChild);
-      }
-
-      // Top row of map tiles.
-      if (settings.theme !== 6) {
-        // Top-Down Maps
-        if (settings.hasEndcaps) {
-          if (settings.hasCorners) {
-            me.appendTile('corner', 0);
-          }
-
-          for (j = 0; j < width - staggeredRow; j += 1) {
-            me.appendTile('edge', 0);
-          }
-
-          if (settings.hasCorners) {
-            me.appendTile('corner', 1);
-          }
-
-          tileDiv.appendChild(doc.createElement('br'));
-        }
-      } else {
-        // Side-View Maps
-        if (tops) {
-          if (topCorners) { me.appendTile('tco', 0); }
-          for (j = 0; j < width - staggeredRow; j += 1) { me.appendTile('top', 0); }
-          if (topCorners) { me.appendTile('tco', 1); }
-          tileDiv.appendChild(doc.createElement('br'));
-        }
-      }
-
-      // Middle of map.
-      for (i = 0; i < height; i += 1) {
-        edgerotationa = (settings.theme === 6) ? 0 : 3;
-
-        if (settings.hasEndcaps || (me.staggeredCappedMode && (staggeredRow === 1))) {
-          me.appendTile('edge', edgerotationa);
-        }
-
-        for (j = 0; j < width - staggeredRow; j += 1) {
-          me.appendTile('tile', randInt(0, 3));
-        }
-
-        if (settings.hasEndcaps || (me.staggeredCappedMode && (staggeredRow === 1))) {
-          me.appendTile('edge', 1);
-        }
-
-        if ((requestedStructure === 1) || (requestedStructure === 3)) {
-          staggeredRow = 1 - staggeredRow;
-        }
-
-        tileDiv.appendChild(doc.createElement('br'));
-      }
-
-      // Bottom row of map tiles
-      if (settings.theme !== 6) {
-        // Top-Down Maps
-        if (settings.hasEndcaps) {
-          if (settings.hasCorners) { me.appendTile('corner', 3); }
-          for (j = 0; j < width - staggeredRow; j += 1) { me.appendTile('edge', 2); }
-          if (settings.hasCorners) { me.appendTile('corner', 2); }
-          tileDiv.appendChild(doc.createElement('br'));
-        }
-      } else {
-        // Side-View Maps
-        if (btms) {
-          if (bottomCorners) { me.appendTile('bco', 0); }
-          for (j = 0; j < width - staggeredRow; j += 1) { me.appendTile('btm', 0); }
-          if (bottomCorners) { me.appendTile('bco', 1); }
-          tileDiv.appendChild(doc.createElement('br'));
-        }
-      }
-    } else {
-      $('#map, #tiles').width('902px');
-
-      var tiles = doc.getElementById('tiles');
-
-      while (tiles.firstChild) {
-        tiles.removeChild(tiles.firstChild);
-      }
-
-      me.appendTab(0);
-      me.appendTile('tile', randInt(0, 3));
-      me.appendTab(2);
-      tileDiv.appendChild(doc.createElement('br'));
-      me.appendTile('tile', randInt(0, 3));
-      me.appendTile('tile', randInt(0, 3));
-      me.appendTile('tile', randInt(0, 3));
-      tileDiv.appendChild(doc.createElement('br'));
-      me.appendTab(0);
-      me.appendTile('tile', randInt(0, 3));
-      me.appendTab(2);
-      tileDiv.appendChild(doc.createElement('br'));
-      me.appendTab(0);
-      me.appendTile('tile', randInt(0, 3));
-      me.appendTab(2);
-      tileDiv.appendChild(doc.createElement('br'));
-      var tabBottom = doc.createElement('img');
-      tabBottom.setAttribute('class','rot0');
-      tabBottom.setAttribute('data-rot','0');
-      tabBottom.setAttribute('data-type','tab');
-      tabBottom.setAttribute('src','../images/tab_bottom.png');
-      tileDiv.appendChild(tabBottom);
-    }
-  };
-
-  /**
-   * Applies detects the grid setting selected by the user
-   * and applies it to the grid element.
-   *
-   * @param  {Number} gridType
-   *     Grid setting selected. `0` is no grid, `1` is a
-   *     square grid at 15px size, `2` is a square grid
-   *     at 30px size, and `3` is a hex grid with roughly
-   *     30px wide irregular hexagons.
-   */
-  mapper.applyGridOverlay = function (gridType) {
-    var me = mapper,
-        gridElement = document.getElementById('grid'),
-        gridBackgrounds = {
-          0: 'transparent',
-          1: 'url(/grid_15.png)',
-          2: 'url(/grid_30.png)',
-          3: 'url(/images/hex.png)'
-        };
-
-    me.settings.gridType = parseInt(gridType, 10);
-    gridElement.style.background = gridBackgrounds[me.settings.gridType] || 'transparent';
-
-    ga('send', 'event', 'Grid', 'Type ' + gridType);
-  };
-
-  /**
-   * Switches the grid overlay to the next style in the order displayed in the
-   * applyGridOverlay method.
-   */
-  mapper.nextGrid = function () {
-    mapper.applyGridOverlay((mapper.settings.gridType + 1) % 4);
-  };
-})(window.MAPPER = window.MAPPER || {});
-
-(function(gui){
-  gui.init = function () {
-    gui.notificationHolder = $('#notification');
-    gui.notificationTextHolder = gui.notificationHolder.find('span');
-    gui.notificationHolder.on('click', '#clearNotificationButton', gui.hideNotification);
-
-    gui.modalContainer = $('#popup');
-    gui.modalContentContainer = gui.modalContainer.find('div');
-
-    // Initialize click handler for overlay.
-    gui.modalContainer.click(gui.hideModal);
-  };
-
-  gui.showNotification = function (notificationText) {
-    gui.notificationTextHolder.text(notificationText);
-    gui.notificationHolder.slideDown('fast');
-  };
-
-  gui.hideNotification = function () {
-    gui.notificationHolder.slideUp('fast');
-  };
-
-  /**
-   * Displays a modal with the provided content.
-   *
-   * @param  {string} overlayContent
-   *     A string of HTML content.
-   */
-  gui.showModal = function (overlayContent) {
-    gui.modalContentContainer.html(overlayContent);
-    gui.modalContainer.fadeIn('fast');
-  };
-
-  /**
-   * Returns whether or not the modal is visible.
-   *
-   * @return {Boolean}
-   *     True when a modal is visible.
-   */
-  gui.modalVisible = function () {
-    return gui.modalContainer.is(':visible');
-  };
-
-  /**
-   * Displays a modal with the provided content.
-   *
-   * @param  {string} contentName
-   *     Name of file from which to load external content.
-   */
-  gui.loadExternalModal = function (contentName) {
-    gui.modalContentContainer.load('/content/' + contentName + '.html', function () {
-      GUI.modalContainer.fadeIn('fast');
-    });
-  };
-
-  /**
-   * Hides an active modal.
-   */
-  gui.hideModal = function () {
-    gui.modalContainer.fadeOut('fast');
-  };
-})(window.GUI = window.GUI || {});
-
 var createCookie = function (name, value, days) {
-    var date, expires;
+    var date,
+        expires;
+
     if (days) {
       date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -445,19 +9,28 @@ var createCookie = function (name, value, days) {
     } else {
       expires = '';
     }
+
     document.cookie = name + '=' + value + expires + '; path=/';
   },
 
   readCookie = function (name) {
     var nameEQ = name + '=',
-      ca = document.cookie.split(';'),
-      i,
-      c;
+        ca = document.cookie.split(';'),
+        i,
+        c;
+
     for (i = 0; i < ca.length; i += 1) {
       c = ca[i];
-      while (c.charAt(0) === ' ') { c = c.substring(1, c.length); }
-      if (c.indexOf(nameEQ) === 0) { return c.substring(nameEQ.length, c.length); }
+
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1, c.length);
+      }
+
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
     }
+
     return null;
   },
 
@@ -471,15 +44,7 @@ var createCookie = function (name, value, days) {
       newLineup[$(this).val()] = true;
     });
     MAPPER.settings.lineup = newLineup;
-    DM_TileLibrary.tile.filter();
-    DM_TileLibrary.edge.filter();
-    DM_TileLibrary.corner.filter();
-    if (MAPPER.settings.theme === 6) {
-      DM_TileLibrary.top.filter();
-      DM_TileLibrary.tco.filter();
-      DM_TileLibrary.btm.filter();
-      DM_TileLibrary.bco.filter();
-    }
+    DM_TileLibrary.setFilter(MAPPER.settings.theme, MAPPER.settings.lineup);
     MAPPER.newMap();
   },
 
@@ -492,13 +57,14 @@ var createCookie = function (name, value, days) {
    *     Response data as a string.
    */
   onRosterDataLoaded = function (responseString) {
-    var displayHTML = '',
+    var settings = MAPPER.settings,
+        displayHTML = '',
         data = $.parseJSON(responseString),
         artistsPresent = data.length,
         newLineup = {};
 
     // The roster is the list of all artists available for the current map theme.
-    MAPPER.settings.roster = data;
+    settings.roster = data;
 
     for (var p = 0; p < artistsPresent; p++) {
       newLineup[data[p].artist_id] = true;
@@ -515,9 +81,9 @@ var createCookie = function (name, value, days) {
     }
 
     // The lineup is the list of selected artists for the current map being made.
-    MAPPER.settings.lineup = newLineup;
+    settings.lineup = newLineup;
 
-    DM_TileLibrary.loadTiles(MAPPER.settings.theme, selectTileSets);
+    DM_TileLibrary.loadTiles(settings.theme, selectTileSets);
 
     $('#artistsblock').html(displayHTML);
   },
@@ -529,7 +95,8 @@ var createCookie = function (name, value, days) {
   },
 
   exportMap = function () {
-    var imageHolder = new Image(),
+    var settings = MAPPER.settings,
+        imageHolder = new Image(),
         tilePosition,
         tileRotation,
         tileHeight,
@@ -538,18 +105,18 @@ var createCookie = function (name, value, days) {
 
     GUI.hideNotification();
 
-    if (MAPPER.settings.mode === 4) {
+    if (settings.mode === 4) {
       // Disallow cube export.
       GUI.showNotification('Export for cubes is currently not working. Please try your ' +
         'browser\'s print option instead.');
       ga('send', 'event', 'Export', 'Failed-Cube');
     } else if (
-      (MAPPER.settings.mode === 1) ||
-      (MAPPER.settings.mode === 3) ||
-      (MAPPER.settings.theme === 6)) {
+      (settings.mode === 1) ||
+      (settings.mode === 3) ||
+      (settings.theme === 6)) {
 
       // Warn users if they're choosing to export a large map size.
-      if ((MAPPER.settings.width * MAPPER.settings.height) > 36) {
+      if ((settings.width * settings.height) > 36) {
         if (!confirm('Whoa there! Your browser might choke on saving a map of this size and ' +
           'crash the tab and/or window. Are you sure you want to let it run?')) {
           return false;
@@ -564,7 +131,7 @@ var createCookie = function (name, value, days) {
 
       // Determine export size from app container size.
       // @TODO Find a better way to get this cached during map generation.
-      if (MAPPER.settings.mode === 4) {
+      if (settings.mode === 4) {
         exportCanvas.width = '900px';
         exportCanvas.height = '1235px';
       } else {
@@ -581,7 +148,7 @@ var createCookie = function (name, value, days) {
         imageHolder.src = $(this).attr('src');
         tilePosition.left -= 22;
         tilePosition.top -= 22;
-        if (MAPPER.settings.theme === 6) {
+        if (settings.theme === 6) {
           exportCanvasContext.translate(
             tilePosition.left + (tileWidth / 2),
             tilePosition.top + (tileHeight / 2)
@@ -633,42 +200,40 @@ var createCookie = function (name, value, days) {
       exportCanvas.width = exportCanvas.width * 2 / 2;
       ga('send', 'event', 'Export', 'Canvas');
     } else {
-      if ((MAPPER.settings.width * MAPPER.settings.height) > 64) {
+      if ((settings.width * settings.height) > 64) {
         GUI.showNotification(
           'This map looks too big to export to PNG without causing an error. Sorry!'
         );
         ga('send', 'event', 'Export', 'Failed');
       } else {
-        var fullMapURL, mapData;
+        var fullMapURL,
+            mapData;
+
         GUI.hideNotification();
         mapData = {'tiles': [], 'rotation': []};
+
         $('#tiles img').each(function (i) {
           mapData.tiles[i] = $(this).data('imgid');
           mapData.rotation[i] = $(this).data('rot');
         });
+
         fullMapURL = 'fullmap.php?mapData=' +
           base64_encode(JSON.stringify(mapData)) +
-          '&w=' + MAPPER.settings.width +
-          '&h=' + MAPPER.settings.height;
-        if (MAPPER.settings.hasEndcaps) {
-          fullMapURL += '&e=1';
-        } else {
-          fullMapURL += '&e=0';
-        }
-        if (MAPPER.settings.hasCorners) {
-          fullMapURL += '&c=1';
-        } else {
-          fullMapURL += '&c=0';
-        }
-        fullMapURL += '&g=' + MAPPER.settings.gridType.toString();
+          '&w=' + settings.width +
+          '&h=' + settings.height;
+
+        fullMapURL += '&e=' + (settings.hasEndcaps ? '1' : '0');
+        fullMapURL += '&c=' + (settings.hasCorners ? '1' : '0');
+        fullMapURL += '&g=' + settings.gridType.toString();
         window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       }
       ga('send', 'event', 'Export', 'PHP');
     }
   },
 
-  replaceTile = function ($image, oldtile, type, hasExit) {
-    var tileimg = DM_TileLibrary.draw(type);
+  replaceTile = function ($currentTile, hasExit) {
+    var type = $currentTile.data('type'),
+        newTile = DM_TileLibrary.draw(type);
 
     if (hasExit) {
       GUI.showNotification(
@@ -678,10 +243,10 @@ var createCookie = function (name, value, days) {
       return;
     }
 
-    $image
-      .attr('src', '../tiles/' + tileimg.image)
-      .data('imgid', tileimg.id)
-      .data('artist', tileimg.artist_id);
+    $currentTile
+      .attr('src', '../tiles/' + newTile.image)
+      .data('imgid', newTile.id)
+      .data('artist', newTile.artist_id);
 
     ga('send', 'event', 'Replace Tile', type);
   },
@@ -740,7 +305,7 @@ var createCookie = function (name, value, days) {
         newRot;
 
     if (e.metaKey) {
-      replaceTile($target, $target.data('imgid'), 'tile', false);
+      replaceTile($target);
       ga('send', 'event', 'Replace', 'Ctrl+DblClick');
     } else {
       oldRot = $(this).data('rot');
@@ -754,7 +319,7 @@ var createCookie = function (name, value, days) {
     if (e.metaKey) {
       var $target = $(this);
 
-      replaceTile($target, $target.data('imgid'), 'edge', false);
+      replaceTile($target);
     }
   },
 
@@ -762,7 +327,7 @@ var createCookie = function (name, value, days) {
     if (e.metaKey) {
       var $target = $(this);
 
-      replaceTile($target, $target.data('imgid'), 'corner', false);
+      replaceTile($target);
     }
   },
 
@@ -772,7 +337,7 @@ var createCookie = function (name, value, days) {
         newRot;
 
     if (e.metaKey) {
-      replaceTile($target, $target.data('imgid'), 'top', false);
+      replaceTile($target);
     } else {
       oldRot = $(this).data('rot');
       newRot = (oldRot + 1) % 2;
@@ -784,7 +349,7 @@ var createCookie = function (name, value, days) {
     if (e.metaKey) {
       var $target = $(this);
 
-      replaceTile($target, $target.data('imgid'), 'tco', false);
+      replaceTile($target);
     }
   },
 
@@ -794,7 +359,7 @@ var createCookie = function (name, value, days) {
         newRot;
 
     if (e.metaKey) {
-      replaceTile($target, $target.data('imgid'), 'btm', false);
+      replaceTile($target);
     } else {
       oldRot = $(this).data('rot');
       newRot = (oldRot + 1) % 2;
@@ -806,7 +371,7 @@ var createCookie = function (name, value, days) {
     if (e.metaKey) {
       var $target = $(this);
 
-      replaceTile($target, $target.data('imgid'), 'bco', false);
+      replaceTile($target);
     }
   },
 
@@ -888,19 +453,12 @@ var createCookie = function (name, value, days) {
       MAPPER.settings.theme = parseInt($(this).val(), 10);
       loadRoster();
     });
-    $('#mapViewControls')
-      .on('click tap', '#nogrid', function () {
-        MAPPER.applyGridOverlay(0);
-      })
-      .on('click tap', '#grid5', function () {
-        MAPPER.applyGridOverlay(1);
-      })
-      .on('click tap', '#grid10', function () {
-        MAPPER.applyGridOverlay(2);
-      })
-      .on('click tap', '#gridhex', function () {
-        MAPPER.applyGridOverlay(3);
-      });
+
+    // Set mapViewControls to pass their input value into appleGridOverlay
+    $('#mapViewControls').on('click tap', 'input', function () {
+      MAPPER.applyGridOverlay($(this).val());
+    });
+
     $('#rotateTile').click(function () {
       if (jQuery.inArray(MAPPER.selectedTile.data('type'), ['tile','top','btm']) < 0) {
         return false;
@@ -912,12 +470,7 @@ var createCookie = function (name, value, days) {
       return false;
     });
     $('#removeTile').click(function () {
-      replaceTile(
-        MAPPER.selectedTile,
-        MAPPER.selectedTile.data('imgid'),
-        MAPPER.selectedTile.data('type'),
-        false
-      );
+      replaceTile(MAPPER.selectedTile);
       return false;
     });
 
@@ -976,12 +529,7 @@ var createCookie = function (name, value, days) {
 
     // Handle the remove/replace with exit button
     $('#removeTileExit').on('click tap', function () {
-      replaceTile(
-        MAPPER.selectedTile,
-        MAPPER.selectedTile.data('imgid'),
-        MAPPER.selectedTile.data('type'),
-        true
-      );
+      replaceTile(MAPPER.selectedTile);
       ga('send', 'event', 'Remove Tile', 'Exit');
       return false;
     });

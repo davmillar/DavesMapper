@@ -56,6 +56,8 @@ cat \
   assets-src/js/utf8_encode.js \
   assets-src/js/TileDeck.js \
   assets-src/js/TileLibrary.js \
+  assets-src/js/Mapper.js \
+  assets-src/js/GUI.js \
   assets-src/js/mapping.js \
   | java -jar bin/yuicompressor-2.4.8.jar --type=js \
   > ./assets/js/compiled_app.js

@@ -19,6 +19,8 @@
    * Requests the tile data for the app and stocks the tile library classes
    * with it. Also calls a callback if one is provided.
    *
+   * @param  {Number} themeCode
+   *     Code number corresponding the the theme used for this map.
    * @param  {Function} [callback]
    *     Optional callback.
    */
@@ -41,6 +43,27 @@
         callback();
       }
     });
+  };
+
+  /**
+   * Sets filters on the tile decks based on the selected artist mix.
+   *
+   * @param  {Number} themeCode
+   *     Code number corresponding the the theme used for this map.
+   * @param  {Object} filterData
+   *     Object containing key-value pairs of whether an artist is in the current mix.
+   */
+  library.setFilter = function (themeCode, filterData) {
+    library.tile.filter(filterData);
+    library.edge.filter(filterData);
+    library.corner.filter(filterData);
+    // Side-view extra types.
+    if (themeCode === 6) {
+      library.top.filter(filterData);
+      library.tco.filter(filterData);
+      library.btm.filter(filterData);
+      library.bco.filter(filterData);
+    }
   };
 
   /**

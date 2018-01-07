@@ -5,6 +5,7 @@ var DM_TileDeck = function () {
   this.deck = [];
   this.dataSource = [];
   this.cursor = 0;
+  this.lastLineup = undefined;
 };
 
 /**
@@ -30,11 +31,23 @@ DM_TileDeck.prototype.shuffle = function () {
   this.deck = deck;
 };
 
-DM_TileDeck.prototype.filter = function () {
+DM_TileDeck.prototype.filter = function (lineupData) {
   'use strict';
-  this.deck = this.dataSource.filter(function (tile) {
-    return MAPPER.settings.lineup[tile.artist_id];
-  });
+
+  if (lineupData) {
+    // If new lineup is present, cache it.
+    this.lastLineup = lineupData;
+  } else {
+    // Otherwise use the cached lineup.
+    lineupData = this.lastLineup;
+  }
+
+  if (lineupData) {
+    this.deck = this.dataSource.filter(function (tile) {
+      return lineupData[tile.artist_id];
+    });
+  }
+
   this.shuffle();
 };
 
@@ -49,7 +62,15 @@ DM_TileDeck.prototype.draw = function () {
   return cardDrawn;
 };
 
+/**
+ * Stocks the TileDeck with a new dataset, clears the lineup data,
+ * and reruns filter() to repopulate the active deck.
+ *
+ * @param  {Object[]} stockpile
+ *     An array of tile data objects.
+ */
 DM_TileDeck.prototype.stock = function (stockpile) {
   this.dataSource = stockpile || [];
+  this.lastLineup = null;
   this.filter();
 };

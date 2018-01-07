@@ -1,14 +1,3 @@
-var TileDeck,
-    artBoard,
-    artMode,
-    imgBoard,
-    corners,
-    $issafari = ((/Safari/i).test(window.navigator.appVersion)),
-    ua = window.navigator.userAgent,
-    tileLibrary = {},
-    MAPPER,
-    GUI;
-
 (function(mapper){
   mapper.isRotating = false;
   mapper.isSwapping = false;
@@ -20,6 +9,7 @@ var TileDeck,
     height: 2,
     width: 2,
     hasEndcaps: false,
+    hasCorners: false,
     gridType: 0,
     /**
      * @type {Object}
@@ -157,7 +147,7 @@ var TileDeck,
   };
 
   mapper.appendTile = function (type, rotation) {
-    var newTile = tileLibrary[type].draw(),
+    var newTile = DM_TileLibrary.draw(type),
         newTileImage = document.createElement('img'),
         tilesElement = document.getElementById('tiles');
 
@@ -184,13 +174,13 @@ var TileDeck,
         requestedStructure = me.detectStructure(),
         settings = me.settings,
         staggeredRow = 0,
+        bottomCorners,
+        topCorners,
+        fullWidth,
         height,
         width,
         tops,
         btms,
-        topCorners,
-        bottomCorners,
-        fullWidth,
         i,
         j,
         edgerotationa;
@@ -210,21 +200,23 @@ var TileDeck,
     settings.width = width;
     settings.height = height;
 
-    me.staggeredCappedMode = ((tileLibrary.edge.deck.length > 0) && (requestedStructure === 3));
-    settings.hasEndcaps = ((tileLibrary.edge.deck.length > 0) && (requestedStructure === 2));
-    corners = ((tileLibrary.corner.deck.length > 0) && (requestedStructure === 2));
+    me.staggeredCappedMode = ((DM_TileLibrary.has('edge')) && (requestedStructure === 3));
+    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (requestedStructure === 2));
+    settings.hasCorners = ((DM_TileLibrary.has('corner')) && (requestedStructure === 2));
 
     if (settings.theme === 6) {
-      tops = ((tileLibrary.top.deck.length > 0) && (requestedStructure === 2));
-      topCorners = ((tileLibrary.tco.deck.length > 0) && (requestedStructure === 2));
-      btms = ((tileLibrary.btm.deck.length > 0) && (requestedStructure === 2));
-      bottomCorners = ((tileLibrary.bco.deck.length > 0) && (requestedStructure === 2));
+      // Side-view maps have additional requirements.
+      tops = ((DM_TileLibrary.has('top')) && (requestedStructure === 2));
+      topCorners = ((DM_TileLibrary.has('tco')) && (requestedStructure === 2));
+      btms = ((DM_TileLibrary.has('btm')) && (requestedStructure === 2));
+      bottomCorners = ((DM_TileLibrary.has('bco')) && (requestedStructure === 2));
       $('#viewport').removeClass('nm').addClass('sv');
       GUI.hideNotification();
     } else {
+      // Top-down maps.
       $('#viewport').removeClass('sv').addClass('nm');
       if (((requestedStructure === 2) || (requestedStructure === 3)) &&
-          ((tileLibrary.edge.deck.length === 0) || (tileLibrary.corner.deck.length === 0))) {
+          ((!DM_TileLibrary.has('edge')) || (!DM_TileLibrary.has('corner')))) {
         GUI.showNotification(
           'The tile sets you selected do not contain the right tile mix for your selected map ' +
           'structure. Falling back to the closest possible map structure.');
@@ -247,7 +239,7 @@ var TileDeck,
       if (settings.theme !== 6) {
         // Top-Down Maps
         if (settings.hasEndcaps) {
-          if (corners) {
+          if (settings.hasCorners) {
             me.appendTile('corner', 0);
           }
 
@@ -255,7 +247,7 @@ var TileDeck,
             me.appendTile('edge', 0);
           }
 
-          if (corners) {
+          if (settings.hasCorners) {
             me.appendTile('corner', 1);
           }
 
@@ -298,9 +290,9 @@ var TileDeck,
       if (settings.theme !== 6) {
         // Top-Down Maps
         if (settings.hasEndcaps) {
-          if (corners) { me.appendTile('corner', 3); }
+          if (settings.hasCorners) { me.appendTile('corner', 3); }
           for (j = 0; j < width - staggeredRow; j += 1) { me.appendTile('edge', 2); }
-          if (corners) { me.appendTile('corner', 2); }
+          if (settings.hasCorners) { me.appendTile('corner', 2); }
           tileDiv.appendChild(doc.createElement('br'));
         }
       } else {
@@ -381,8 +373,6 @@ var TileDeck,
   };
 })(window.MAPPER = window.MAPPER || {});
 
-MAPPER = window.MAPPER;
-
 (function(gui){
   gui.init = function () {
     gui.notificationHolder = $('#notification');
@@ -434,7 +424,7 @@ MAPPER = window.MAPPER;
    */
   gui.loadExternalModal = function (contentName) {
     gui.modalContentContainer.load('/content/' + contentName + '.html', function () {
-      gui.modalContainer.fadeIn('fast');
+      GUI.modalContainer.fadeIn('fast');
     });
   };
 
@@ -445,72 +435,6 @@ MAPPER = window.MAPPER;
     gui.modalContainer.fadeOut('fast');
   };
 })(window.GUI = window.GUI || {});
-
-GUI = window.GUI;
-
-TileDeck = function () {
-  'use strict';
-  this.deck = [];
-  this.dataSource = [];
-  this.cursor = 0;
-};
-
-/**
- * Shuffles the deck of tiles using Durstenfeld shuffle, as suggested on StackOverflow:
- * http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
- */
-TileDeck.prototype.shuffle = function () {
-  'use strict';
-  var deck = this.deck,
-      temp,
-      i,
-      j;
-
-  this.cursor = 0;
-
-  for (i = deck.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      temp = deck[i];
-      deck[i] = deck[j];
-      deck[j] = temp;
-  }
-
-  this.deck = deck;
-};
-
-TileDeck.prototype.filter = function () {
-  'use strict';
-  this.deck = this.dataSource.filter(function (tile) {
-    return MAPPER.settings.lineup[tile.artist_id];
-  });
-  this.shuffle();
-};
-
-TileDeck.prototype.draw = function () {
-  var cardDrawn = this.deck[this.cursor];
-
-  this.cursor += 1;
-  if ((this.cursor % this.deck.length) === 0) {
-    this.shuffle();
-  }
-
-  return cardDrawn;
-};
-
-TileDeck.prototype.stock = function (stockpile) {
-  this.dataSource = stockpile || [];
-  this.filter();
-};
-
-tileLibrary = {
-  tile: new TileDeck(),
-  edge: new TileDeck(),
-  corner: new TileDeck(),
-  top: new TileDeck(),
-  tco: new TileDeck(),
-  btm: new TileDeck(),
-  bco: new TileDeck()
-};
 
 var createCookie = function (name, value, days) {
     var date, expires;
@@ -541,47 +465,20 @@ var createCookie = function (name, value, days) {
     $('#sideBar').toggleClass('shown');
   },
 
-  /**
-   * Requests the tile data for the app and stocks the tile library classes
-   * with it. Also calls a callback if one is provided.
-   *
-   * @param  {Function} [callback]
-   *     Optional callback.
-   */
-  downloadTileData = function (callback) {
-    $.post('scripts/load_morphs.php', {
-      'map_kind': MAPPER.settings.theme
-    }, function (data) {
-      var fulldata = $.parseJSON(data);
-      tileLibrary.tile.stock(fulldata[1]);
-      tileLibrary.edge.stock(fulldata[2]);
-      tileLibrary.corner.stock(fulldata[3]);
-      if (MAPPER.settings.theme === 6) {
-        tileLibrary.top.stock(fulldata[4]);
-        tileLibrary.tco.stock(fulldata[5]);
-        tileLibrary.btm.stock(fulldata[6]);
-        tileLibrary.bco.stock(fulldata[7]);
-      }
-      if (callback) {
-        callback();
-      }
-    });
-  },
-
   selectTileSets = function () {
     var newLineup = {};
     $('#artistsblock input').filter(':checked').each(function () {
       newLineup[$(this).val()] = true;
     });
     MAPPER.settings.lineup = newLineup;
-    tileLibrary.tile.filter();
-    tileLibrary.edge.filter();
-    tileLibrary.corner.filter();
+    DM_TileLibrary.tile.filter();
+    DM_TileLibrary.edge.filter();
+    DM_TileLibrary.corner.filter();
     if (MAPPER.settings.theme === 6) {
-      tileLibrary.top.filter();
-      tileLibrary.tco.filter();
-      tileLibrary.btm.filter();
-      tileLibrary.bco.filter();
+      DM_TileLibrary.top.filter();
+      DM_TileLibrary.tco.filter();
+      DM_TileLibrary.btm.filter();
+      DM_TileLibrary.bco.filter();
     }
     MAPPER.newMap();
   },
@@ -620,7 +517,7 @@ var createCookie = function (name, value, days) {
     // The lineup is the list of selected artists for the current map being made.
     MAPPER.settings.lineup = newLineup;
 
-    downloadTileData(selectTileSets);
+    DM_TileLibrary.loadTiles(MAPPER.settings.theme, selectTileSets);
 
     $('#artistsblock').html(displayHTML);
   },
@@ -636,7 +533,10 @@ var createCookie = function (name, value, days) {
         tilePosition,
         tileRotation,
         tileHeight,
-        tileWidth;
+        tileWidth,
+        dataURL;
+
+    GUI.hideNotification();
 
     if (MAPPER.settings.mode === 4) {
       // Disallow cube export.
@@ -644,13 +544,10 @@ var createCookie = function (name, value, days) {
         'browser\'s print option instead.');
       ga('send', 'event', 'Export', 'Failed-Cube');
     } else if (
-
       (MAPPER.settings.mode === 1) ||
       (MAPPER.settings.mode === 3) ||
       (MAPPER.settings.theme === 6)) {
-      //
-      var dataURL;
-      GUI.hideNotification();
+
       // Warn users if they're choosing to export a large map size.
       if ((MAPPER.settings.width * MAPPER.settings.height) > 36) {
         if (!confirm('Whoa there! Your browser might choke on saving a map of this size and ' +
@@ -658,15 +555,25 @@ var createCookie = function (name, value, days) {
           return false;
         }
       }
-      //artMode.clearRect(0,0,artBoard.width,artBoard.height);
-      artBoard.width = imgBoard.width() - 2;
-      artBoard.height = imgBoard.height();
+
+      // Establish canvas and canvas context.
+      var exportCanvas = document.getElementById('drawingboard'),
+          exportCanvasContext = exportCanvas.getContext('2d');
+
+      //exportCanvasContext.clearRect(0,0,exportCanvas.width,exportCanvas.height);
+
+      // Determine export size from app container size.
+      // @TODO Find a better way to get this cached during map generation.
       if (MAPPER.settings.mode === 4) {
-        artBoard.width = '900px';
-        artBoard.height = '1235px';
+        exportCanvas.width = '900px';
+        exportCanvas.height = '1235px';
+      } else {
+        exportCanvas.width = $('#tiles').width() - 2;
+        exportCanvas.height = $('#tiles').height();
       }
+
       $('#tiles').find('img').each(function () {
-        artMode.save();
+        exportCanvasContext.save();
         tilePosition = $(this).position();
         tileRotation = $(this).data('rot');
         tileWidth = $(this).width();
@@ -675,40 +582,55 @@ var createCookie = function (name, value, days) {
         tilePosition.left -= 22;
         tilePosition.top -= 22;
         if (MAPPER.settings.theme === 6) {
-          artMode.translate(
+          exportCanvasContext.translate(
             tilePosition.left + (tileWidth / 2),
             tilePosition.top + (tileHeight / 2)
           );
           if ((tileRotation % 2) === 1) {
-            artMode.scale(-1, 1);
+            exportCanvasContext.scale(-1, 1);
           }
         } else {
           if ((tileRotation % 2) === 1 && tileWidth > 150 && tileHeight < 300) {
             tilePosition.left -= 150;
             tilePosition.top += 75;
           }
-          artMode.translate(
+          exportCanvasContext.translate(
             tilePosition.left + (tileWidth / 2),
             tilePosition.top + (tileHeight / 2)
           );
-          artMode.rotate(tileRotation * Math.PI / 2);
+          exportCanvasContext.rotate(tileRotation * Math.PI / 2);
         }
-        artMode.drawImage(imageHolder, -(tileWidth / 2), -(tileHeight / 2), tileWidth, tileHeight);
-        artMode.restore();
+        exportCanvasContext.drawImage(
+          imageHolder,
+          -(tileWidth / 2),
+          -(tileHeight / 2),
+          tileWidth,
+          tileHeight
+        );
+        exportCanvasContext.restore();
       });
       $('#grid').find('img').each(function () {
-        artMode.save();
+        exportCanvasContext.save();
         tilePosition = $(this).position();
         tileWidth = $(this).width();
         tileHeight = $(this).height();
         imageHolder.src = $(this).attr('src');
-        artMode.translate(tilePosition.left + (tileWidth / 2), tilePosition.top + (tileHeight / 2));
-        artMode.drawImage(imageHolder, -(tileWidth / 2), -(tileHeight / 2), tileWidth, tileHeight);
-        artMode.restore();
+        exportCanvasContext.translate(
+          tilePosition.left + (tileWidth / 2),
+          tilePosition.top + (tileHeight / 2)
+        );
+        exportCanvasContext.drawImage(
+          imageHolder,
+          -(tileWidth / 2),
+          -(tileHeight / 2),
+          tileWidth,
+          tileHeight
+        );
+        exportCanvasContext.restore();
       });
-      dataURL = artBoard.toDataURL();
+      dataURL = exportCanvas.toDataURL();
       window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
-      artBoard.width = artBoard.width * 2 / 2;
+      exportCanvas.width = exportCanvas.width * 2 / 2;
       ga('send', 'event', 'Export', 'Canvas');
     } else {
       if ((MAPPER.settings.width * MAPPER.settings.height) > 64) {
@@ -733,7 +655,7 @@ var createCookie = function (name, value, days) {
         } else {
           fullMapURL += '&e=0';
         }
-        if (corners) {
+        if (MAPPER.settings.hasCorners) {
           fullMapURL += '&c=1';
         } else {
           fullMapURL += '&c=0';
@@ -746,7 +668,7 @@ var createCookie = function (name, value, days) {
   },
 
   replaceTile = function ($image, oldtile, type, hasExit) {
-    var tileimg = tileLibrary[type].draw();
+    var tileimg = DM_TileLibrary.draw(type);
 
     if (hasExit) {
       GUI.showNotification(
@@ -909,6 +831,9 @@ var createCookie = function (name, value, days) {
    * Setup for the app that is performed when the document is ready.
    */
   initApp = function () {
+    var userAgentString = window.navigator.userAgent,
+        $issafari = ((/Safari/i).test(window.navigator.appVersion));
+
     GUI.init();
 
     // Initialize click handler for mobile button.
@@ -957,8 +882,6 @@ var createCookie = function (name, value, days) {
     }
 
     $('#newWindowB').click(exportMap);
-    artBoard = document.getElementById('drawingboard');
-    artMode = artBoard.getContext('2d');
     $('#newBtn').click(MAPPER.newMap);
     $('#mapTypeSelector').on('click tap', 'input:radio[name=maptype]', function () {
       if ($mobilemode) { $(this).blur(); }
@@ -1011,8 +934,8 @@ var createCookie = function (name, value, days) {
     } else {
       $('#viewport').addClass('nm').removeClass('sv');
     }
-    if (($mobilemode) && (ua.indexOf('Android') >= 0)) {
-      var androidversion = parseFloat(ua.slice(ua.indexOf('Android')+8));
+    if (($mobilemode) && (userAgentString.indexOf('Android') >= 0)) {
+      var androidversion = parseFloat(userAgentString.slice(userAgentString.indexOf('Android')+8));
       if (androidversion < 3) {
         $('body').addClass('faildroid');
       }
@@ -1031,8 +954,7 @@ var createCookie = function (name, value, days) {
     }
 
     // Add listeners to the tiles holder.
-    imgBoard = $('#tiles');
-    imgBoard
+    $('#tiles')
       // Handle dragging a tile
       .on('dragstart', 'img', onImageDragStart)
       // Handle dropping a tile

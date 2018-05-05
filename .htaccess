@@ -24,7 +24,7 @@ RewriteRule ^sw.js$ /assets/js/service-worker.js [QSA]
 RewriteRule ^submit/?$ /contribute.php [QSA]
 RewriteRule ^help/?$ /help.php [QSA]
 RewriteRule ^ibd/?$ /ibd.php [QSA]
-RewriteRule ^supporters/?$ /supporters.php [QSA]
+RewriteRule ^supporters/?$ /supporters-all.php [QSA]
 RewriteRule ^supporters/([^/.]+)/?$ /profile.php?artist=$1 [QSA]
 
 RewriteRule ^(apple-)?touch-icon(.*).png$ assets/logo-optimized.png [L]

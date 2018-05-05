@@ -1,9 +1,13 @@
 document.addEventListener('keydown', function (keyEvent) {
-  var keyName = keyEvent.key;
+  var keyName = keyEvent.key,
+      getById = function (id) {
+        return document.getElementById.call(document, id);
+      };
 
   switch (keyName) {
     case 'c':
-      cappedEndsMode();
+      getById('endBtn').checked = true;
+      MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Keyboard', 'FullMap');
       break;
     case 'g':
@@ -11,7 +15,8 @@ document.addEventListener('keydown', function (keyEvent) {
       ga('send', 'event', 'Grid Settings', 'Rotate via Keyboard');
       break;
     case 'N':
-      normalMode();
+      getById('normal').checked = true;
+      MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Keyboard', 'Normal');
       break;
     case 'n':
@@ -19,15 +24,17 @@ document.addEventListener('keydown', function (keyEvent) {
       ga('send', 'event', 'Mode', 'Keyboard', 'NewMap');
       break;
     case 'S':
-      staggeredCappedMode();
+      getById('stagcap').checked = true;
+      MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Keyboard', 'StaggeredCapped');
       break;
     case 's':
-      staggeredMode();
+      getById('stagger').checked = true;
+      MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Keyboard', 'Staggered');
       break;
     case 'Y':
-      toggleIconMode();
+      $('#grid').toggleClass('iconmode');
       break;
     case '?':
       if (GUI.modalVisible()) {

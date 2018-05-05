@@ -30,10 +30,39 @@
 		<section id="viewport">
 			<section id="about">
 				<h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
-					<?php 
-						$mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
-						$ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
-						$tabular = Array(1=>Array(),2=>Array(),3=>Array(),4=>Array(),5=>Array());
+					<?php
+
+            $mtypes = Array(
+              'Dungeon' => 1,
+              'Cavern' => 2,
+              'Dun/Cav Mix' => 3,
+              'City' => 4,
+              'Village' => 5,
+              'Side View' => 6,
+              'SciFi Ship' => 7,
+              'Boardwalk' => 8,
+              'SciFi City' =>  9
+            );
+            $ttypes = Array(
+              'Full' => 1,
+              'Edge' => 2,
+              'Corner' => 3,
+              'Top' => 4,
+              'Top Corner' => 5,
+              'Bottom' => 6,
+              'Bottom Corner' => 7
+            );
+            $tabular = Array(
+              1 => Array(),
+              2 => Array(),
+              3 => Array(),
+              4 => Array(),
+              5 => Array(),
+              6 => Array(),
+              7 => Array(),
+              8 => Array(),
+              9 => Array()
+            );
 						$totals = Array();
 						$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
 						while ($td = mysql_fetch_array($tdata)) {

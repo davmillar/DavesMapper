@@ -58,8 +58,26 @@ include PATH . "/cgi-bin/db_start.php";
         <hr />
         <h2>Tiles Contributed</h2>
           <?php
-            $mtypes = Array('Dungeon'=>1,'Cavern'=>2,'Dun/Cav Mix'=>3,'City'=>4, 'Village'=>5, 'Side View'=>6, 'SciFi Ship'=>7, 'Boardwalk'=>8);
-            $ttypes = Array('Full'=>1,'Edge'=>2,'Corner'=>3,'Top'=>4,'Top Corner'=>5,'Bottom'=>6,'Bottom Corner'=>7);
+            $mtypes = Array(
+              'Dungeon' => 1,
+              'Cavern' => 2,
+              'Dun/Cav Mix' => 3,
+              'City' => 4,
+              'Village' => 5,
+              'Side View' => 6,
+              'SciFi Ship' => 7,
+              'Boardwalk' => 8,
+              'SciFi City' =>  9
+            );
+            $ttypes = Array(
+              'Full' => 1,
+              'Edge' => 2,
+              'Corner' => 3,
+              'Top' => 4,
+              'Top Corner' => 5,
+              'Bottom' => 6,
+              'Bottom Corner' => 7
+            );
             $tabular = Array(
               1 => Array(),
               2 => Array(),
@@ -68,9 +86,10 @@ include PATH . "/cgi-bin/db_start.php";
               5 => Array(),
               6 => Array(),
               7 => Array(),
-              8 => Array()
+              8 => Array(),
+              9 => Array()
             );
-            $totals = Array();
+            $totals = Array(0, 0, 0, 0, 0, 0, 0, 0);
             $tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles GROUP BY map_type, tile_type");
             while ($td = mysql_fetch_array($tdata)) {
               $tabular[$td['map_type']][$td['tile_type']] = $td['total'];
@@ -87,9 +106,13 @@ include PATH . "/cgi-bin/db_start.php";
               <tr><th><?php echo $mname?></th>
                 <?php
                   foreach ($ttypes as $tname=>$tid) {
-                    ?><td><?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?></td><?php
-                    $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
-                    $totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
+                    if (!isset($tabular[$mid][$tid])) {
+                      $tabular[$mid][$tid] = 0;
+                    }
+
+                    ?><td><?php echo $tabular[$mid][$tid]; ?></td><?php
+                    $rowtotal += $tabular[$mid][$tid];
+                    $totals[$tid] += $tabular[$mid][$tid];
                   }
                 ?>
                 <td><strong><?php echo $rowtotal?></strong></td>

@@ -1,9 +1,11 @@
-<?php 
-	include "/home/dmillar/public_html/cgi-bin/db_start.php";
+<?php
+  define('PATH', dirname(__FILE__));
+  include PATH . "/cgi-bin/db_start.php";
+
 	if ($_REQUEST['artist']) {
 		$thisartist = $_REQUEST['artist'];
 		$artistdata = mysql_fetch_assoc(mysql_query("SELECT * FROM artists WHERE url_slug = '".$thisartist."'"));
-		if (!$artistdata['id']) {		
+		if (!$artistdata['id']) {
 			header("Location: /supporters");
 			exit;
 		}
@@ -21,7 +23,7 @@
 		<?php include "includes/head.php"; ?>
 	</head>
 	<body>
-    <?php include "includes/magic.php"; ?>		
+    <?php include "includes/magic.php"; ?>
 		<section id="sidepanel"><form>
 			<h2><?php echo $artistdata['name']?></h2>
 			<p><?php echo $artistdata['bio']?></p>
@@ -63,7 +65,7 @@
               8 => Array(),
               9 => Array()
             );
-						$totals = Array();
+						$totals = Array(0, 0, 0, 0, 0, 0, 0, 0);
 						$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
 						while ($td = mysql_fetch_array($tdata)) {
 							$tabular[$td['map_type']][$td['tile_type']] = $td['total'];
@@ -78,12 +80,17 @@
 						<?php foreach ($mtypes as $mname=>$mid) { ?>
 							<?php $rowtotal = 0; ?>
 							<tr><th><?php echo $mname?></th>
-								<?php foreach ($ttypes as $tname=>$tid) { ?>
-									<td class="showme" data-carto="<?php echo $artistdata['id']?>" data-ttype="<?php echo $tid?>" data-mtype="<?php echo $mid?>">
-										<?php echo ($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0?>
-									</td>
-									<?php $rowtotal += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0);
-										$totals[$tid] += (($tabular[$mid][$tid]) ? $tabular[$mid][$tid] : 0); ?>
+                <?php foreach ($ttypes as $tname=>$tid) { ?>
+									<?php
+                    if (!isset($tabular[$mid][$tid])) {
+                      $tabular[$mid][$tid] = 0;
+                    }
+                    $rowtotal += $tabular[$mid][$tid];
+										$totals[$tid] += $tabular[$mid][$tid];
+                  ?>
+                  <td class="showme" data-carto="<?php echo $artistdata['id']; ?>" data-ttype="<?php echo $tid; ?>" data-mtype="<?php echo $mid; ?>">
+                    <?php echo $tabular[$mid][$tid]; ?>
+                  </td>
 								<?php } ?>
 								<td><strong><?php echo $rowtotal?></strong></td>
 							</tr>
@@ -104,4 +111,6 @@
 		<?php include "includes/footer.php"; ?>
 	</body>
 </html>
-<?php include "/home/dmillar/public_html/cgi-bin/db_end.php"; ?>
+<?php
+  include PATH . "/cgi-bin/db_end.php";
+?>

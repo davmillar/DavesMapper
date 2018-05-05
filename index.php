@@ -91,26 +91,30 @@
           <label for="mt_mix">
             <em class="sprite sprite-maptype-hybrid"></em> Dungeons &amp; Caverns
           </label>
+        <input type="radio" class="panelChk" name="maptype" value="6" id="mt_side">
+          <label for="mt_side">
+            <em class="sprite sprite-maptype-sideview"></em> Side-View Dungeon
+          </label>
+        <input type="radio" class="panelChk" name="maptype" value="5" id="mt_vil">
+          <label for="mt_vil">
+            <em class="sprite sprite-maptype-village"></em> Village
+          </label>
         <input type="radio" class="panelChk" name="maptype" value="4" id="mt_city">
           <label for="mt_city">
             <em class="sprite sprite-maptype-city"></em> City
           </label>
-        <!--input type="radio" class="panelChk" name="maptype" value="5" id="mt_vil">
-          <label for="mt_vil">
-            <em class="sprite sprite-maptype-village"></em> Village
-          </label-->
-        <input type="radio" class="panelChk" name="maptype" value="6" id="mt_side">
-          <label for="mt_side">
-            <em class="sprite sprite-maptype-sideview"></em> Side-View Dungeon
+        <input type="radio" class="panelChk" name="maptype" value="8" id="mt_jet">
+          <label for="mt_jet">
+            <em class="sprite sprite-maptype-boardwalk"></em> Boardwalk
           </label>
         <input type="radio" class="panelChk" name="maptype" value="7" id="mt_ship">
           <label for="mt_ship">
             <em class="sprite sprite-maptype-spaceship"></em> Sci-Fi Ship
           </label>
-        <!--input type="radio" class="panelChk" name="maptype" value="8" id="mt_jet">
-          <label for="mt_jet">
-            <em class="sprite sprite-maptype-boardwalk"></em> Boardwalk
-          </label-->
+        <input type="radio" class="panelChk" name="maptype" value="9" id="mt_scificity">
+          <label for="mt_scificity">
+            <em class="sprite sprite-maptype-spacecity"></em> Sci-Fi City
+          </label>
       </section>
       <section id="artistsblock">
       </section>

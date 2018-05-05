@@ -4,7 +4,7 @@
   include PATH . "/../cgi-bin/db_start.php";
   session_start();
 
-  $business = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
+  $artist_icon_query = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
   $folders = Array(
     1 => 'dungeon',
     2 => 'cavern',
@@ -13,15 +13,16 @@
     5 => 'village',
     6 => 'sideview',
     7 => 'spaceship',
-    8 => 'boardwalk');
+    8 => 'boardwalk',
+    9 => 'scificity');
 
-  while ($nextb = mysql_fetch_assoc($business)){
-    if (!is_dir("../tiles/".$nextb['icon'])) {
-      mkdir("../tiles/".$nextb['icon']);
+  while ($artist_icon = mysql_fetch_assoc($artist_icon_query)){
+    if (!is_dir("../tiles/".$artist_icon['icon'])) {
+      mkdir("../tiles/".$artist_icon['icon']);
     }
     foreach ($folders as $foldnum => $myfold) {
-      if (!is_dir("../tiles/".$nextb['icon']."/".$myfold)) {
-        mkdir("../tiles/".$nextb['icon']."/".$myfold);
+      if (!is_dir("../tiles/".$artist_icon['icon']."/".$myfold)) {
+        mkdir("../tiles/".$artist_icon['icon']."/".$myfold);
       }
     }
   }
@@ -215,11 +216,12 @@
                     <option value="1" <?php echo (($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
                     <option value="2" <?php echo (($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
                     <option value="3" <?php echo (($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
-                    <option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
-                    <option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
                     <option value="6" <?php echo (($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
-                    <option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+                    <option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
+                    <option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
                     <option value="8" <?php echo (($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
+                    <option value="9" <?php echo (($mmtype == 9) ? 'selected' : '')?>>SciFi City</option>
+                    <option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
                   </select>
                   <select name="ttype" id="ttype">
                     <optgroup label="Regular" id="nmbits">
@@ -294,11 +296,12 @@
                     <option value="1" <?php echo (($mmtype == 1) ? 'selected' : '')?>>Dungeon</option>
                     <option value="2" <?php echo (($mmtype == 2) ? 'selected' : '')?>>Cavern</option>
                     <option value="3" <?php echo (($mmtype == 3) ? 'selected' : '')?>>Dun/Cav Mix</option>
-                    <option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
-                    <option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
                     <option value="6" <?php echo (($mmtype == 6) ? 'selected' : '')?>>Side-View Dun/Cav</option>
-                    <option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
+                    <option value="5" <?php echo (($mmtype == 5) ? 'selected' : '')?>>Village</option>
+                    <option value="4" <?php echo (($mmtype == 4) ? 'selected' : '')?>>City</option>
                     <option value="8" <?php echo (($mmtype == 8) ? 'selected' : '')?>>Boardwalk</option>
+                    <option value="9" <?php echo (($mmtype == 9) ? 'selected' : '')?>>SciFi City</option>
+                    <option value="7" <?php echo (($mmtype == 7) ? 'selected' : '')?>>SciFi Ship</option>
                   </select>
                   <select name="ttype_m" id="ttype_m">
                     <optgroup label="All">

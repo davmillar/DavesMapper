@@ -42,7 +42,7 @@ var $appmode = window.navigator.standalone,
 
           registration.addEventListener('updatefound', function() {
             _trackInstalling(registration.installing);
-          });      
+          });
         })['catch'](function(err) {
           console.log('ServiceWorker registration failed: ', err);
         });
@@ -139,9 +139,3 @@ $(document)
 
 ga('create', 'UA-5344894-8', 'davesmapper.com');
 ga('send', 'pageview');
-
-(function() {
-  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-  po.src = 'https://apis.google.com/js/plusone.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-})();

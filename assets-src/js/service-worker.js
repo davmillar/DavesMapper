@@ -1,3 +1,4 @@
+// jshint esversion:6
 var CACHE_NAME = 'my-site-cache-v1',
     now = Date.now(),
     urlsToCache = [
@@ -14,7 +15,7 @@ var CACHE_NAME = 'my-site-cache-v1',
       '/grid_30.png',
       '/images/hex.png'
     ].map(function (resourceURL) {
-      return resourceURL + '?cache-bust=' + now
+      return resourceURL + '?cache-bust=' + now;
     });
 
 self.addEventListener('install', function(event) {

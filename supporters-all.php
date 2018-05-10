@@ -58,7 +58,7 @@ include PATH . "/cgi-bin/db_start.php";
         <hr />
         <h2>Tiles Contributed</h2>
           <?php
-            $mtypes = Array(
+            $map_styles = Array(
               'Dungeon' => 1,
               'Cavern' => 2,
               'Dun/Cav Mix' => 3,
@@ -69,7 +69,7 @@ include PATH . "/cgi-bin/db_start.php";
               'Boardwalk' => 8,
               'SciFi City' =>  9
             );
-            $ttypes = Array(
+            $tile_types = Array(
               'Full' => 1,
               'Edge' => 2,
               'Corner' => 3,
@@ -89,7 +89,15 @@ include PATH . "/cgi-bin/db_start.php";
               8 => Array(),
               9 => Array()
             );
-            $totals = Array(0, 0, 0, 0, 0, 0, 0, 0);
+            $totals_by_type = Array(
+              1 => 0,
+              2 => 0,
+              3 => 0,
+              4 => 0,
+              5 => 0,
+              6 => 0,
+              7 => 0
+            );
             $tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles GROUP BY map_type, tile_type");
             while ($td = mysql_fetch_array($tdata)) {
               $tabular[$td['map_type']][$td['tile_type']] = $td['total'];
@@ -98,21 +106,21 @@ include PATH . "/cgi-bin/db_start.php";
           <table>
             <tr>
               <th></th>
-              <?php foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
+              <?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
               <th>Map Type Total</th>
             </tr>
-            <?php foreach ($mtypes as $mname=>$mid) { ?>
+            <?php foreach ($map_styles as $mname=>$mid) { ?>
               <?php $rowtotal = 0; ?>
               <tr><th><?php echo $mname?></th>
                 <?php
-                  foreach ($ttypes as $tname=>$tid) {
+                  foreach ($tile_types as $tname=>$tid) {
                     if (!isset($tabular[$mid][$tid])) {
                       $tabular[$mid][$tid] = 0;
                     }
 
                     ?><td><?php echo $tabular[$mid][$tid]; ?></td><?php
                     $rowtotal += $tabular[$mid][$tid];
-                    $totals[$tid] += $tabular[$mid][$tid];
+                    $totals_by_type[$tid] += $tabular[$mid][$tid];
                   }
                 ?>
                 <td><strong><?php echo $rowtotal?></strong></td>
@@ -120,7 +128,7 @@ include PATH . "/cgi-bin/db_start.php";
             <?php } ?>
             <?php $rowtotal = 0; ?>
             <tr><th>Tile Type Total</th>
-              <?php foreach ($totals as $tid=>$tsum) { ?>
+              <?php foreach ($totals_by_type as $tid=>$tsum) { ?>
                 <td><strong><?php echo $tsum?></strong></td>
                 <?php $rowtotal += $tsum; ?>
               <?php } ?>

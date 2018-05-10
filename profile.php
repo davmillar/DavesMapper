@@ -34,7 +34,7 @@
 				<h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
 					<?php
 
-            $mtypes = Array(
+            $map_styles = Array(
               'Dungeon' => 1,
               'Cavern' => 2,
               'Dun/Cav Mix' => 3,
@@ -45,7 +45,7 @@
               'Boardwalk' => 8,
               'SciFi City' =>  9
             );
-            $ttypes = Array(
+            $tile_types = Array(
               'Full' => 1,
               'Edge' => 2,
               'Corner' => 3,
@@ -65,7 +65,15 @@
               8 => Array(),
               9 => Array()
             );
-						$totals = Array(0, 0, 0, 0, 0, 0, 0, 0);
+						$totals_by_type = Array(
+              1 => 0,
+              2 => 0,
+              3 => 0,
+              4 => 0,
+              5 => 0,
+              6 => 0,
+              7 => 0
+            );
 						$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
 						while ($td = mysql_fetch_array($tdata)) {
 							$tabular[$td['map_type']][$td['tile_type']] = $td['total'];
@@ -74,19 +82,19 @@
 					<table id="cartomagic">
 						<tr>
 							<th></th>
-							<?php foreach ($ttypes as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
+							<?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
 							<th>Map Type Total</th>
 						</tr>
-						<?php foreach ($mtypes as $mname=>$mid) { ?>
+						<?php foreach ($map_styles as $mname=>$mid) { ?>
 							<?php $rowtotal = 0; ?>
 							<tr><th><?php echo $mname?></th>
-                <?php foreach ($ttypes as $tname=>$tid) { ?>
+                <?php foreach ($tile_types as $tname=>$tid) { ?>
 									<?php
                     if (!isset($tabular[$mid][$tid])) {
                       $tabular[$mid][$tid] = 0;
                     }
                     $rowtotal += $tabular[$mid][$tid];
-										$totals[$tid] += $tabular[$mid][$tid];
+										$totals_by_type[$tid] += $tabular[$mid][$tid];
                   ?>
                   <td class="showme" data-carto="<?php echo $artistdata['id']; ?>" data-ttype="<?php echo $tid; ?>" data-mtype="<?php echo $mid; ?>">
                     <?php echo $tabular[$mid][$tid]; ?>
@@ -97,7 +105,7 @@
 						<?php } ?>
 						<?php $rowtotal = 0; ?>
 						<tr><th>Tile Type Total</th>
-							<?php foreach ($totals as $tid=>$tsum) { ?>
+							<?php foreach ($totals_by_type as $tid=>$tsum) { ?>
 								<td><strong><?php echo $tsum?></strong></td>
 								<?php $rowtotal += $tsum; ?>
 							<?php } ?>

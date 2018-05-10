@@ -383,16 +383,15 @@ h4{
   }
 }
 
+
 #actionButtons { left: 200px; width: 106px; }
 #mapModeControls { left: 306px; width: 174px; }
 #mapSizeControls { left: 480px; width: 116px; }
-#selectionEdit   { left: 596px; width: 162px; z-index:(@ui-base + 1); }
-#mapViewControls { left: 758px; width: 212px; }
+#mapViewControls { left: 596px; width: 212px; }
 
 #actionButtons,
 #mapModeControls,
 #mapSizeControls,
-#selectionEdit,
 #mapViewControls { top: 30px; }
 
 input[type=number],
@@ -1170,7 +1169,10 @@ kbd{
   vertical-align:middle;
   position:relative;
   z-index: @map-tile;
-  .transition;
+  -webkit-transition: transform .3s ease;
+  -moz-transition: transform .3s ease;
+  -o-transition: transform .3s ease;
+  transition: transform .3s ease;
 }
 
 .tile,.sv .top,.tab{
@@ -1204,8 +1206,8 @@ kbd{
     width:300px;
     height:150px;
     &.rot1,&.rot3{
-      margin-left:-75px !important;
-      margin-right:-75px !important;
+      margin-left: -75px !important;
+      margin-right: -75px !important;
     }
     &.swapfirst{
       width:240px;
@@ -1245,11 +1247,18 @@ kbd{
 
 .selected-tile {
   z-index: @map-focus !important;
+  outline: 5px solid rgba(0, 250, 154, 0.5);
 }
 
-.selected-tile,
-#selectionEdit{
-  .box-shadow(0 0 10px 5px rgba(0,250,154,0.75));
+#selectionEdit {
+  background:rgba(0, 250, 154, 0.5);
+  z-index: (@map-focus + 1) !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  padding: 0 5px 5px;
+  font-size: 0;
 }
 
 .selHeader{
@@ -1656,7 +1665,6 @@ label:hover,
   #actionButtons,
   #mapModeControls,
   #mapSizeControls,
-  #selectionEdit,
   #mapViewControls{ top: 0; }
 
   #sideBar {
@@ -1692,8 +1700,7 @@ label:hover,
   #actionButtons { left: 120px; }
   #mapModeControls { left: 226px; }
   #mapSizeControls { left: 400px; }
-  #selectionEdit   { left: 516px; }
-  #mapViewControls { left: 678px; }
+  #mapViewControls { left: 596px; }
 
 
   #viewport{
@@ -1702,6 +1709,7 @@ label:hover,
 
   #sideBar {
     width: 120px;
+    bottom: 24px;
     .name{
       font-size:10px;
       .nick{
@@ -1741,7 +1749,6 @@ label:hover,
       bottom: 64px;
     }
 
-    #selectionEdit { top: auto; }
     #mapViewControls { top: auto; }
   }
 
@@ -1753,7 +1760,7 @@ label:hover,
     .transition;
     background-color: rgba(0, 0, 0, .35);
     top: 0;
-    bottom: 0;
+    bottom: 0 !important;
     .transform(translateX(-110%));
     width: 100%;
     &.shown {
@@ -1770,8 +1777,7 @@ label:hover,
   #actionButtons { top: 0; left: 0; width: 218px; }
   #mapModeControls { top: 0; left: 218px; }
 
-  #selectionEdit { top: auto; left:0; bottom:0; }
-  #mapViewControls { top: auto; left: 162px; bottom: 0; }
+  #mapViewControls { top: auto; width: auto; left: 0; right: 0; bottom: 0; }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0){

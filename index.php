@@ -50,19 +50,6 @@
       <label for="width" class="labelTxt" title="Map size in tiles wide.">Width</label>
       <label for="height" class="labelTxt" title="Map size in tiles tall.">Height</label>
     </div>
-    <div class="fieldset" id="selectionEdit">
-      <h4 class="legend selHeader" title="Change up the selected tile.">Selection</h4>
-      <input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked>
-        <label for="rotateTile" title="Rotate Tile 90 Degrees" id="rotateBtn"><em class="sprite spRot">Rotate</em></label>
-      <input type="button" class="btnGrp" name="swapTileBtn" value="Swap" id="swapTileBtn">
-        <label for="swapTileBtn" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
-      <input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush">
-        <label for="mancrush" title="Build a Map by this Artist"><em class="sprite spCrush">Mancrush</em></label>
-      <input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile">
-        <label for="removeTile" title="Remove Tile and Replace"><em class="sprite spX">Replace Tile</em></label>
-      <input type="button" class="btnGrp last" name="removeTileExit" value="Remove with Exit" id="removeTileExit">
-        <label for="removeTileExit" title="Remove Tile and Replace with Entrance/Exit"><em class="sprite spExit">Replace Tile with Exit</em></label>
-    </div>
     <div class="fieldset" id="mapViewControls">
       <h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">View Options</h4>
       <input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked>
@@ -121,6 +108,18 @@
     </form></section>
     <section id="viewport">
       <section id="map">
+        <div id="selectionEdit">
+          <input type="button" class="btnGrp first" name="rotateTile" value="Rotate" id="rotateTile" checked>
+            <label for="rotateTile" title="Rotate Tile 90 Degrees" id="rotateBtn"><em class="sprite spRot">Rotate</em></label>
+          <input type="button" class="btnGrp" name="swapTileBtn" value="Swap" id="swapTileBtn">
+            <label for="swapTileBtn" title="Swap Tile with Another"><em class="sprite spSwap">Swap</em></label>
+          <input type="button" class="btnGrp" name="mancrush" value="Admire" id="mancrush">
+            <label for="mancrush" title="Build a Map by this Artist"><em class="sprite spCrush">Mancrush</em></label>
+          <input type="button" class="btnGrp" name="removeTile" value="Remove" id="removeTile">
+            <label for="removeTile" title="Remove Tile and Replace"><em class="sprite spX">Replace Tile</em></label>
+          <input type="button" class="btnGrp last" name="removeTileExit" value="Remove with Exit" id="removeTileExit">
+            <label for="removeTileExit" title="Remove Tile and Replace with Entrance/Exit"><em class="sprite spExit">Replace Tile with Exit</em></label>
+        </div>
         <canvas id="drawingboard"></canvas>
         <div id="grid"></div>
         <div id="tiles"></div>

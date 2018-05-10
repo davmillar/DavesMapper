@@ -35,7 +35,10 @@
    *    Newly-selected tile.
    */
   mapper.selectTile = function (tile) {
-    var me = mapper;
+    var me = mapper,
+        tilePosition,
+        newLeft,
+        newTop;
 
     // Unselect old selection.
     if (me.selectedTile) {
@@ -47,6 +50,24 @@
     if (me.selectedTile) {
       me.selectedTile.addClass('selected-tile');
 
+      tilePosition = tile.position();
+
+      newLeft = tilePosition.left - 5;
+      newTop = tilePosition.top - 40;
+
+      if (tile.hasClass('edge') && (tile.hasClass('rot1') || tile.hasClass('rot3'))) {
+        newLeft -= 75;
+      }
+
+      if (newTop < 0) {
+        newTop = tile.get(0).height + 22;
+      }
+
+      $('#selectionEdit').css({
+        left: newLeft,
+        top: newTop
+      }).fadeIn();
+
       // Visually disable rotate tool for tile types that don't support it.
       // @TODO: Link appearance with enabled/disabled status.
       if (jQuery.inArray(MAPPER.selectedTile.data('type'), ['tile', 'top', 'btm']) > -1) {
@@ -54,6 +75,8 @@
       } else {
         $('#rotateBtn').fadeTo('fast', 0.5);
       }
+    } else {
+      $('#selectionEdit').hide();
     }
   };
 

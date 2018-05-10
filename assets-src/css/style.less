@@ -315,24 +315,6 @@ a{
   }
 }
 
-#socialNavBar {
-  display:inline-block;
-  vertical-align:middle;
-  height:30px;
-  line-height:30px;
-  float:right;
-  text-align: right;
-}
-
-
-.social{
-  display:inline-block;
-  vertical-align:middle;
-  height:20px;
-  line-height:20px;
-  padding:5px;
-}
-
 h1{
   margin:0;
   padding:0;
@@ -515,7 +497,7 @@ input[type=submit],
 .btnDrp + label {
   display:inline-block;
   width:auto;
-  height:26px !important;
+  height:32px !important;
   margin:5px 0 0;
   padding:0 2px;
   vertical-align:middle;
@@ -526,7 +508,7 @@ input[type=submit],
   cursor:pointer;
   .fancyfonts;
   font-size:11px;
-  line-height:26px;
+  line-height:32px;
   font-weight:700 !important;
   text-align:center;
   text-decoration:none;
@@ -1679,15 +1661,6 @@ label:hover,
     -webkit-column-count:2 !important;
     column-count:2 !important;
   }
-  #socialNavBar {
-    display:none;
-  }
-}
-
-@media screen and (min-width:1016px) {
-  #socialNavBar {
-    display:inline-block;
-  }
 }
 
 @media screen and (min-width:641px) {
@@ -1772,12 +1745,12 @@ label:hover,
     }
   }
 
-  #mapSizeControls { display: none; }
 
   #actionButtons { top: 0; left: 0; width: 218px; }
-  #mapModeControls { top: 0; left: 218px; }
+  #mapModeControls { top: 0; left: 218px; width: auto; right: 0; }
 
-  #mapViewControls { top: auto; width: auto; left: 0; right: 0; bottom: 0; }
+  #mapSizeControls { top: auto; left: 0; width: 35%; bottom: 0; }
+  #mapViewControls { top: auto; left: auto; width: 65%; right: 0; bottom: 0; }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0){

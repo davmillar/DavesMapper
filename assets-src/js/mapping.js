@@ -494,13 +494,6 @@ var createCookie = function (name, value, days) {
       }
     }
 
-    if ($appmode) {
-      $('body').addClass('standalone-app');
-      // @TODO Find a way to include this in the CSS or GUI module.
-      $('#notification').css({'top': '64px;'});
-      $('#newnav,#site-foot').hide();
-    }
-
     if ($('canvas#grid').length > 0) {
       $('#grid').remove();
       $('<div id="grid"></div>').appendTo('#map');

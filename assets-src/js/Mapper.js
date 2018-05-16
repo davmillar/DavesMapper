@@ -175,6 +175,11 @@
         newTileImage = document.createElement('img'),
         tilesElement = document.getElementById('tiles');
 
+    if (!newTile) {
+      console.error('No tile of this type could be found.');
+      return;
+    }
+
     newTileImage.classList.add(type);
     newTileImage.classList.add('rot' + rotation);
 

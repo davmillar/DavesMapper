@@ -29,92 +29,90 @@
 			<p><?php echo $artistdata['bio']?></p>
 			<?php if ($artistdata['url']) { ?><a href="<?php echo $artistdata['url']?>" target="_blank" class="widebutton"><?php echo $artistdata['name']?>'s Site</a><?php 	} ?>
 		</form></section>
-		<section id="viewport">
-			<section id="about">
-				<h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
-					<?php
+		<section id="about">
+			<h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
+				<?php
 
-            $map_styles = Array(
-              'Dungeon' => 1,
-              'Cavern' => 2,
-              'Dun/Cav Mix' => 3,
-              'City' => 4,
-              'Village' => 5,
-              'Side View' => 6,
-              'SciFi Ship' => 7,
-              'Boardwalk' => 8,
-              'SciFi City' =>  9
-            );
-            $tile_types = Array(
-              'Full' => 1,
-              'Edge' => 2,
-              'Corner' => 3,
-              'Top' => 4,
-              'Top Corner' => 5,
-              'Bottom' => 6,
-              'Bottom Corner' => 7
-            );
-            $tabular = Array(
-              1 => Array(),
-              2 => Array(),
-              3 => Array(),
-              4 => Array(),
-              5 => Array(),
-              6 => Array(),
-              7 => Array(),
-              8 => Array(),
-              9 => Array()
-            );
-						$totals_by_type = Array(
-              1 => 0,
-              2 => 0,
-              3 => 0,
-              4 => 0,
-              5 => 0,
-              6 => 0,
-              7 => 0
-            );
-						$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
-						while ($td = mysql_fetch_array($tdata)) {
-							$tabular[$td['map_type']][$td['tile_type']] = $td['total'];
-						}
-					?>
-					<table id="cartomagic">
-						<tr>
-							<th></th>
-							<?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
-							<th>Map Type Total</th>
-						</tr>
-						<?php foreach ($map_styles as $mname=>$mid) { ?>
-							<?php $rowtotal = 0; ?>
-							<tr><th><?php echo $mname?></th>
-                <?php foreach ($tile_types as $tname=>$tid) { ?>
-									<?php
-                    if (!isset($tabular[$mid][$tid])) {
-                      $tabular[$mid][$tid] = 0;
-                    }
-                    $rowtotal += $tabular[$mid][$tid];
-										$totals_by_type[$tid] += $tabular[$mid][$tid];
-                  ?>
-                  <td class="showme" data-carto="<?php echo $artistdata['id']; ?>" data-ttype="<?php echo $tid; ?>" data-mtype="<?php echo $mid; ?>">
-                    <?php echo $tabular[$mid][$tid]; ?>
-                  </td>
-								<?php } ?>
-								<td><strong><?php echo $rowtotal?></strong></td>
-							</tr>
-						<?php } ?>
+          $map_styles = Array(
+            'Dungeon' => 1,
+            'Cavern' => 2,
+            'Dun/Cav Mix' => 3,
+            'City' => 4,
+            'Village' => 5,
+            'Side View' => 6,
+            'SciFi Ship' => 7,
+            'Boardwalk' => 8,
+            'SciFi City' =>  9
+          );
+          $tile_types = Array(
+            'Full' => 1,
+            'Edge' => 2,
+            'Corner' => 3,
+            'Top' => 4,
+            'Top Corner' => 5,
+            'Bottom' => 6,
+            'Bottom Corner' => 7
+          );
+          $tabular = Array(
+            1 => Array(),
+            2 => Array(),
+            3 => Array(),
+            4 => Array(),
+            5 => Array(),
+            6 => Array(),
+            7 => Array(),
+            8 => Array(),
+            9 => Array()
+          );
+					$totals_by_type = Array(
+            1 => 0,
+            2 => 0,
+            3 => 0,
+            4 => 0,
+            5 => 0,
+            6 => 0,
+            7 => 0
+          );
+					$tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
+					while ($td = mysql_fetch_array($tdata)) {
+						$tabular[$td['map_type']][$td['tile_type']] = $td['total'];
+					}
+				?>
+				<table id="cartomagic">
+					<tr>
+						<th></th>
+						<?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
+						<th>Map Type Total</th>
+					</tr>
+					<?php foreach ($map_styles as $mname=>$mid) { ?>
 						<?php $rowtotal = 0; ?>
-						<tr><th>Tile Type Total</th>
-							<?php foreach ($totals_by_type as $tid=>$tsum) { ?>
-								<td><strong><?php echo $tsum?></strong></td>
-								<?php $rowtotal += $tsum; ?>
+						<tr><th><?php echo $mname?></th>
+              <?php foreach ($tile_types as $tname=>$tid) { ?>
+								<?php
+                  if (!isset($tabular[$mid][$tid])) {
+                    $tabular[$mid][$tid] = 0;
+                  }
+                  $rowtotal += $tabular[$mid][$tid];
+									$totals_by_type[$tid] += $tabular[$mid][$tid];
+                ?>
+                <td class="showme" data-carto="<?php echo $artistdata['id']; ?>" data-ttype="<?php echo $tid; ?>" data-mtype="<?php echo $mid; ?>">
+                  <?php echo $tabular[$mid][$tid]; ?>
+                </td>
 							<?php } ?>
 							<td><strong><?php echo $rowtotal?></strong></td>
 						</tr>
-					</table>
-					<div id="cartoload"></div>
-					<div id="cartoloadanim"><img src="/images/ajax-loader.gif" alt="Loading..." /></div>
-			</section>
+					<?php } ?>
+					<?php $rowtotal = 0; ?>
+					<tr><th>Tile Type Total</th>
+						<?php foreach ($totals_by_type as $tid=>$tsum) { ?>
+							<td><strong><?php echo $tsum?></strong></td>
+							<?php $rowtotal += $tsum; ?>
+						<?php } ?>
+						<td><strong><?php echo $rowtotal?></strong></td>
+					</tr>
+				</table>
+				<div id="cartoload"></div>
+				<div id="cartoloadanim"><img src="/images/ajax-loader.gif" alt="Loading..." /></div>
 		</section>
 		<?php include "includes/footer.php"; ?>
 	</body>

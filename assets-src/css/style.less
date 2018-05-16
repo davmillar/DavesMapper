@@ -1,5 +1,8 @@
 @import (reference) "assets-src/css/mixins.less";
 
+/**
+ * Color scheme.
+ */
 @darkbrown: #321;
 @medbrown: #642;
 @litebrown: #963;
@@ -7,6 +10,9 @@
 @litetan: #e6dab6;
 @brightgreen: #00fa9a;
 
+/**
+ * Z-indices.
+ */
 @site-base: 0;
 @map-base: 0;
 @map-tile: 10;
@@ -23,8 +29,38 @@
 
 @masthead: 500;
 
+/**
+ * X/Y Layout variables.
+ */
+@navHeight: 30px;
+@toolbarHeight: 64px;
+@footerHeight: 24px;
 
+@sidebarWidth: 200px;
 
+@actionWidth: 136px;
+@mapModeWidth: 174px;
+@mapSizeWidth: 116px;
+@mapViewWidth: 131px;
+
+@actionLeft: @sidebarWidth;
+@mapModeLeft: @actionLeft + @actionWidth;
+@mapSizeLeft: @mapModeLeft + @mapModeWidth;
+@mapViewLeft: @mapSizeLeft + @mapSizeWidth;
+
+@sidebarWidthMed: 120px;
+
+@actionLeftMed: @sidebarWidthMed;
+@mapModeLeftMed: @actionLeftMed + @actionWidth;
+@mapSizeLeftMed: @mapModeLeftMed + @mapModeWidth;
+@mapViewLeftMed: @mapSizeLeftMed + @mapSizeWidth;
+
+@mediumBreakpoint: (@actionWidth + @mapModeWidth + @mapSizeWidth + @mapViewWidth + @sidebarWidth);
+@mobileBreakpoint: (@actionWidth + @mapModeWidth + @mapSizeWidth + @mapViewWidth + @sidebarWidthMed);
+
+/**
+ * Utilities.
+ */
 .content-box{
   -webkit-box-sizing:content-box;
   -moz-box-sizing:content-box;
@@ -97,8 +133,8 @@ a{
 }
 
 #site-head{
-  top:30px;
-  height:64px;
+  top:@navHeight;
+  height:@toolbarHeight;
   padding:0;
   font-size:24px;
   line-height:24px;
@@ -114,10 +150,10 @@ a{
   color:@darkbrown;
   bottom:0;
   z-index:@ui-top;
-  height:15px;
+  height: (@footerHeight - 9px);
   padding:1px 15px 8px;
   font-size:11px;
-  line-height:15px;
+  line-height: (@footerHeight - 9px);
   cursor:default;
   .unselectable;
   overflow:hidden;
@@ -131,9 +167,9 @@ a{
 #sidepanel,
 #sideBar{
   left:0;
-  top:30px;
-  bottom:24px;
-  width:200px;
+  top:@navHeight;
+  bottom:@footerHeight;
+  width:@sidebarWidth;
   z-index:@ui-mid;
   overflow-x:hidden;
   overflow-y:auto;
@@ -185,9 +221,9 @@ a{
 }
 
 #notification{
-  top:94px;
+  top: (@navHeight + @toolbarHeight);
   min-height:19px;
-  left:200px;
+  left: @sidebarWidth;
   right:0;
   padding:5px 15px 4px;
   font-size:12px;
@@ -239,7 +275,7 @@ a{
   top:0;
   left:0;
   right:0;
-  height:30px;
+  height:@navHeight;
   z-index:@masthead;
   background:@medbrown;
   text-shadow:0 1px 1px #000;
@@ -251,12 +287,12 @@ a{
     padding:0;
     display:inline;
     font-size:16px;
-    line-height:30px;
+    line-height:@navHeight;
   }
   .main{
     display:inline-block;
-    line-height:30px;
-    height:30px;
+    line-height:@navHeight;
+    height:@navHeight;
     font-size:14px;
     color:#fff;
     text-decoration:none;
@@ -346,7 +382,7 @@ h4{
   margin:0;
   padding:22px 0 8px;
   text-align: center;
-  height:34px;
+  height:(@toolbarHeight - 30px);
   line-height:10px;
   font-size:0;
   border:0;
@@ -365,16 +401,15 @@ h4{
   }
 }
 
-
-#actionButtons { left: 200px; width: 106px; }
-#mapModeControls { left: 306px; width: 174px; }
-#mapSizeControls { left: 480px; width: 116px; }
-#mapViewControls { left: 596px; width: 212px; }
+#actionButtons { left: @actionLeft; width: @actionWidth; }
+#mapModeControls { left: @mapModeLeft; width: @mapModeWidth; }
+#mapSizeControls { left: @mapSizeLeft; width: @mapSizeWidth; }
+#mapViewControls { left: @mapViewLeft; width: @mapViewWidth; }
 
 #actionButtons,
 #mapModeControls,
 #mapSizeControls,
-#mapViewControls { top: 30px; }
+#mapViewControls { top: @navHeight; }
 
 input[type=number],
 input[type=text],
@@ -501,7 +536,7 @@ input[type=submit],
   margin:5px 0 0;
   padding:0 2px;
   vertical-align:middle;
-  letter-spacing: 1px !important;
+  letter-spacing: 0 !important;
   background-color:#aa6e33;
   color:#fff !important;
   border:1px solid @medbrown;
@@ -560,7 +595,7 @@ input[type=submit]:active,
 
 a.button{
   margin-left:5px;
-  padding:0 10px 0 2px;
+  padding:0 5px 0 2px;
   .border-radius(3px);
 }
 
@@ -1644,26 +1679,27 @@ label:hover,
   }
 }
 
-@media screen and (min-width:641px) {
+
+@media screen and (min-width: (@mobileBreakpoint+1px)) {
   #mapTypeMenuBtn {
     display:none;
   }
 }
 
-@media screen and (max-width:800px) and (min-width:641px) {
-  #actionButtons { left: 120px; }
-  #mapModeControls { left: 226px; }
-  #mapSizeControls { left: 400px; }
-  #mapViewControls { left: 596px; }
-
-
-  #viewport{
-    left: 120px;
+@media screen and (max-width: @mediumBreakpoint) and (min-width: (@mobileBreakpoint+1px)) {
+  #notification,
+  #viewport {
+    left: @sidebarWidthMed;
   }
 
+  #actionButtons { left: @actionLeftMed; }
+  #mapModeControls { left: @mapModeLeftMed; }
+  #mapSizeControls { left: @mapSizeLeftMed; }
+  #mapViewControls { left: @mapViewLeftMed; }
+
   #sideBar {
-    width: 120px;
-    bottom: 24px;
+    width: @sidebarWidthMed;
+    bottom: @footerHeight;
     .name{
       font-size:10px;
       .nick{
@@ -1676,7 +1712,7 @@ label:hover,
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: @mobileBreakpoint) {
   #newnav,
   #site-foot {
     display: none;
@@ -1694,7 +1730,7 @@ label:hover,
   #viewport{
     top: 0;
     left: 0;
-    bottom: 64px;
+    bottom: @toolbarHeight;
   }
 
   #mapTypeMenuBtn {
@@ -1717,12 +1753,17 @@ label:hover,
     }
   }
 
+  #notification {
+    top: (@toolbarHeight + 10px);
+    left: 10px;
+    right: 10px;
+  }
 
-  #actionButtons { top: 0; left: 0; width: 218px; }
-  #mapSizeControls { top: 0; left: 218px; width: auto; right: 0; }
+  #actionButtons { top: 0; left: 0; width: auto; right: @mapSizeWidth; }
+  #mapSizeControls { top: 0; left: auto; right: 0; }
 
-  #mapModeControls { top: auto; left: 0; width: 43%; bottom: 0; }
-  #mapViewControls { top: auto; left: auto; width: 57%; right: 0; bottom: 0; }
+  #mapModeControls { top: auto; left: 0; width: auto; right: @mapViewWidth; bottom: 0; }
+  #mapViewControls { top: auto; left: auto; right: 0; bottom: 0; }
 
   .dropradio div { bottom: -34px; }
 }

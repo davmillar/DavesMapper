@@ -25,8 +25,9 @@
     <?php include "includes/magic.php"; ?>
     <div class="fieldset" id="actionButtons">
       <h4 class="legend" title="Commands to perform.">Options</h4>
-      <a class="button" id="mapTypeMenuBtn" title="Change Map Type"><em class="sprite sprite-map-options"></em> Map Type</a>
-      <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New Map</a>
+      <a class="button" id="mapTypeMenuBtn" title="Change Map Type"><em class="sprite sprite-map-options"></em> Map</a>
+      <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New</a>
+      <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
     <div class="fieldset" id="mapModeControls">
       <h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Structure</h4>
@@ -60,7 +61,6 @@
         <label for="grid10" title="Use 10-foot Grid"><em class="sprite spGrid10">10-foot Grid</em></label>
       <input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex">
         <label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
-      <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
     <section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
     <section id="popup"><div></div></section>

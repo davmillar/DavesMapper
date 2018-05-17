@@ -1,21 +1,18 @@
 <?php
-
-define('PATH', dirname(__FILE__));
-
-include PATH . "/cgi-bin/db_start.php";
-
+  define('PATH', dirname(__FILE__));
+  include PATH . "/cgi-bin/db_start.php";
 ?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-	<head>
-		<title>Supporters | Dave's Mapper | RPG Map Generator</title>
-		<meta name="description" content="Information on the people supporting the Dave's Mapper web app for role-playing enthusiasts. Includes information on the tile artists and mapper contributors."/>
-		<meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
-		<?php include "includes/head.php"; ?>
-	</head>
-	<body class="single">
+  <head>
+    <title>Supporters | Dave's Mapper | RPG Map Generator</title>
+    <meta name="description" content="Information on the people supporting the Dave's Mapper web app for role-playing enthusiasts. Includes information on the tile artists and mapper contributors."/>
+    <meta name="keywords" content="RPG,dungeons and dragons,DnD,D&amp;D,OSR,roleplaying,risus,dungeon master,game master,mapping,web app" />
+    <?php include "includes/head.php"; ?>
+  </head>
+  <body class="single">
     <?php include "includes/magic.php"; ?>
-		<section id="about">
+    <section id="about">
       <h2>Contributors' Projects</h2>
         <section class="columns">
           <p>Many of the contributors to Dave's Mapper have other role-playing projects that can be of great use to game masters.</p>
@@ -105,12 +102,12 @@ include PATH . "/cgi-bin/db_start.php";
         <table>
           <tr>
             <th></th>
-            <?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname?></th><?php } ?>
+            <?php foreach ($tile_types as $tname=>$tid) { ?><th class="maim"><?php echo $tname; ?></th><?php } ?>
             <th>Map Type Total</th>
           </tr>
           <?php foreach ($map_styles as $mname=>$mid) { ?>
             <?php $rowtotal = 0; ?>
-            <tr><th><?php echo $mname?></th>
+            <tr><th><?php echo $mname; ?></th>
               <?php
                 foreach ($tile_types as $tname=>$tid) {
                   if (!isset($tabular[$mid][$tid])) {
@@ -122,16 +119,16 @@ include PATH . "/cgi-bin/db_start.php";
                   $totals_by_type[$tid] += $tabular[$mid][$tid];
                 }
               ?>
-              <td><strong><?php echo $rowtotal?></strong></td>
+              <td><strong><?php echo $rowtotal; ?></strong></td>
             </tr>
           <?php } ?>
           <?php $rowtotal = 0; ?>
           <tr><th>Tile Type Total</th>
             <?php foreach ($totals_by_type as $tid=>$tsum) { ?>
-              <td><strong><?php echo $tsum?></strong></td>
+              <td><strong><?php echo $tsum; ?></strong></td>
               <?php $rowtotal += $tsum; ?>
             <?php } ?>
-            <td><strong><?php echo $rowtotal?></strong></td>
+            <td><strong><?php echo $rowtotal; ?></strong></td>
           </tr>
         </table>
       <hr/>

@@ -176,7 +176,6 @@
         tilesElement = document.getElementById('tiles');
 
     if (!newTile) {
-      console.error('No tile of this type could be found.');
       return;
     }
 

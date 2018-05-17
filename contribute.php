@@ -1,9 +1,6 @@
 <?php
-
-define('PATH', dirname(__FILE__));
-
-include PATH . "/cgi-bin/db_start.php";
-
+  define('PATH', dirname(__FILE__));
+  include PATH . "/cgi-bin/db_start.php";
 ?>
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">

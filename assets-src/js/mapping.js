@@ -209,23 +209,24 @@ var createCookie = function (name, value, days) {
         var encodedMap = '',
             tileValue,
             tileCode,
+            tile,
             fullMapURL;
 
         GUI.hideNotification();
 
-        $('#tiles img').each(function (i) {
+        $('#tiles img').each(function () {
+          tile = $(this);
           // Max 36^4 / 4 = 419904 tiles
-          tileValue = ($(this).data('imgid') * 4) + $(this).data('rot');
+          tileValue = (tile.data('imgid') * 4) + tile.data('rot');
           tileCode = tileValue.toString(36);
           while (tileCode.length < 4) { tileCode = '0' + tileCode; }
           encodedMap += tileCode;
         });
 
-        fullMapURL = 'fullmap.php?mapData=' + encodedMap +
-          '&w=' + settings.width +
+        fullMapURL = '/export/' + encodedMap +
+          '?w=' + settings.width +
           '&h=' + settings.height;
 
-        fullMapURL += '&exportType=36';
         fullMapURL += '&e=' + (settings.hasEndcaps ? '1' : '0');
         fullMapURL += '&c=' + (settings.hasCorners ? '1' : '0');
         fullMapURL += '&g=' + settings.gridType.toString();

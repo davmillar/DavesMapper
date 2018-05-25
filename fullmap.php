@@ -3,11 +3,6 @@
 
   include PATH . "/cgi-bin/db_start.php";
 
-  // Decrypt base64-encoded map data to JSON string
-  $data = base64_decode($_REQUEST['mapData']);
-  // Decode JSON data string to a PHP object
-  $dataObj = json_decode($data);
-
   // Get integer height and width and edge and corner flags and grid type from query string
   $width = intval($_REQUEST['w']);
   $height = intval($_REQUEST['h']);
@@ -22,9 +17,37 @@
   // Die if the data doesn't make sense.
   if (($mapwidth == 0)||($mapheight == 0)) { die("Map data seems messed up."); }
 
-  // Select all tiles needed for this map from the DB
+  // Check if using newest export method.
+  $exportType = isset($_REQUEST['exportType']) ? intval($_REQUEST['exportType']) : 0;
+
+  if ($exportType == 36) {
+    // Decrypt base64-encoded map data to JSON string
+    $data = $_REQUEST['mapData'];
+
+    // Decode JSON data string to a PHP object
+    $data_chunks = str_split($data, 4);
+
+    $dataObj = Array(
+      'tiles' => Array(),
+      'rotation' => Array()
+    );
+
+    foreach ($data_chunks as $chunk) {
+      $decoded_chunk = base_convert($chunk, 36, 10);
+      $tile_rotation = $decoded_chunk % 4;
+      $tile_id = ($decoded_chunk - $tile_rotation) / 4;
+      $dataObj[rotation][] = $tile_rotation;
+      $dataObj[tiles][] = $tile_id;
+    }
+
+    $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode($dataObj[tiles], ",") . ")";
+  } else {
+    die("Invalid map export type.");
+  }
+
+
   $tileData = array();
-  $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode($dataObj->tiles, ",") . ")";
+  // Select all tiles needed for this map from the DB
   $tileQueryResult = mysql_query($tileQuery);
   // Die if the result set has no rows
   if (mysql_num_rows($tileQueryResult) == 0) {
@@ -38,7 +61,7 @@
   // Function for getting the tile data, opening the image file, and adding the image data to the map.
   function nextTile(&$img, &$tileData, &$data, $n, $dx, $dy, $tw = 300, $th = 300) {
     // Get tile ID from JSON data
-    $tileId = intval($data->tiles[$n]);
+    $tileId = intval($data[tiles][$n]);
     // Compose filename and die if it isn't there
     if ($tileData[$tileId] == "") {
       die('No filename found for tile #' . $tileId);
@@ -48,7 +71,7 @@
       die($fname . " not found."); return;
     }
     // Calculate rotation in degrees
-    $rot = ($data->rotation[$n] * -90) + 360;
+    $rot = ($data[rotation][$n] * -90) + 360;
     // Grab image data based on filetype.
     $ext = strtolower(substr($fname, -3));
     switch ($ext) {

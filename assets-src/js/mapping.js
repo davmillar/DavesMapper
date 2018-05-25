@@ -206,22 +206,26 @@ var createCookie = function (name, value, days) {
         );
         ga('send', 'event', 'Export', 'Failed');
       } else {
-        var fullMapURL,
-            mapData;
+        var encodedMap = '',
+            tileValue,
+            tileCode,
+            fullMapURL;
 
         GUI.hideNotification();
-        mapData = {'tiles': [], 'rotation': []};
 
         $('#tiles img').each(function (i) {
-          mapData.tiles[i] = $(this).data('imgid');
-          mapData.rotation[i] = $(this).data('rot');
+          // Max 36^4 / 4 = 419904 tiles
+          tileValue = ($(this).data('imgid') * 4) + $(this).data('rot');
+          tileCode = tileValue.toString(36);
+          while (tileCode.length < 4) { tileCode = '0' + tileCode; }
+          encodedMap += tileCode;
         });
 
-        fullMapURL = 'fullmap.php?mapData=' +
-          base64_encode(JSON.stringify(mapData)) +
+        fullMapURL = 'fullmap.php?mapData=' + encodedMap +
           '&w=' + settings.width +
           '&h=' + settings.height;
 
+        fullMapURL += '&exportType=36';
         fullMapURL += '&e=' + (settings.hasEndcaps ? '1' : '0');
         fullMapURL += '&c=' + (settings.hasCorners ? '1' : '0');
         fullMapURL += '&g=' + settings.gridType.toString();

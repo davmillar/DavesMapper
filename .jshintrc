@@ -66,9 +66,7 @@
 
   "globals": {
     "$": true,
-    "$appmode": true,
     "$mobilemode": true,
-    "base64_encode": true,
     "caches": true,
     "DM_TileDeck": true,
     "DM_TileLibrary": true,

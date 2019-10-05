@@ -96,32 +96,6 @@ $(document)
   })
   .ready(function(){
     $("#cartoloadanim, #cartoload").hide();
-
-    if ($mobilemode === false) {
-      $('header a,header label,#imgMenu a,#imgMenu label,clearNoti,div.fieldset h4').not(".dropped").qtip({
-        position: {
-          my: 'top center',
-          at: 'bottom center',
-          viewport: $(window)
-        },
-        style: {
-          tip: true,
-          classes: 'ui-tooltip-dark ui-tooltip-rounded'
-        }
-      });
-
-      $('#sideBar a').qtip({
-        position: {
-          my: 'center left',
-          at: 'center right',
-          viewport: $(window)
-        },
-        style: {
-          tip: true,
-          classes: 'ui-tooltip-dark ui-tooltip-rounded'
-        }
-      });
-    }
   });
 
 (function(i,s,o,g,r,a,m){

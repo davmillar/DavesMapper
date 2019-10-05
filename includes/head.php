@@ -44,15 +44,8 @@
 <link rel="shortcut icon" sizes="48x48" href="/assets/images/logo-48.png">
 <meta name="msapplication-square310x310logo" content="/assets/images/logo-600.png">
 
-<!-- App Publisher -->
-<link rel="publisher" href="https://plus.google.com/107206980364478824224">
-
 <!-- Assets -->
 <link href="//fonts.googleapis.com/css?family=Philosopher:regular,bold" rel="stylesheet">
 <link href="/assets/css/compiled.css" rel="stylesheet" media="screen">
 <link href="/assets/css/compiled_print.css" rel="stylesheet" media="print">
 <script src="/assets/js/global.js"></script>
-<script src="/scripts/jquery.qtip.min.js"></script>
-<!--[if IE]>
-  <link href="style/ie9.css" rel="stylesheet" media="screen">
-<![endif]-->

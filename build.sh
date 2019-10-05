@@ -52,9 +52,6 @@ cat \
 echo "Combining and compressing app JS..."
 
 cat \
-  assets-src/js/base64_encode.js \
-  assets-src/js/json2.js \
-  assets-src/js/utf8_encode.js \
   assets-src/js/TileDeck.js \
   assets-src/js/TileLibrary.js \
   assets-src/js/Mapper.js \

@@ -220,9 +220,11 @@
     if (requestedStructure === 4) {
       height = 4;
       width = 3;
+      $('#mapSizeControls input').prop( "disabled", true );
     } else {
       height = parseInt($('#height').val(), 10);
       width = parseInt($('#width').val(), 10);
+      $('#mapSizeControls input').prop( "disabled", false );
     }
 
     settings.width = width;

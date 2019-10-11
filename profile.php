@@ -24,12 +24,13 @@
   </head>
   <body>
     <?php include "includes/magic.php"; ?>
-    <section id="sidepanel"><form>
-      <h2><?php echo $artistdata['name']?></h2>
-      <p><?php echo $artistdata['bio']?></p>
-      <?php if ($artistdata['url']) { ?><a href="<?php echo $artistdata['url']?>" target="_blank" class="widebutton"><?php echo $artistdata['name']?>'s Site</a><?php   } ?>
-    </form></section>
     <section id="about">
+      <?php if ($artistdata['url']) { ?>
+        <h2><a href="<?php echo $artistdata['url']?>" target="_blank"><?php echo $artistdata['name']?></a></h2>
+      <?php } else { ?>
+        <h2><?php echo $artistdata['name']?></h2>
+      <?php } ?>
+      <p><?php echo $artistdata['bio']?></p>
       <h2>Tiles Contributed by <?php echo $artistdata['name']?></h2>
         <?php
 

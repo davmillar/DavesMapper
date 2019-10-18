@@ -6,7 +6,7 @@
   mapper.staggeredCappedMode = undefined;
   mapper.settings = {
     structure: -1,
-    theme: 1,
+    theme: DM_THEMES.mixed,
     height: 2,
     width: 2,
     hasEndcaps: false,
@@ -193,6 +193,37 @@
   };
 
   /**
+   * Checks that the string passed in is a valid theme to select, then switches to it,
+   * pushes a new history state.
+   *
+   * @param  {String} newTheme
+   *     Theme URL slug or empty string which equates to 'mixed'.
+   *
+   * @return {Boolean|undefined}
+   *     Returns true when successful at changing the theme.
+   */
+  mapper.changeTheme = function (newTheme) {
+    var settings = mapper.settings,
+        newThemeCode;
+
+    if (newTheme === '') {
+      newTheme = 'mixed';
+    }
+
+    if (DM_THEMES.hasOwnProperty(newTheme)) {
+      var newThemeCode = DM_THEMES[newTheme];
+      if (settings.theme !== newThemeCode) {
+        settings.theme = newThemeCode;
+        history.pushState({}, '', newTheme);
+      }
+      loadRoster();
+      return true;
+    } else {
+      console.error('Unknown theme selected: ' + newTheme);
+    }
+  };
+
+  /**
    * Create a new map based on the current user settings.
    */
   mapper.newMap = function () {
@@ -234,7 +265,7 @@
     settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (requestedStructure === 2));
     settings.hasCorners = ((DM_TileLibrary.has('corner')) && (requestedStructure === 2));
 
-    if (settings.theme === 6) {
+    if (settings.theme === DM_THEMES.side) {
       // Side-view maps have additional requirements.
       tops = ((DM_TileLibrary.has('top')) && (requestedStructure === 2));
       topCorners = ((DM_TileLibrary.has('tco')) && (requestedStructure === 2));
@@ -266,7 +297,7 @@
       }
 
       // Top row of map tiles.
-      if (settings.theme !== 6) {
+      if (settings.theme !== DM_THEMES.side) {
         // Top-Down Maps
         if (settings.hasEndcaps) {
           if (settings.hasCorners) {
@@ -295,7 +326,7 @@
 
       // Middle of map.
       for (i = 0; i < height; i += 1) {
-        edgerotationa = (settings.theme === 6) ? 0 : 3;
+        edgerotationa = (settings.theme === DM_THEMES.side) ? 0 : 3;
 
         if (settings.hasEndcaps || (me.staggeredCappedMode && (staggeredRow === 1))) {
           me.appendTile('edge', edgerotationa);
@@ -317,7 +348,7 @@
       }
 
       // Bottom row of map tiles
-      if (settings.theme !== 6) {
+      if (settings.theme !== DM_THEMES.side) {
         // Top-Down Maps
         if (settings.hasEndcaps) {
           if (settings.hasCorners) { me.appendTile('corner', 3); }

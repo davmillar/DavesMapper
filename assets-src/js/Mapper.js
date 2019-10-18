@@ -198,11 +198,13 @@
    *
    * @param  {String} newTheme
    *     Theme URL slug or empty string which equates to 'mixed'.
+   * @param  {Boolean} pushState
+   *     Whether or not to push a new history state.
    *
    * @return {Boolean|undefined}
    *     Returns true when successful at changing the theme.
    */
-  mapper.changeTheme = function (newTheme) {
+  mapper.changeTheme = function (newTheme, pushState) {
     var settings = mapper.settings,
         newThemeCode;
 
@@ -214,7 +216,16 @@
       var newThemeCode = DM_THEMES[newTheme];
       if (settings.theme !== newThemeCode) {
         settings.theme = newThemeCode;
-        history.pushState({}, '', newTheme);
+        if (pushState) {
+          history.pushState(
+            {
+              theme: newTheme,
+              themeCode: newThemeCode
+            },
+            "Dave's Mapper | " + newTheme,
+            newTheme
+          );
+        }
       }
       loadRoster();
       return true;

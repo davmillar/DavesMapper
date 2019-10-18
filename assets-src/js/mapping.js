@@ -562,24 +562,37 @@ var createCookie = function (name, value, days) {
       $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo('body');
     }
 
-    // Detect map theme selected and add listeners for the navigation
-    var theme = location.pathname.replace('/', '');
-    if (MAPPER.changeTheme(theme)) {
-      $('#mapTypeSelector a')
-        .filter(function(index, link) { console.log(link.href); return link.href === location.href; })
-        .addClass('selected');
-    } else {
-      location.replace('/');
-    }
-
+    // Do initial theme detection and add listeners for theme changes.
+    detectTheme();
     $('#mapTypeSelector').on('click tap', 'a', function (e) {
       var linkTheme = this.href.replace(/.*\//g, '');
       e.preventDefault();
-      if (MAPPER.changeTheme(linkTheme)) {
+      if (MAPPER.changeTheme(linkTheme, true)) {
         $(this).addClass('selected').siblings().removeClass('selected');
       }
     });
+
+    window.onpopstate = detectTheme;
   },
+
+  /**
+   * Detect map theme selected and load it.
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
+  detectTheme = function(event) {
+    var theme = location.pathname.replace('/', '');
+    if (MAPPER.changeTheme(theme)) {
+      $('#mapTypeSelector a')
+        .filter(function(index, link) { return link.href === location.href; })
+        .addClass('selected')
+        .siblings()
+          .removeClass('selected');
+    } else {
+      location.replace('/');
+    }
+  },
+
 
   /**
    * Handler for when a detected multitouch performs rotation.

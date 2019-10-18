@@ -52,6 +52,7 @@ cat \
 echo "Combining and compressing app JS..."
 
 cat \
+  assets-src/js/Constants.js \
   assets-src/js/TileDeck.js \
   assets-src/js/TileLibrary.js \
   assets-src/js/Mapper.js \

@@ -32,6 +32,8 @@ RewriteRule ^(apple-)?touch-icon(.*).png$ assets/logo-optimized.png [L]
 
 RewriteRule ^con/?$ /conv/index.php [QSA]
 
+RewriteRule ^[a-z\-]+/?$ / [QSA]
+
 RedirectMatch 404 /\.git
 
 <Files .htaccess>

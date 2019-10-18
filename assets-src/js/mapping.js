@@ -113,7 +113,7 @@ var createCookie = function (name, value, days) {
     } else if (
       (settings.mode === 1) ||
       (settings.mode === 3) ||
-      (settings.theme === 6)) {
+      (settings.theme === DM_THEMES.side)) {
 
       // Warn users if they're choosing to export a large map size.
       if ((settings.width * settings.height) > 36) {
@@ -148,7 +148,7 @@ var createCookie = function (name, value, days) {
         imageHolder.src = $(this).attr('src');
         tilePosition.left -= 22;
         tilePosition.top -= 22;
-        if (settings.theme === 6) {
+        if (settings.theme === DM_THEMES.side) {
           exportCanvasContext.translate(
             tilePosition.left + (tileWidth / 2),
             tilePosition.top + (tileHeight / 2)
@@ -453,11 +453,6 @@ var createCookie = function (name, value, days) {
 
     $('#newWindowB').click(exportMap);
     $('#newBtn').click(MAPPER.newMap);
-    $('#mapTypeSelector').on('click tap', 'input:radio[name=maptype]', function () {
-      if ($mobilemode) { $(this).blur(); }
-      MAPPER.settings.theme = parseInt($(this).val(), 10);
-      loadRoster();
-    });
 
     // Set mapViewControls to pass their input value into appleGridOverlay
     $('#mapViewControls').on('click tap', 'input', function () {
@@ -482,12 +477,9 @@ var createCookie = function (name, value, days) {
     $('#width').val(2);
     $('#height').val(2);
     MAPPER.settings.mode = parseInt($('input:radio[name=mode]:checked').val(), 10);
-    MAPPER.settings.theme = parseInt($('input:radio[name=maptype]:checked').val(), 10);
     MAPPER.applyGridOverlay($('input:radio[name=grid]:checked').val());
 
-    loadRoster();
-
-    if (MAPPER.settings.theme === 6) {
+    if (MAPPER.settings.theme === DM_THEMES.side) {
       $('#viewport').addClass('sv').removeClass('nm');
     } else {
       $('#viewport').addClass('nm').removeClass('sv');
@@ -569,11 +561,44 @@ var createCookie = function (name, value, days) {
       $('<link rel="stylesheet" href="/style/add2home.css" />').appendTo('body');
       $('<script src="/scripts/add2home.js"><\/s' + 'cript>').appendTo('body');
     }
+
+    // Do initial theme detection and add listeners for theme changes.
+    detectTheme();
+    $('#mapTypeSelector').on('click tap', 'a', function (e) {
+      var linkTheme = this.href.replace(/.*\//g, '');
+      e.preventDefault();
+      if (MAPPER.changeTheme(linkTheme, true)) {
+        $(this).addClass('selected').siblings().removeClass('selected');
+      }
+    });
+
+    window.onpopstate = detectTheme;
+  },
+
+  /**
+   * Detect map theme selected and load it.
+   *
+   * @param  {Object|undefined} event
+   *     Browser history pop state event, if used as listener.
+   */
+  detectTheme = function(event) {
+    var theme = location.pathname.replace('/', '');
+    if (MAPPER.changeTheme(theme)) {
+      $('#mapTypeSelector a')
+        .filter(function(index, link) { return link.href === location.href; })
+        .addClass('selected')
+        .siblings()
+          .removeClass('selected');
+    } else {
+      location.replace('/');
+    }
   },
 
   /**
    * Handler for when a detected multitouch performs rotation.
-   * @param  {Object} event The event object
+   *
+   * @param  {Object} event
+   *     The event object
    */
   onHammerRotateDetected = function (event) {
     if (MAPPER.selectedTile.data('type') === 'tile') {

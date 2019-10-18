@@ -577,8 +577,9 @@ var createCookie = function (name, value, days) {
 
   /**
    * Detect map theme selected and load it.
-   * @param  {[type]} event [description]
-   * @return {[type]}       [description]
+   *
+   * @param  {Object|undefined} event
+   *     Browser history pop state event, if used as listener.
    */
   detectTheme = function(event) {
     var theme = location.pathname.replace('/', '');
@@ -593,10 +594,11 @@ var createCookie = function (name, value, days) {
     }
   },
 
-
   /**
    * Handler for when a detected multitouch performs rotation.
-   * @param  {Object} event The event object
+   *
+   * @param  {Object} event
+   *     The event object
    */
   onHammerRotateDetected = function (event) {
     if (MAPPER.selectedTile.data('type') === 'tile') {

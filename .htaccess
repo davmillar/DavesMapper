@@ -1,3 +1,8 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} davesmapper\.com [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://davesmapper.com/$1 [R,L]
+
 Options +FollowSymlinks
 Options -Indexes
 RewriteEngine on

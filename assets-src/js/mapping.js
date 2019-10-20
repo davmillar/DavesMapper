@@ -582,10 +582,12 @@ var createCookie = function (name, value, days) {
    *     Browser history pop state event, if used as listener.
    */
   detectTheme = function(event) {
-    var theme = location.pathname.replace('/', '');
+    var pathName = location.pathname;
+    var theme = pathName.replace('/', '');
     if (MAPPER.changeTheme(theme)) {
+      if (theme === '') { pathName = '/mixed'; }
       $('#mapTypeSelector a')
-        .filter(function(index, link) { return link.href === location.href; })
+        .filter(function(index, link) { return link.href.indexOf(pathName) > -1; })
         .addClass('selected')
         .siblings()
           .removeClass('selected');

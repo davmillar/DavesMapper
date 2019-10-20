@@ -68,7 +68,7 @@
       <section id="mapTypeSelector">
         <a class="panelItem" href="/dungeon"><em class="sprite sprite-maptype-dungeon"></em> Dungeons</a>
         <a class="panelItem" href="/cavern"><em class="sprite sprite-maptype-cavern"></em> Caverns</a>
-        <a class="panelItem" href="/"><em class="sprite sprite-maptype-hybrid"></em> Dungeons &amp; Caverns</a>
+        <a class="panelItem" href="/mixed"><em class="sprite sprite-maptype-hybrid"></em> Dungeons &amp; Caverns</a>
         <a class="panelItem" href="/side"><em class="sprite sprite-maptype-sideview"></em> Side-View Dungeon</a>
         <a class="panelItem" href="/village"><em class="sprite sprite-maptype-village"></em> Village</a>
         <a class="panelItem" href="/city"><em class="sprite sprite-maptype-city"></em> City</a>

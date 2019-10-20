@@ -21,6 +21,9 @@ JS Overview
 ### mapping.js
 This was the original everything-script that once had all the code in it. Now it handles basic page setup stuff and most of the touch event and UI event handling.
 
+### Constants.js
+This file contains constants used in the app code. It's a work in progress and only has a couple things right now.
+
 ### GUI.js (window.GUI)
 This class handles showing and hiding of notification bars and modals for the rest of the app.
 

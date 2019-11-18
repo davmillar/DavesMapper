@@ -1,4 +1,4 @@
-<footer id="site-foot">If you like the mapper, please consider <a href="https://secure3.convio.net/ccfa/site/Donation2?df_id=1782&1782.donation=form1">a donation to the <abbr title="Crohn's and Colitis Foundation of America">CCFA</abbr></a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSNQ8LXZF9946">helping with my medical costs</a>.
+<footer id="site-foot">Support hosting costs and continued development with stickers and pins at the <a href="https://store.davegoesthedistance.com">Dave Goes the Distance store</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSNQ8LXZF9946">with a donation</a>.
 <script type="text/javascript"><!--
   google_ad_client = "ca-pub-4905539882779515";
   /* Mapper One Line */

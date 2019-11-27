@@ -1,1 +1,1 @@
-<?php mysql_close(); ?>
+<?php $pdo = null; ?>

@@ -10,15 +10,16 @@
 	  $map_type_phr = ($map_type == 3) ? "IN (1,2,3)" : "= ". $map_type;
 
 		$query = "SELECT id, image, artist_id, tile_type FROM tiles WHERE map_type ".$map_type_phr." AND approved = 1";
-		$tiledata = mysql_query($query);
+		$tiledata = $pdo->query($query);
 		$rarr = Array();
-		if (mysql_num_rows($tiledata) > 0) {
-		  while ($thistile = mysql_fetch_assoc($tiledata)) {
+		if ($tiledata->rowCount() > 0) {
+		  while ($thistile = $tiledata->fetch(PDO::FETCH_ASSOC)) {
 			  $tt = intval($thistile['tile_type']);
 			  if (!isset($rarr[$tt])) { $rarr[$tt] = Array(); }
 		    $rarr[$tt][] = $thistile;
 		  }
 		}
+    $tiledata->closeCursor();
 		$our_json = json_encode($rarr);
 		file_put_contents($datafile, $our_json);
   	include PATH . "/../cgi-bin/db_end.php";

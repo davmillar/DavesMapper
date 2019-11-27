@@ -4,7 +4,7 @@
   include PATH . "/../cgi-bin/db_start.php";
   session_start();
 
-  $artist_icon_query = mysql_query("SELECT icon FROM artists ORDER BY icon ASC");
+  $artist_icon_query = $pdo->query("SELECT icon FROM artists ORDER BY icon ASC");
   $folders = Array(
     1 => 'dungeon',
     2 => 'cavern',
@@ -16,7 +16,7 @@
     8 => 'boardwalk',
     9 => 'scificity');
 
-  while ($artist_icon = mysql_fetch_assoc($artist_icon_query)){
+  while ($artist_icon = $artist_icon_query->fetch(PDO::FETCH_ASSOC)){
     if (!is_dir("../tiles/".$artist_icon['icon'])) {
       mkdir("../tiles/".$artist_icon['icon']);
     }
@@ -27,7 +27,9 @@
     }
   }
 
-  function bounceOut(){ header("Location: /admin"); exit; }
+  $artist_icon_query->closeCursor();
+
+  function bounceOut(){ header("Location: /admin/"); exit; }
 
   if ($_GET['action'] == 'log_me_out') {
     session_destroy();
@@ -37,9 +39,11 @@
   }
 
   if ($_POST['action'] == 'log_me_in') {
-    $myquery = mysql_query("SELECT * FROM artists WHERE email = '".mysql_real_escape_string($_POST['aemail'])."' AND password = '".sha1($_POST['aemail']."bacon".$_POST['apass'])."'");
-    if (mysql_num_rows($myquery) > 0) {
-      $mystuff = mysql_fetch_assoc($myquery);
+    $email = $pdo->quote($_POST['aemail']);
+    $hash = $pdo->quote(sha1($_POST['aemail']."bacon".$_POST['apass']));
+    $login_query = $pdo->query("SELECT * FROM artists WHERE email = $email AND password = $hash");
+    if ($login_query->rowCount() > 0) {
+      $mystuff = $login_query->fetch(PDO::FETCH_ASSOC);
       $_SESSION['liuser'] = $mystuff['id'];
       $_SESSION['liusername'] = $mystuff['name'];
       $_SESSION['liuseremail'] = $mystuff['email'];
@@ -47,29 +51,39 @@
     } else {
       $_SESSION['message'] = "<p>No such user found.</p>";
     }
+    $login_query->closeCursor();
     bounceOut();
   }
 
   if ($_POST['action'] == "add_tile_full") {
     if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
-      $foruser = mysql_fetch_array(mysql_query("SELECT * FROM artists WHERE id = '".intval($_POST['artist'])."' LIMIT 1"));
+      $user_query = $pdo->query("SELECT * FROM artists WHERE id = '".intval($_POST['artist'])."' LIMIT 1");
+      $foruser = $user_query->fetch(PDO::FETCH_ASSOC);
+      $user_query->closeCursor();
+
       if ($_FILES['tileImg']) {
         $upDirectory = dirname(__FILE__) . '/../tiles/';
         $upFilename = str_replace(" ","_",$foruser['icon'] . '/' . $folders[intval($_POST['mtype'])] . "/" . time() . $_FILES['tileImg']['name']);
-        move_uploaded_file($_FILES['tileImg']['tmp_name'], $upDirectory.$upFilename);
-
-        $hexit = (isset($_POST['hasexit']) && $_POST['hasexit'] == "1") ? 1 : 0;
-        mysql_query("INSERT INTO tiles (image, tile_type, map_type, artist_id, has_exit, approved)
-                     VALUES ('".mysql_real_escape_string($upFilename)."', ".intval($_POST['ttype']).", ".intval($_POST['mtype']).", ".intval($_POST['artist']).", ".$hexit.",1)");
-        $result = mysql_insert_id();
-        $_SESSION['artist'] = intval($_POST['artist']);
-        if ($result) {
-          $_SESSION['last_mtype'] = $_POST['mtype'];
-          $_SESSION['last_tttype'] = $_POST['ttype'];
-          $_SESSION['message'] = "<p>Tile successfully added to the site.</p><br/>
-            <img src='/tiles/".$upFilename."' alt='Tile Preview' style='width:100px;' />";
+        if (is_uploaded_file($_FILES['tileImg']['tmp_name'])) {
+          if (move_uploaded_file($_FILES['tileImg']['tmp_name'], $upDirectory.$upFilename)) {
+            $hexit = (isset($_POST['hasexit']) && $_POST['hasexit'] == "1") ? 1 : 0;
+            $pdo->query("INSERT INTO tiles (image, tile_type, map_type, artist_id, has_exit, approved)
+                         VALUES (".$pdo->quote($upFilename).", ".intval($_POST['ttype']).", ".intval($_POST['mtype']).", ".intval($_POST['artist']).", ".$hexit.",1)");
+            $result = $pdo->lastInsertId();
+            $_SESSION['artist'] = intval($_POST['artist']);
+            if ($result) {
+              $_SESSION['last_mtype'] = $_POST['mtype'];
+              $_SESSION['last_tttype'] = $_POST['ttype'];
+              $_SESSION['message'] = "<p>Tile successfully added to the site.</p><br/>
+                <img src='/tiles/".$upFilename."' alt='Tile Preview' style='width:100px;' />";
+            } else {
+              $_SESSION['message'] = "<p>An error occurred while adding to the database.</p>";
+            }
+          } else {
+            $_SESSION['message'] = "<p>File failed to move to permanent location.</p>";
+          }
         } else {
-          $_SESSION['message'] = "<p>An error occurred while adding to the database.</p>";
+          $_SESSION['message'] = "<p>Possible file upload attack.</p>";
         }
       } else {
         $_SESSION['message'] = "<p>No file went through.</p>";
@@ -83,7 +97,7 @@
   if ($_POST['action'] == "change_it") {
     if ($_SESSION['liuser'] && $_SESSION['liuser']>0) {
       if ($_POST['apass'] == $_POST['apass2']) {
-        mysql_query("UPDATE artists SET password = '".sha1($_SESSION['liuseremail']."bacon".$_POST['apass'])."' WHERE id = '".$_SESSION['liuser']."'");
+        $pdo->query("UPDATE artists SET password = '".sha1($_SESSION['liuseremail']."bacon".$_POST['apass'])."' WHERE id = '".$_SESSION['liuser']."'");
         $_SESSION['message'] = "<p>All set!</p>";
       } else {
         $_SESSION['message'] = "<p>Those gotta be the same.</p>";
@@ -94,16 +108,16 @@
     bounceOut();
   }
   if ($_POST['action'] == "add_carto") {
-    mysql_query("INSERT INTO artists (name, url_slug, initials, icon, url, bio, email, password)
-                 VALUES ('".mysql_real_escape_string($_POST['aname'])."',
-                         '".mysql_real_escape_string($_POST['aurlslug'])."',
-                         '".mysql_real_escape_string($_POST['ainit'])."',
-                         '".mysql_real_escape_string($_POST['aicon'])."',
-                         '".mysql_real_escape_string($_POST['alink'])."',
-                         '".mysql_real_escape_string($_POST['abio'])."',
-                         '".mysql_real_escape_string($_POST['aemail'])."',
+    $pdo->query("INSERT INTO artists (name, url_slug, initials, icon, url, bio, email, password)
+                 VALUES ('".$pdo->quote($_POST['aname'])."',
+                         '".$pdo->quote($_POST['aurlslug'])."',
+                         '".$pdo->quote($_POST['ainit'])."',
+                         '".$pdo->quote($_POST['aicon'])."',
+                         '".$pdo->quote($_POST['alink'])."',
+                         '".$pdo->quote($_POST['abio'])."',
+                         '".$pdo->quote($_POST['aemail'])."',
                          '".sha1($_POST['aemail']."bacon".$_POST['apass'])."')");
-    $result = mysql_insert_id();
+    $result = $pdo->lastInsertId();
     if ($result) {
       $_SESSION['message'] = "<p>" .  $_POST['aname'] . " added to list of users.</p>";
     } else {
@@ -138,15 +152,15 @@
             if ($_POST['action'] == "add_tile_m") {
               ?><h2>Results</h2><?php
               $hexit = (isset($_POST['hasexit_m']) && $_POST['hasexit_m'] == "1") ? 1 : 0;
-              $imagebit = mysql_real_escape_string($_POST['imagefn_m']);
+              $imagebit = $_POST['imagefn_m'];
               $r_start = intval($_POST['start_m']);
               $r_end = intval($_POST['end_m']);
               $deci = intval($_POST['deci_m']);
               for ($i = $r_start; $i <= $r_end; $i++) {
-                $full_name = str_replace("#",str_pad("".$i, $deci, "0", STR_PAD_LEFT),$imagebit);
-                mysql_query("INSERT INTO tiles (image, tile_type, map_type, artist_id, has_exit, approved)
-                             VALUES ('".$full_name."', ".intval($_POST['ttype_m']).", ".intval($_POST['mtype_m']).", ".intval($_POST['artist_m']).", ".$hexit.", 1)");
-                $result = mysql_insert_id();
+                $full_name = $pdo->quote(str_replace("#",str_pad("".$i, $deci, "0", STR_PAD_LEFT),$imagebit));
+                $pdo->query("INSERT INTO tiles (image, tile_type, map_type, artist_id, has_exit, approved)
+                             VALUES ($full_name, ".intval($_POST['ttype_m']).", ".intval($_POST['mtype_m']).", ".intval($_POST['artist_m']).", $hexit, 1)");
+                $result = $pdo->lastInsertId();
                 if ($result) {
                   ?><img src="/tiles/<?php echo $full_name?>" alt="Tile Preview" style="width:100px;" /><?php
                 }
@@ -198,12 +212,13 @@
                   <div class="fieldset">
                     <h4 class="legend">Tile Artist</h4>
                     <select name="artist" id="artist"><?php
-                      $artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
-                      if (mysql_num_rows($artistdata) > 0) {
-                        while ($thisartist = mysql_fetch_array($artistdata)) { ?>
+                      $artistdata = $pdo->query("SELECT name, id FROM artists ORDER BY name ASC");
+                      if ($artistdata->rowCount() > 0) {
+                        while ($thisartist = $artistdata->fetch(PDO::FETCH_ASSOC)) { ?>
                           <option value="<?php echo $thisartist['id']?>" <?php echo (($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?php echo $thisartist['name']?></option>
                         <?php }
                       }
+                      $artistdata->closeCursor();
                     ?></select><br/>
                       <label for="artist" class="labelTxt">Artist</label>
                   </div>
@@ -278,12 +293,13 @@
                   <div class="fieldset">
                     <h4 class="legend">Tile Artist</h4>
                     <select name="artist_m" id="artist_m"><?php
-                      $artistdata = mysql_query("SELECT name, id FROM artists ORDER BY name ASC");
-                      if (mysql_num_rows($artistdata) > 0) {
-                        while ($thisartist = mysql_fetch_array($artistdata)) { ?>
+                      $artistdata = $pdo->query("SELECT name, id FROM artists ORDER BY name ASC");
+                      if ($artistdata->rowCount() > 0) {
+                        while ($thisartist = $artistdata->fetch(PDO::FETCH_ASSOC)) { ?>
                           <option value="<?php echo $thisartist['id']?>" <?php echo (($currentartistid == intval($thisartist['id'])) ? 'selected' : '')?>><?php echo $thisartist['name']?></option>
                         <?php }
                       }
+                      $artistdata->closeCursor();
                     ?></select><br/>
                       <label for="artist_m" class="labelTxt">Artist</label>
                   </div>
@@ -404,15 +420,18 @@
       </section>
     </section>
     <script>
-      $(document).on("change", "#mtype", function () {
-        if (parseInt($(this).val(), 10) === 6) {
+      let switchFunction = function () {
+        if (parseInt($("#mtype").val(), 10) === 6) {
           $("#svbits,#svinfo").show();
           $("#nmbits,#nminfo").hide();
         } else {
           $("#svbits,#svinfo").hide();
           $("#nmbits,#nminfo").show();
         }
-      });
+      };
+      $(document)
+        .on("load", switchFunction)
+        .on("change", "#mtype", switchFunction);
     </script>
   </body>
 </html>

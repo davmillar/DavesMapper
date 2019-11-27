@@ -48,13 +48,13 @@
 
   $tileData = array();
   // Select all tiles needed for this map from the DB
-  $tileQueryResult = mysql_query($tileQuery);
+  $tileQueryResult = $pdo->query($tileQuery);
   // Die if the result set has no rows
-  if (mysql_num_rows($tileQueryResult) == 0) {
-    die('An error occurred while gathering the tiles for your map. Please try again later.<br>'.$tileQuery.'<br>'.mysql_error());
+  if ($tileQueryResult->rowCount() == 0) {
+    die('An error occurred while gathering the tiles for your map. Please try again later.<br>'.$tileQuery.'<br>'.$pdo->errorInfo());
   }
   // Translate the result data into an array where the ID is key and filename is value
-  while ($tileDataRow = mysql_fetch_assoc($tileQueryResult)) {
+  while ($tileDataRow = $tileQueryResult->fetch(PDO::FETCH_ASSOC)) {
     $tileData[intval($tileDataRow['id'])] = $tileDataRow['image'];
   }
 

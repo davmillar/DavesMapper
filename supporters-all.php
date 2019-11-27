@@ -24,12 +24,13 @@
       <h2>Cartographers' Profiles</h2>
         <section class="columns"><ul>
         <?php
-          $artistdata = mysql_query("SELECT url_slug, name FROM artists ORDER BY name ASC");
-          if (mysql_num_rows($artistdata) > 0) {
-            while ($thisartist = mysql_fetch_array($artistdata)) { ?>
+          $artistdata = $pdo->query("SELECT url_slug, name FROM artists ORDER BY name ASC");
+          if ($artistdata->rowCount() > 0) {
+            while ($thisartist = $artistdata->fetch(PDO::FETCH_ASSOC)) { ?>
               <li><a href="/supporters/<?php echo $thisartist['url_slug']?>"><?php echo $thisartist['name']?></a></li>
             <?php }
           }
+          $artistdata->closeCursor();
         ?></ul></section>
 
       <h2>Other Contributors</h2>
@@ -94,10 +95,11 @@
             6 => 0,
             7 => 0
           );
-          $tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles GROUP BY map_type, tile_type");
-          while ($td = mysql_fetch_array($tdata)) {
+          $tdata = $pdo->query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles GROUP BY map_type, tile_type");
+          while ($td = $tdata->fetch(PDO::FETCH_ASSOC)) {
             $tabular[$td['map_type']][$td['tile_type']] = $td['total'];
           }
+          $tdata->closeCursor();
         ?>
         <table>
           <tr>

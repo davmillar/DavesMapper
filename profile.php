@@ -4,11 +4,13 @@
 
   if ($_REQUEST['artist']) {
     $thisartist = $_REQUEST['artist'];
-    $artistdata = mysql_fetch_assoc(mysql_query("SELECT * FROM artists WHERE url_slug = '".$thisartist."'"));
+    $artist_query = $pdo->query("SELECT * FROM artists WHERE url_slug = '".$thisartist."'");
+    $artistdata = $artist_query->fetch(PDO::FETCH_ASSOC);
     if (!$artistdata['id']) {
       header("Location: /supporters");
       exit;
     }
+    $artist_query->closeCursor();
   } else {
     header("Location: /supporters");
     exit;
@@ -74,10 +76,11 @@
             6 => 0,
             7 => 0
           );
-          $tdata = mysql_query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
-          while ($td = mysql_fetch_array($tdata)) {
+          $tdata = $pdo->query("SELECT COUNT(id) AS total, tile_type, map_type FROM tiles WHERE artist_id = '".$artistdata['id']."' GROUP BY map_type, tile_type");
+          while ($td = $tdata->fetch(PDO::FETCH_ASSOC)) {
             $tabular[$td['map_type']][$td['tile_type']] = $td['total'];
           }
+          $tdata->closeCursor();
         ?>
         <table id="cartomagic">
           <tr>

@@ -2,7 +2,7 @@
   define('PATH', dirname(__FILE__));
 	$map_type = intval($_POST['map_kind']);
   $map_type = ($map_type > 0) ? $map_type : 1;
-  $datafile = "./datacache/" . $map_type . ".json";
+  $datafile = PATH . "/datacache/" . $map_type . ".json";
   if (file_exists($datafile) && (time() - filemtime($datafile) >= 60 * 60 *24 * 5)) {
     include($datafile);
   } else {
@@ -21,7 +21,13 @@
 		}
     $tiledata->closeCursor();
 		$our_json = json_encode($rarr);
-		file_put_contents($datafile, $our_json);
+
+    try {
+		  file_put_contents($datafile, $our_json);
+    } catch (Exception $e) {
+      echo '';
+    }
+
   	include PATH . "/../cgi-bin/db_end.php";
 	  echo $our_json;
   }

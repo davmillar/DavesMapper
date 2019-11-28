@@ -17,19 +17,20 @@ if ! [ -L /var/www ]; then
 fi
 
 echo "Installing PHP"
-apt-get install -y php5-common php5-dev php5-cli php5-fpm > /dev/null
+apt-get install -y php7.2 php7.2-dev libapache2-mod-php7.2 libsodium23 php-common php7.2-cli php7.2-common php7.2-json php7.2-opcache php7.2-readline > /dev/null
 
 echo "Installing PHP extensions"
-apt-get install -y curl php5-curl php5-gd php5-mcrypt php5-mysql > /dev/null
+apt-get install -y curl php-curl php7.2-gd mcrypt php-mysql php7.2-mysql > /dev/null
+sed -i "s|;extension=pdo_mysql|extension=pdo_mysql|g" /etc/php/7.2/apache2/php.ini
 
 echo "Making PHP and Apache work together"
-sudo apt-get install -y libapache2-mod-php5 # > /dev/null
-sudo a2enmod php5 # > /dev/null
+sudo a2enmod php7.2 # > /dev/null
 service apache2 stop # > /dev/null
 echo "listen 4069" | sudo tee --append /etc/apache2/httpd.conf
 echo "ServerName localhost" | sudo tee --append /etc/apache2/httpd.conf
 sudo ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load
-sed -i "s|AllowOverride None|AllowOverride All|g" /etc/apache2/sites-available/default
+sudo rm /etc/apache2/sites-enabled/000-default.conf
+sudo cp /vagrant/.vagrant/default.conf /etc/apache2/sites-enabled/000-default.conf
 service apache2 restart # > /dev/null
 
 echo "Preparing MySQL"

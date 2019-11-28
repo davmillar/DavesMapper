@@ -4,9 +4,10 @@
   <div class="downcontainer">
     <a class="main" href="/supporters">About Us</a>
     <div class="downpanel"><?php
-      if (!$pdo) {
-        include "../cgi-bin/db_start.php";
-      }
+      define('PATH', dirname(__FILE__));
+
+      include PATH . "/cgi-bin/db_start.php";
+
       $navdata = $pdo->query("SELECT url_slug, name FROM dmillar_cartography.artists ORDER BY name ASC");
       if ($navdata->rowCount() > 0) {
         while ($nextguy = $navdata->fetch(PDO::FETCH_ASSOC)) {

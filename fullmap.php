@@ -36,11 +36,11 @@
       $decoded_chunk = base_convert($chunk, 36, 10);
       $tile_rotation = $decoded_chunk % 4;
       $tile_id = ($decoded_chunk - $tile_rotation) / 4;
-      $dataObj[rotation][] = $tile_rotation;
-      $dataObj[tiles][] = $tile_id;
+      $dataObj['rotation'][] = $tile_rotation;
+      $dataObj['tiles'][] = $tile_id;
     }
 
-    $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode($dataObj[tiles], ",") . ")";
+    $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode($dataObj['tiles'], ",") . ")";
   } else {
     die("Invalid map export type.");
   }
@@ -61,7 +61,7 @@
   // Function for getting the tile data, opening the image file, and adding the image data to the map.
   function nextTile(&$img, &$tileData, &$data, $n, $dx, $dy, $tw = 300, $th = 300) {
     // Get tile ID from JSON data
-    $tileId = intval($data[tiles][$n]);
+    $tileId = intval($data['tiles'][$n]);
     // Compose filename and die if it isn't there
     if ($tileData[$tileId] == "") {
       die('No filename found for tile #' . $tileId);
@@ -71,7 +71,7 @@
       die($fname . " not found."); return;
     }
     // Calculate rotation in degrees
-    $rot = ($data[rotation][$n] * -90) + 360;
+    $rot = ($data['rotation'][$n] * -90) + 360;
     // Grab image data based on filetype.
     $ext = strtolower(substr($fname, -3));
     switch ($ext) {

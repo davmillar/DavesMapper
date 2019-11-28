@@ -20,7 +20,7 @@ echo "Installing PHP"
 apt-get install -y php7.2 php7.2-dev libapache2-mod-php7.2 libsodium23 php-common php7.2-cli php7.2-common php7.2-json php7.2-opcache php7.2-readline > /dev/null
 
 echo "Installing PHP extensions"
-apt-get install -y curl php-curl php7.2-gd mcrypt php-mysql php7.2-mysql > /dev/null
+apt-get install -y curl php-curl php7.2-gd php-gd mcrypt php-mysql php7.2-mysql > /dev/null
 sed -i "s|;extension=pdo_mysql|extension=pdo_mysql|g" /etc/php/7.2/apache2/php.ini
 
 echo "Making PHP and Apache work together"

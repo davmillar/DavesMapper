@@ -1,0 +1,4 @@
+This is a Brave Payments publisher verification file.
+
+Domain: davesmapper.com 
+Token: bbfcba4d8687cdc8a68a23abb2e650f862e0e94b0d51b7e373522a70b4f0b040

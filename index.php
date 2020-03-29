@@ -23,14 +23,10 @@
   </head>
   <body>
     <?php include "includes/magic.php"; ?>
-    <div class="fieldset" id="actionButtons">
-      <h4 class="legend" title="Commands to perform.">Options</h4>
-      <a class="button" id="mapTypeMenuBtn" title="Change Map Type"><em class="sprite sprite-map-options"></em> Map</a>
+    <div class="fieldset" id="generatorOptions">
+      <h4 class="legend" title="Control how new maps generate.">Generator Options</h4>
+      <a class="button" id="mapTypeMenuBtn" title="Change Map Type"><em class="sprite sprite-map-options"></em></a>
       <a class="button" id="newBtn" title="Generate a New Map [n]"><em class="sprite spPNG"></em> New</a>
-      <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
-    </div>
-    <div class="fieldset" id="mapModeControls">
-      <h4 class="legend" title="Choose between a classic style map, a staggered map, or a closed map.">Map Structure</h4>
       <div class="dropradio" id="mapModeDrop"><div>
         <input type="radio" class="btnDrp first" name="mode" value="0" id="normal">
           <label for="normal"><em class="sprite spOrig"></em> Open-Edge</label>
@@ -43,16 +39,11 @@
         <input type="radio" class="btnDrp last" name="mode" value="4" id="cubeBtn">
           <label for="cubeBtn"><em class="sprite spCube"></em> Cube</label>
       </div></div>
+      <label for="width" class="labelTxt" title="Map size in tiles wide."><input type="number" min="1" max="25" id="width" required><br>Width</label>
+      <label for="height" class="labelTxt" title="Map size in tiles tall."><input type="number" min="1" max="25" id="height" required><br>Height</label>
     </div>
-    <div class="fieldset" id="mapSizeControls">
-      <h4 class="legend" title="Choose your map's height and width.">Map Size</h4>
-      <input type="number" min="1" max="25" id="width" required>
-      <input type="number" min="1" max="25" id="height" required><br>
-      <label for="width" class="labelTxt" title="Map size in tiles wide.">Width</label>
-      <label for="height" class="labelTxt" title="Map size in tiles tall.">Height</label>
-    </div>
-    <div class="fieldset" id="mapViewControls">
-      <h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">View Options</h4>
+    <div class="fieldset" id="currentMapOptions">
+      <h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">Current Map Options</h4>
       <input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked>
         <label for="nogrid" title="Don't Use a Grid"><em class="sprite spX">No Grid</em></label>
       <input type="radio" class="btnGrp" name="grid" value="1" id="grid5">
@@ -61,10 +52,12 @@
         <label for="grid10" title="Use 10-foot Grid"><em class="sprite spGrid10">10-foot Grid</em></label>
       <input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex">
         <label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
+      <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
     <section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
     <section id="popup"><div></div></section>
     <section id="sideBar"><form>
+      <h4>Map Type</h4>
       <section id="mapTypeSelector">
         <a class="panelItem" href="/dungeon"><em class="sprite sprite-maptype-dungeon"></em> Dungeons</a>
         <a class="panelItem" href="/cavern"><em class="sprite sprite-maptype-cavern"></em> Caverns</a>
@@ -76,6 +69,7 @@
         <a class="panelItem" href="/scifi-ship"><em class="sprite sprite-maptype-spaceship"></em> Sci-Fi Ship</a>
         <a class="panelItem" href="/scifi-city"><em class="sprite sprite-maptype-spacecity"></em> Sci-Fi City</a>
       </section>
+      <h4>Artists</h4>
       <section id="artistsblock">
       </section>
     </form></section>

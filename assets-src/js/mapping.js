@@ -546,9 +546,9 @@ var createCookie = function (name, value, days) {
     // Redraw the map when width or height are changed
     $('#width, #height').on('change', MAPPER.newMap);
 
-    // Change mode based on radio button value changing
+    // Change structure based on radio button value changing
     $('input:radio[name=mode]').on('click tap change', function () {
-      MAPPER.settings.mode = parseInt($(this).val(), 10);
+      MAPPER.settings.structure = parseInt($(this).val(), 10);
       MAPPER.newMap();
       ga('send', 'event', 'Mode', 'Change');
     });

@@ -9,3 +9,11 @@ const DM_THEMES = {
   boardwalk: 8,
   'scifi-city': 9
 };
+const DM_STRUCTURES = {
+  openEdge: 0,
+  staggered: 1,
+  closedEdge: 2,
+  staggeredCapped: 3,
+  cube: 4
+};
+const DM_TILE_URL = 'https://tiles.davesmapper.com/';

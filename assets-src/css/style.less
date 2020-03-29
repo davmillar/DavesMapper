@@ -38,25 +38,19 @@
 
 @sidebarWidth: 200px;
 
-@actionWidth: 140px;
-@mapModeWidth: 174px;
-@mapSizeWidth: 116px;
-@mapViewWidth: 131px;
+@generatorWidth: 340px;
+@currentMapWidth: 205px;
 
-@actionLeft: @sidebarWidth;
-@mapModeLeft: @actionLeft + @actionWidth;
-@mapSizeLeft: @mapModeLeft + @mapModeWidth;
-@mapViewLeft: @mapSizeLeft + @mapSizeWidth;
+@generatorLeft: @sidebarWidth;
+@currentMapLeft: @generatorLeft + @generatorWidth;
 
 @sidebarWidthMed: 120px;
 
-@actionLeftMed: @sidebarWidthMed;
-@mapModeLeftMed: @actionLeftMed + @actionWidth;
-@mapSizeLeftMed: @mapModeLeftMed + @mapModeWidth;
-@mapViewLeftMed: @mapSizeLeftMed + @mapSizeWidth;
+@generatorLeftMed: @sidebarWidthMed;
+@currentMapLeftMed: @generatorLeftMed + @generatorWidth;
 
-@mediumBreakpoint: (@actionWidth + @mapModeWidth + @mapSizeWidth + @mapViewWidth + @sidebarWidth);
-@mobileBreakpoint: (@actionWidth + @mapModeWidth + @mapSizeWidth + @mapViewWidth + @sidebarWidthMed);
+@mediumBreakpoint: (@generatorWidth + @generatorWidth + @sidebarWidth);
+@mobileBreakpoint: (@generatorWidth + @generatorWidth + @sidebarWidthMed);
 
 /**
  * Utilities.
@@ -401,15 +395,11 @@ h4{
   }
 }
 
-#actionButtons { left: @actionLeft; width: @actionWidth; }
-#mapModeControls { left: @mapModeLeft; width: @mapModeWidth; }
-#mapSizeControls { left: @mapSizeLeft; width: @mapSizeWidth; }
-#mapViewControls { left: @mapViewLeft; width: @mapViewWidth; }
+#generatorOptions { left: @generatorLeft; width: @generatorWidth; }
+#currentMapOptions { left: @currentMapLeft; width: @currentMapWidth; }
 
-#actionButtons,
-#mapModeControls,
-#mapSizeControls,
-#mapViewControls { top: @navHeight; }
+#generatorOptions,
+#currentMapOptions { top: @navHeight; }
 
 input[type=number],
 input[type=text],
@@ -452,16 +442,15 @@ input[type=submit] {
 
 label.labelTxt {
   display:inline-block;
-  width:50px;
-  height:10px;
+  min-width: 52px;
+  height: 36px;
   vertical-align:top;
-  padding-top:2px;
+  margin: 5px 2px;
   color:@medbrown;
   .fancyfonts;
   font-size:10px;
   line-height:10px;
   text-align:center;
-  text-shadow:0 1px 0 rgba(255,255,255,0.5);
   .unselectable;
   &.bigLabel{
     width:128px;
@@ -1450,10 +1439,8 @@ a.selected > .sprite-maptype {
     left: @sidebarWidthMed;
   }
 
-  #actionButtons { left: @actionLeftMed; }
-  #mapModeControls { left: @mapModeLeftMed; }
-  #mapSizeControls { left: @mapSizeLeftMed; }
-  #mapViewControls { left: @mapViewLeftMed; }
+  #generatorOptions { left: @generatorLeftMed; }
+  #currentMapOptions { left: @currentMapLeftMed; }
 
   #sideBar {
     width: @sidebarWidthMed;
@@ -1506,6 +1493,8 @@ a.selected > .sprite-maptype {
       .transform(translateX(0));
     }
     form {
+      background-color:@litetan;
+      color:@litebrown;
       max-width: 300px;
       margin-right: 50px;
     }
@@ -1517,11 +1506,8 @@ a.selected > .sprite-maptype {
     right: 10px;
   }
 
-  #actionButtons { top: 0; left: 0; width: auto; right: @mapSizeWidth; }
-  #mapSizeControls { top: 0; left: auto; right: 0; }
-
-  #mapModeControls { top: auto; left: 0; width: auto; right: @mapViewWidth; bottom: 0; }
-  #mapViewControls { top: auto; left: auto; right: 0; bottom: 0; }
+  #generatorOptions { top: 0; left: 0; width: auto; right: 0; }
+  #currentMapOptions { top: auto; left: 0; width: auto; right: 0; bottom: 0; }
 
   .dropradio div { bottom: -34px; }
 }

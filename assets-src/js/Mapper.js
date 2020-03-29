@@ -5,7 +5,7 @@
   mapper.selectedTile = undefined;
   mapper.staggeredCappedMode = undefined;
   mapper.settings = {
-    structure: -1,
+    structure: DM_STRUCTURES.closedEdge,
     theme: DM_THEMES.mixed,
     height: 2,
     width: 2,
@@ -42,6 +42,11 @@
 
     // Unselect old selection.
     if (me.selectedTile) {
+      // Bail to prevent weird behavior when rapidly clicking the same tile.
+      if (tile === me.selectedTile) {
+        return;
+      }
+
       me.selectedTile.removeClass('selected-tile');
     }
 
@@ -139,23 +144,6 @@
     $('#swapTileBtn').removeClass('down');
   };
 
-  /**
-   * Detects the user's selected map structure and returns it,
-   * as well as caching it in the settings object.
-   *
-   * @return {Number}
-   *     Map structure number.
-   *
-   * @todo Deprecate this and rely on changes bubbling from user action.
-   */
-  mapper.detectStructure = function () {
-    var me = mapper;
-
-    me.settings.structure = parseInt($('input:radio[name=mode]:checked').val(), 10);
-
-    return me.settings.structure;
-  };
-
   mapper.appendTab = function (rotation) {
     var newTab = document.createElement('img'),
         tilesElement = document.getElementById('tiles');
@@ -186,7 +174,7 @@
     newTileImage.setAttribute('data-type', type);
     newTileImage.setAttribute('data-imgid', newTile.id);
     newTileImage.setAttribute('data-artist', newTile.artist_id);
-    newTileImage.setAttribute('src', '../tiles/' + newTile.image);
+    newTileImage.setAttribute('src', DM_TILE_URL + newTile.image);
     newTileImage.setAttribute('draggable', 'true');
 
     tilesElement.appendChild(newTileImage);
@@ -241,7 +229,6 @@
     var me = mapper,
         doc = document,
         tileDiv = doc.getElementById('tiles'),
-        requestedStructure = me.detectStructure(),
         settings = me.settings,
         staggeredRow = 0,
         bottomCorners,
@@ -255,15 +242,18 @@
         j,
         edgerotationa;
 
+    var structure = settings.structure;
+
     me.selectTile();
     me.isSwapping = false;
 
     // Cube maps are always this size.
-    if (requestedStructure === 4) {
+    if (structure === DM_STRUCTURES.cube) {
       height = 4;
       width = 3;
       $('#mapSizeControls input').prop( "disabled", true );
     } else {
+      // @TODO Deprecate this bit and get it from settings rather than always interrogating the inputs.
       height = parseInt($('#height').val(), 10);
       width = parseInt($('#width').val(), 10);
       $('#mapSizeControls input').prop( "disabled", false );
@@ -272,22 +262,22 @@
     settings.width = width;
     settings.height = height;
 
-    me.staggeredCappedMode = ((DM_TileLibrary.has('edge')) && (requestedStructure === 3));
-    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (requestedStructure === 2));
-    settings.hasCorners = ((DM_TileLibrary.has('corner')) && (requestedStructure === 2));
+    me.staggeredCappedMode = ((DM_TileLibrary.has('edge')) && (structure === DM_STRUCTURES.staggeredCapped));
+    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (structure === DM_STRUCTURES.closedEdge));
+    settings.hasCorners = ((DM_TileLibrary.has('corner')) && (structure === DM_STRUCTURES.closedEdge));
 
     if (settings.theme === DM_THEMES.side) {
       // Side-view maps have additional requirements.
-      tops = ((DM_TileLibrary.has('top')) && (requestedStructure === 2));
-      topCorners = ((DM_TileLibrary.has('tco')) && (requestedStructure === 2));
-      btms = ((DM_TileLibrary.has('btm')) && (requestedStructure === 2));
-      bottomCorners = ((DM_TileLibrary.has('bco')) && (requestedStructure === 2));
+      tops = ((DM_TileLibrary.has('top')) && (structure === DM_STRUCTURES.closedEdge));
+      topCorners = ((DM_TileLibrary.has('tco')) && (structure === DM_STRUCTURES.closedEdge));
+      btms = ((DM_TileLibrary.has('btm')) && (structure === DM_STRUCTURES.closedEdge));
+      bottomCorners = ((DM_TileLibrary.has('bco')) && (structure === DM_STRUCTURES.closedEdge));
       $('#viewport').removeClass('nm').addClass('sv');
       GUI.hideNotification();
     } else {
       // Top-down maps.
       $('#viewport').removeClass('sv').addClass('nm');
-      if (((requestedStructure === 2) || (requestedStructure === 3)) &&
+      if (((structure === DM_STRUCTURES.closedEdge) || (structure === DM_STRUCTURES.staggeredCapped)) &&
           ((!DM_TileLibrary.has('edge')) || (!DM_TileLibrary.has('corner')))) {
         GUI.showNotification(
           'The tile sets you selected do not contain the right tile mix for your selected map ' +
@@ -298,7 +288,7 @@
     }
 
     // Prepare Drawing Area
-    if (requestedStructure !== 4) {
+    if (structure !== DM_STRUCTURES.cube) {
       fullWidth = 300 * width + 2;
       if (settings.hasEndcaps) { fullWidth += 300; }
       $('#map, #tiles').width(fullWidth + 'px');
@@ -351,7 +341,7 @@
           me.appendTile('edge', 1);
         }
 
-        if ((requestedStructure === 1) || (requestedStructure === 3)) {
+        if ((structure === DM_STRUCTURES.staggered) || (structure === DM_STRUCTURES.staggeredCapped)) {
           staggeredRow = 1 - staggeredRow;
         }
 

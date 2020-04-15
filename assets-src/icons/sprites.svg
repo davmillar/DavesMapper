@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -13,7 +11,7 @@
    height="144"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="1.0beta2 (unknown)"
    sodipodi:docname="sprites.svg"
    inkscape:export-filename="C:\Users\Dave\My Projects\mapper\images\sprites.png"
    inkscape:export-xdpi="90"
@@ -28,20 +26,21 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="158.14712"
-     inkscape:cy="76.794745"
+     inkscape:zoom="1"
+     inkscape:cx="123.24767"
+     inkscape:cy="78.977238"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="927"
+     inkscape:window-height="971"
      inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
      inkscape:bbox-nodes="true"
-     scale-x="1.06667">
+     scale-x="1.06667"
+     inkscape:document-rotation="0">
     <inkscape:grid
        empspacing="2"
        visible="true"
@@ -316,5 +315,22 @@
        style="opacity:1;vector-effect:none;fill:#996633;fill-opacity:1;stroke:none;stroke-width:2.51999211;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;font-variant-east_asian:normal"
        d="m 160,1048.5197 -9,6 h 16 v -1.334 z m -12,6 -3,2 h 6 z m 5,1 v 8 h 4 v -3 c -1e-5,-1.6569 1.34314,-3 3,-3 1.65686,0 3.00001,1.3431 3,3 v 3 h 4 v -8 z m -7,2 v 3 h 4 v -3 z m -1,7 v 3 h 11 v -3 z m 19,0 v 3 h 3 v -3 z"
        id="rect1838-5" />
+    <path
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="rect4617-9"
+       d="M 124.9989,989.5149 V 973.515 h 13.99994 v 15.9999 h -3.99998 v -1.9999 h 1.99998 v -11.9999 h -9.99995 v 11.9999 h 1.99999 v 1.9999 z"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.51999;marker:none;enable-background:accumulate" />
+    <path
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path5245-1-0"
+       d="m 127.99889,991.515 h 2.99998 v -8 h 2 v 8 h 2.99999 l -3.99999,3.9999 z"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.51999;marker:none;enable-background:accumulate" />
+    <path
+       transform="translate(0,972.5197)"
+       d="M 98 74 L 98 75 L 100 75 L 100 74 L 98 74 z M 101 74 L 101 75 L 104 75 L 104 74 L 101 74 z M 105 74 L 105 75 L 108 75 L 108 74 L 105 74 z M 109 74 L 109 75 L 112 75 L 112 74 L 109 74 z M 113 74 L 113 75 L 116 75 L 116 74 L 113 74 z M 117 74 L 117 76 L 118 76 L 118 74 L 117 74 z M 98 76 L 98 79 L 99 79 L 99 76 L 98 76 z M 117 77 L 117 80 L 118 80 L 118 77 L 117 77 z M 98 80 L 98 83 L 99 83 L 99 80 L 98 80 z M 117 81 L 117 84 L 118 84 L 118 81 L 117 81 z M 98 84 L 98 87 L 99 87 L 99 84 L 98 84 z M 117 85 L 117 88 L 118 88 L 118 85 L 117 85 z M 98 88 L 98 91 L 99 91 L 99 88 L 98 88 z M 117 89 L 117 92 L 118 92 L 118 89 L 117 89 z M 98 92 L 98 94 L 99 94 L 99 92 L 98 92 z M 100 93 L 100 94 L 103 94 L 103 93 L 100 93 z M 104 93 L 104 94 L 107 94 L 107 93 L 104 93 z M 108 93 L 108 94 L 111 94 L 111 93 L 108 93 z M 112 93 L 112 94 L 115 94 L 115 93 L 112 93 z M 116 93 L 116 94 L 118 94 L 118 93 L 116 93 z "
+       style="fill:#000000;stroke-width:1px;stop-color:#000000;opacity:0.5"
+       id="rect4841" />
   </g>
 </svg>

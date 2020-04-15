@@ -45,15 +45,15 @@
     <div class="fieldset" id="currentMapOptions">
       <h4 class="legend" title="Viewing options. Toggle through grid overlays with [g].">Current Map Options</h4>
       <input type="radio" class="btnGrp first" name="grid" value="0" id="nogrid" checked>
-        <label for="nogrid" title="Don't Use a Grid"><em class="sprite spX">No Grid</em></label>
+        <label for="nogrid" title="Don't Use a Grid"><em class="sprite sprite-no-grid">No Grid</em></label>
       <input type="radio" class="btnGrp" name="grid" value="1" id="grid5">
         <label for="grid5" title="Use 5-foot Grid"><em class="sprite spGrid5">5-foot Grid</em></label>
       <input type="radio" class="btnGrp" name="grid" value="2" id="grid10">
         <label for="grid10" title="Use 10-foot Grid"><em class="sprite spGrid10">10-foot Grid</em></label>
       <input type="radio" class="btnGrp last" name="grid" value="3" id="gridhex">
         <label for="gridhex" title="Use Hex Grid"><em class="sprite spHex">Hex Grid</em></label>
-      <a class="button" id="newWindowB" title="Export to PNG"><em class="sprite spPNG"></em> Export</a>
     </div>
+    <button id="exportButton" title="Export to PNG"><em class="sprite sprite-save"></em> Export</button>
     <section id="notification"><span></span> <a id="clearNotificationButton" title="Clear this notification.">OK</a></section>
     <section id="popup"><div></div></section>
     <section id="sideBar"><form>

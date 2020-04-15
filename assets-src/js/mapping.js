@@ -451,7 +451,7 @@ var createCookie = function (name, value, days) {
       ga('send', 'event', 'New User Overlay');
     }
 
-    $('#newWindowB').click(exportMap);
+    $('#exportButton').click(exportMap);
     $('#newBtn').click(MAPPER.newMap);
 
     // Set mapViewControls to pass their input value into appleGridOverlay

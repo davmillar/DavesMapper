@@ -39,15 +39,13 @@
 @sidebarWidth: 200px;
 
 @generatorWidth: 340px;
-@currentMapWidth: 205px;
+@currentMapWidth: 136px;
 
 @generatorLeft: @sidebarWidth;
-@currentMapLeft: @generatorLeft + @generatorWidth;
 
 @sidebarWidthMed: 120px;
 
 @generatorLeftMed: @sidebarWidthMed;
-@currentMapLeftMed: @generatorLeftMed + @generatorWidth;
 
 @mediumBreakpoint: (@generatorWidth + @generatorWidth + @sidebarWidth);
 @mobileBreakpoint: (@generatorWidth + @generatorWidth + @sidebarWidthMed);
@@ -396,7 +394,7 @@ h4{
 }
 
 #generatorOptions { left: @generatorLeft; width: @generatorWidth; }
-#currentMapOptions { left: @currentMapLeft; width: @currentMapWidth; }
+#currentMapOptions { right: 80px; width: @currentMapWidth; }
 
 #generatorOptions,
 #currentMapOptions { top: @navHeight; }
@@ -516,12 +514,13 @@ label.labelTxt {
 .btnChk + label,
 .btnGrp + label,
 a.button,
+button,
 .more-link,
 input[type=submit],
 .btnDrp + label {
   display:inline-block;
   width:auto;
-  height:32px !important;
+  height:32px;
   margin:5px 0 0;
   padding:0 2px;
   vertical-align:middle;
@@ -537,7 +536,6 @@ input[type=submit],
   text-align:center;
   text-decoration:none;
   text-shadow:0 1px 0 rgba(0,0,0,0.5);
-  .box-shadow(inset 0 1px 1px rgba(255,255,255,0.3));
   .unselectable;
   .transition;
   .content-box;
@@ -681,19 +679,22 @@ a.button{
   position:relative;
   display:block;
   text-decoration:none;
-  width:auto;
-  height:36px;
-  line-height:12px;
-  margin:0;
-  padding:12px 10px 12px 45px;
-  vertical-align:middle;
-  cursor:pointer;
-  background:#fff;
-  color:#8a8a8a;
-  border:0;
-  font-size:12px;
-  font-weight:700;
-  text-align:left;
+  width: auto;
+  height: 36px;
+  line-height: 12px;
+  margin: 0;
+  padding: 12px 10px 12px 45px;
+  vertical-align: middle;
+  cursor: pointer;
+  background: #fff;
+  color: #8a8a8a;
+  border: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   .border-box;
   .fancyfonts;
   .unselectable;
@@ -1363,6 +1364,7 @@ table{
 .spCube           {.spritePos(2,0);}
 .spRot            {.spritePos(3,0);}
 .sprite-share     {.spritePos(4,0);}
+.sprite-save      {.spritePos(5,0);}
 /* Row 2 */
 .spFull             {.spritePos(1,1);}
 .spGrid10           {.spritePos(2,1);}
@@ -1378,6 +1380,7 @@ table{
 .spX              {.spritePos(1,3);}
 .spCrush          {.spritePos(2,3);}
 .spHex            {.spritePos(3,3);}
+.sprite-no-grid   {.spritePos(4,3);}
 
 /* Row 5 */
 .sprite-maptype {
@@ -1418,6 +1421,18 @@ a.selected > .sprite-maptype {
   z-index:@map-icons;
 }
 
+#exportButton {
+  z-index:@ui-top;
+  position: absolute;
+  width:48px;
+  height:48px;
+  line-height: 12px;
+  text-align: center;
+  top: 34px;
+  right: 20px;
+  em { display:block; margin: 0 auto; }
+}
+
 @media screen and (max-width:1015px){
   #about .columns{
     -moz-column-count:2 !important;
@@ -1440,7 +1455,6 @@ a.selected > .sprite-maptype {
   }
 
   #generatorOptions { left: @generatorLeftMed; }
-  #currentMapOptions { left: @currentMapLeftMed; }
 
   #sideBar {
     width: @sidebarWidthMed;
@@ -1507,7 +1521,8 @@ a.selected > .sprite-maptype {
   }
 
   #generatorOptions { top: 0; left: 0; width: auto; right: 0; }
-  #currentMapOptions { top: auto; left: 0; width: auto; right: 0; bottom: 0; }
+  #currentMapOptions { top: auto; left: 0; bottom: 0; right: auto; }
+  #exportButton { top: auto; bottom: 6px; right: 6px; }
 
   .dropradio div { bottom: -34px; }
 }
@@ -1518,14 +1533,5 @@ a.selected > .sprite-maptype {
   }
   .faildroid .sprite{
     background-image:url(/assets/icons/sprites.png?dc=0) !important;
-  }
-}
-
-body.admin-bar{
-  #newnav{
-    top:28px;
-  }
-  #sideBar,#site-head{
-    top:58px;
   }
 }

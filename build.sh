@@ -13,11 +13,17 @@ if [ -n $ICONS ]; then
   mkdir -p ./assets/icons/
   echo "Exporting icon Inkscape SVG to PNG and plain SVG..."
   inkscape \
-    -y 0 \
+    --export-background-opacity=0 \
+    --export-type=png \
+    --export-file=assets/icons/sprites.png \
     --vacuum-defs \
-    -f assets-src/icons/sprites.svg \
-    --export-plain-svg assets/icons/sprites.svg \
-    --export-png assets/icons/sprites.png
+    assets-src/icons/sprites.svg
+  inkscape \
+    --export-background-opacity=0 \
+    --export-type=svg \
+    --export-file=assets/icons/sprites.svg \
+    --vacuum-defs \
+    assets-src/icons/sprites.svg
 else
   echo "Skipping icon build section..."
 fi

@@ -61,10 +61,19 @@
     $tileData[intval($tileDataRow['id'])] = $tileDataRow['image'];
   }
 
+  // Create image
+  $canvas = imagecreatetruecolor($mapwidth, $mapheight);
+  $nImg = 0;
+
   // Function for getting the tile data, opening the image file, and adding the image data to the map.
-  function nextTile(&$side, &$img, &$tileData, &$data, $n, $dx, $dy, $tw = 300, $th = 300) {
+  function nextTile($dx, $dy, $tw = 300, $th = 300) {
+    global $side, $tileData, $dataObj, $nImg, $canvas;
+
+    $n = $nImg;
+    $nImg++;
+
     // Get tile ID from JSON data
-    $tileId = intval($data['tiles'][$n]);
+    $tileId = intval($dataObj['tiles'][$n]);
     // Compose filename and die if it isn't there
     if ($tileData[$tileId] == "") {
       die('No filename found for tile #' . $tileId);
@@ -89,11 +98,11 @@
     }
     // Append image data to map.
     if ($side) {
-      if (intval($data['rotation'][$n]) % 2 > 0) {
+      if (intval($dataObj['rotation'][$n]) % 2 > 0) {
         imageflip($tileSrc, IMG_FLIP_HORIZONTAL) or die('Could not flip ' . $fname . '.');
       }
     } else {
-      $rot = ($data['rotation'][$n] * -90) + 360;
+      $rot = ($dataObj['rotation'][$n] * -90) + 360;
       if ($rot > 0) {
         $rotatedTile = imagerotate($tileSrc, $rot, 0) or die('Could not rotate ' . $fname . ' to ' . $rot . ' degrees.');
         $tileSrc = $rotatedTile;
@@ -101,26 +110,23 @@
     }
 
 		$sw = imagesx($tileSrc); $sh = imagesy($tileSrc);
-    imagecopyresampled($img, $tileSrc, $dx, $dy, 0, 0, $tw, $th, $sw, $sh);
+    imagecopyresampled($canvas, $tileSrc, $dx, $dy, 0, 0, $tw, $th, $sw, $sh);
     imagedestroy($tileSrc);
   }
 
-  // Create image
-  $canvas = imagecreatetruecolor($mapwidth, $mapheight);
-  $nImg = 0;
   // Create top row if edges are in use
   if ($edges) {
     if ($corners) {
       $dest_x = 0;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, 0, 150, $topHeight); $nImg++;
+      nextTile($dest_x, 0, 150, $topHeight);
     }
     for($x=0; $x<$width; $x++) {
       $dest_x = ($x*300) + ($edges ? 150 : 0);
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, 0, 300, $topHeight); $nImg++;
+      nextTile($dest_x, 0, 300, $topHeight);
     }
     if ($corners) {
       $dest_x = $width*300 + 150;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, 0, 150, $topHeight); $nImg++;
+      nextTile($dest_x, 0, 150, $topHeight);
     }
   }
   // Create map body
@@ -128,15 +134,15 @@
     $dest_y = ($y*300) + $topHeight;
     if ($edges) {
       $dest_x = 0;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 150, 300); $nImg++;
+      nextTile($dest_x, $dest_y, 150, 300);
     }
     for($x=0; $x<$width; $x++) {
       $dest_x = ($x*300) + ($edges ? 150 : 0);
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 300, 300); $nImg++;
+      nextTile($dest_x, $dest_y, 300, 300);
     }
     if ($edges) {
       $dest_x = $width*300 + 150;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 150, 300); $nImg++;
+      nextTile($dest_x, $dest_y, 150, 300);
     }
   }
   // Create bottom row if edges are turned on
@@ -144,15 +150,15 @@
     $dest_y = ($height * 300) + $topHeight;
     if ($corners) {
       $dest_x = 0;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 150, $topHeight); $nImg++;
+      nextTile($dest_x, $dest_y, 150, $topHeight);
     }
     for($x=0; $x<$width; $x++) {
       $dest_x = ($x*300) + ($edges ? 150 : 0);
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 300, $topHeight); $nImg++;
+      nextTile($dest_x, $dest_y, 300, $topHeight);
     }
     if ($corners) {
       $dest_x = $width*300 + 150;
-      nextTile($side, $canvas, $tileData, $dataObj, $nImg, $dest_x, $dest_y, 150, $topHeight); $nImg++;
+      nextTile($dest_x, $dest_y, 150, $topHeight);
     }
   }
 

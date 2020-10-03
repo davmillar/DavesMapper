@@ -272,22 +272,26 @@
     settings.width = width;
     settings.height = height;
 
+    var isClosedStructure = (requestedStructure === 2);
+
     me.staggeredCappedMode = ((DM_TileLibrary.has('edge')) && (requestedStructure === 3));
-    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && (requestedStructure === 2));
-    settings.hasCorners = ((DM_TileLibrary.has('corner')) && (requestedStructure === 2));
+    settings.hasEndcaps = ((DM_TileLibrary.has('edge')) && isClosedStructure);
+    settings.hasCorners = ((DM_TileLibrary.has('corner')) && isClosedStructure);
 
     if (settings.theme === DM_THEMES.side) {
       // Side-view maps have additional requirements.
-      tops = ((DM_TileLibrary.has('top')) && (requestedStructure === 2));
-      topCorners = ((DM_TileLibrary.has('tco')) && (requestedStructure === 2));
-      btms = ((DM_TileLibrary.has('btm')) && (requestedStructure === 2));
-      bottomCorners = ((DM_TileLibrary.has('bco')) && (requestedStructure === 2));
+      tops = ((DM_TileLibrary.has('top')) && isClosedStructure);
+      topCorners = ((DM_TileLibrary.has('tco')) && isClosedStructure);
+      btms = ((DM_TileLibrary.has('btm')) && isClosedStructure);
+      bottomCorners = ((DM_TileLibrary.has('bco')) && isClosedStructure);
+      settings.hasSideCorners = topCorners && bottomCorners;
       $('#viewport').removeClass('nm').addClass('sv');
       GUI.hideNotification();
     } else {
+      settings.hasSideCorners = false;
       // Top-down maps.
       $('#viewport').removeClass('sv').addClass('nm');
-      if (((requestedStructure === 2) || (requestedStructure === 3)) &&
+      if ((isClosedStructure || (requestedStructure === 3)) &&
           ((!DM_TileLibrary.has('edge')) || (!DM_TileLibrary.has('corner')))) {
         GUI.showNotification(
           'The tile sets you selected do not contain the right tile mix for your selected map ' +

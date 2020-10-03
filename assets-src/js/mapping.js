@@ -112,8 +112,10 @@ var createCookie = function (name, value, days) {
       ga('send', 'event', 'Export', 'Failed-Cube');
     } else if (
       (settings.mode === 1) ||
-      (settings.mode === 3) ||
-      (settings.theme === DM_THEMES.side)) {
+      (settings.mode === 3)) {
+        GUI.showNotification('Export for this mode is currently not working. Please try your ' +
+          'browser\'s print option instead.');
+        return false;
 
       // Warn users if they're choosing to export a large map size.
       if ((settings.width * settings.height) > 36) {
@@ -228,8 +230,12 @@ var createCookie = function (name, value, days) {
           '&h=' + settings.height;
 
         fullMapURL += '&e=' + (settings.hasEndcaps ? '1' : '0');
-        fullMapURL += '&c=' + (settings.hasCorners ? '1' : '0');
+        fullMapURL += '&c=' + (settings.hasCorners || settings.hasSideCorners ? '1' : '0');
         fullMapURL += '&g=' + settings.gridType.toString();
+
+        if (settings.theme === DM_THEMES.side) {
+          fullMapURL += '&side=1';
+        }
         window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
       }
       ga('send', 'event', 'Export', 'PHP');

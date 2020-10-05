@@ -117,90 +117,90 @@ var createCookie = function (name, value, days) {
           'browser\'s print option instead.');
         return false;
 
-      // Warn users if they're choosing to export a large map size.
-      if ((settings.width * settings.height) > 36) {
-        if (!confirm('Whoa there! Your browser might choke on saving a map of this size and ' +
-          'crash the tab and/or window. Are you sure you want to let it run?')) {
-          return false;
-        }
-      }
+      // // Warn users if they're choosing to export a large map size.
+      // if ((settings.width * settings.height) > 36) {
+      //   if (!confirm('Whoa there! Your browser might choke on saving a map of this size and ' +
+      //     'crash the tab and/or window. Are you sure you want to let it run?')) {
+      //     return false;
+      //   }
+      // }
 
-      // Establish canvas and canvas context.
-      var exportCanvas = document.getElementById('drawingboard'),
-          exportCanvasContext = exportCanvas.getContext('2d');
+      // // Establish canvas and canvas context.
+      // var exportCanvas = document.getElementById('drawingboard'),
+      //     exportCanvasContext = exportCanvas.getContext('2d');
 
-      //exportCanvasContext.clearRect(0,0,exportCanvas.width,exportCanvas.height);
+      // //exportCanvasContext.clearRect(0,0,exportCanvas.width,exportCanvas.height);
 
-      // Determine export size from app container size.
-      // @TODO Find a better way to get this cached during map generation.
-      if (settings.mode === 4) {
-        exportCanvas.width = '900px';
-        exportCanvas.height = '1235px';
-      } else {
-        exportCanvas.width = $('#tiles').width() - 2;
-        exportCanvas.height = $('#tiles').height();
-      }
+      // // Determine export size from app container size.
+      // // @TODO Find a better way to get this cached during map generation.
+      // if (settings.mode === 4) {
+      //   exportCanvas.width = '900px';
+      //   exportCanvas.height = '1235px';
+      // } else {
+      //   exportCanvas.width = $('#tiles').width() - 2;
+      //   exportCanvas.height = $('#tiles').height();
+      // }
 
-      $('#tiles').find('img').each(function () {
-        exportCanvasContext.save();
-        tilePosition = $(this).position();
-        tileRotation = $(this).data('rot');
-        tileWidth = $(this).width();
-        tileHeight = $(this).height();
-        imageHolder.src = $(this).attr('src');
-        tilePosition.left -= 22;
-        tilePosition.top -= 22;
-        if (settings.theme === DM_THEMES.side) {
-          exportCanvasContext.translate(
-            tilePosition.left + (tileWidth / 2),
-            tilePosition.top + (tileHeight / 2)
-          );
-          if ((tileRotation % 2) === 1) {
-            exportCanvasContext.scale(-1, 1);
-          }
-        } else {
-          if ((tileRotation % 2) === 1 && tileWidth > 150 && tileHeight < 300) {
-            tilePosition.left -= 150;
-            tilePosition.top += 75;
-          }
-          exportCanvasContext.translate(
-            tilePosition.left + (tileWidth / 2),
-            tilePosition.top + (tileHeight / 2)
-          );
-          exportCanvasContext.rotate(tileRotation * Math.PI / 2);
-        }
-        exportCanvasContext.drawImage(
-          imageHolder,
-          -(tileWidth / 2),
-          -(tileHeight / 2),
-          tileWidth,
-          tileHeight
-        );
-        exportCanvasContext.restore();
-      });
-      $('#grid').find('img').each(function () {
-        exportCanvasContext.save();
-        tilePosition = $(this).position();
-        tileWidth = $(this).width();
-        tileHeight = $(this).height();
-        imageHolder.src = $(this).attr('src');
-        exportCanvasContext.translate(
-          tilePosition.left + (tileWidth / 2),
-          tilePosition.top + (tileHeight / 2)
-        );
-        exportCanvasContext.drawImage(
-          imageHolder,
-          -(tileWidth / 2),
-          -(tileHeight / 2),
-          tileWidth,
-          tileHeight
-        );
-        exportCanvasContext.restore();
-      });
-      dataURL = exportCanvas.toDataURL();
-      window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
-      exportCanvas.width = exportCanvas.width * 2 / 2;
-      ga('send', 'event', 'Export', 'Canvas');
+      // $('#tiles').find('img').each(function () {
+      //   exportCanvasContext.save();
+      //   tilePosition = $(this).position();
+      //   tileRotation = $(this).data('rot');
+      //   tileWidth = $(this).width();
+      //   tileHeight = $(this).height();
+      //   imageHolder.src = $(this).attr('src');
+      //   tilePosition.left -= 22;
+      //   tilePosition.top -= 22;
+      //   if (settings.theme === DM_THEMES.side) {
+      //     exportCanvasContext.translate(
+      //       tilePosition.left + (tileWidth / 2),
+      //       tilePosition.top + (tileHeight / 2)
+      //     );
+      //     if ((tileRotation % 2) === 1) {
+      //       exportCanvasContext.scale(-1, 1);
+      //     }
+      //   } else {
+      //     if ((tileRotation % 2) === 1 && tileWidth > 150 && tileHeight < 300) {
+      //       tilePosition.left -= 150;
+      //       tilePosition.top += 75;
+      //     }
+      //     exportCanvasContext.translate(
+      //       tilePosition.left + (tileWidth / 2),
+      //       tilePosition.top + (tileHeight / 2)
+      //     );
+      //     exportCanvasContext.rotate(tileRotation * Math.PI / 2);
+      //   }
+      //   exportCanvasContext.drawImage(
+      //     imageHolder,
+      //     -(tileWidth / 2),
+      //     -(tileHeight / 2),
+      //     tileWidth,
+      //     tileHeight
+      //   );
+      //   exportCanvasContext.restore();
+      // });
+      // $('#grid').find('img').each(function () {
+      //   exportCanvasContext.save();
+      //   tilePosition = $(this).position();
+      //   tileWidth = $(this).width();
+      //   tileHeight = $(this).height();
+      //   imageHolder.src = $(this).attr('src');
+      //   exportCanvasContext.translate(
+      //     tilePosition.left + (tileWidth / 2),
+      //     tilePosition.top + (tileHeight / 2)
+      //   );
+      //   exportCanvasContext.drawImage(
+      //     imageHolder,
+      //     -(tileWidth / 2),
+      //     -(tileHeight / 2),
+      //     tileWidth,
+      //     tileHeight
+      //   );
+      //   exportCanvasContext.restore();
+      // });
+      // dataURL = exportCanvas.toDataURL();
+      // window.open(dataURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
+      // exportCanvas.width = exportCanvas.width * 2 / 2;
+      // ga('send', 'event', 'Export', 'Canvas');
     } else {
       if ((settings.width * settings.height) > 64) {
         GUI.showNotification(

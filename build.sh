@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Checking for folders and clearing them..."
 
 rm -r ./assets/css/
@@ -28,45 +30,37 @@ spritedc="$(md5sum assets-src/icons/sprites.svg | cut -c -5)"
 cat \
   assets-src/css/style.less \
   | sed "s/dc=0/dc=${spritedc}/" \
-  | lessc --clean-css - \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
-  > ./assets/css/compiled.css
+  | yarn run --silent lessc --clean-css - \
+  | yarn run cleancss -o ./assets/css/compiled.css
 
 echo "Converting print LESS and compressing output CSS..."
 
 cat \
   assets-src/css/print.less \
-  | lessc --clean-css - \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
-  > ./assets/css/compiled_print.css
+  | yarn run --silent lessc --clean-css - \
+  | yarn run cleancss -o ./assets/css/compiled_print.css
 
 echo "Combining and compressing global JS..."
 
-cat \
+yarn run --silent terser --compress --mangle --output ./assets/js/global.js \
   assets-src/js/jquery-3.2.1.min.js \
   assets-src/js/jquery-migrate-3.0.1.min.js \
-  assets-src/js/global.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
-  > ./assets/js/global.js
+  assets-src/js/global.js
 
 echo "Combining and compressing app JS..."
 
-cat \
+yarn run --silent terser --compress --mangle --output ./assets/js/compiled_app.js \
   assets-src/js/Constants.js \
   assets-src/js/TileDeck.js \
   assets-src/js/TileLibrary.js \
   assets-src/js/Mapper.js \
   assets-src/js/GUI.js \
-  assets-src/js/mapping.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
-  > ./assets/js/compiled_app.js
+  assets-src/js/mapping.js
 
 echo "Combining and compressing keyboard shortcut JS..."
 
-cat \
-  assets-src/js/keyboard.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
-  > ./assets/js/keyboard.js
+yarn run --silent terser --compress --mangle --output ./assets/js/keyboard.js \
+  assets-src/js/keyboard.js
 
 echo "Updating and compressing service worker JS..."
 
@@ -77,7 +71,6 @@ indexsum="$(md5sum index.php | cut -c -5)"
 cat \
   assets-src/js/service-worker.js \
   | sed "s/my-site-cache-v1/${contentsum}-${assetssum}-${indexsum}/" \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
-  > ./assets/js/service-worker.js
+  | yarn run --silent terser --compress --mangle --output ./assets/js/service-worker.js
 
 echo "Build complete!"

@@ -11,7 +11,7 @@
   $gridtype = intval($_REQUEST['g']);
   $side = intval($_REQUEST['side']);
 
-  $topHeight = $side ? 300 : 150;
+  $topHeight = $edges ? ($side ? 300 : 150) : 0;
 
   // Calculate map height and width from flags and map height and width
   $mapwidth = ($width * 300) + ($edges ? 300 : 0);

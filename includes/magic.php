@@ -6,7 +6,7 @@
     <div class="downpanel"><?php
       define('PATH', dirname(__FILE__));
 
-      include PATH . "/cgi-bin/db_start.php";
+      include PATH . "/../cgi-bin/db_start.php";
 
       $navdata = $pdo->query("SELECT url_slug, name FROM dmillar_cartography.artists ORDER BY name ASC");
       if ($navdata->rowCount() > 0) {

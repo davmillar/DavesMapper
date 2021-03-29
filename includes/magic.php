@@ -1,6 +1,6 @@
 <div id="newnav">
   <a class="main" href="/"><h1>Dave's Mapper</h1></a>
-  <a class="main" href="/blog">Blog</a>
+  <a class="main" href="https://blog.davesmapper.com">Blog</a>
   <div class="downcontainer">
     <a class="main" href="/supporters">About Us</a>
     <div class="downpanel"><?php

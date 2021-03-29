@@ -18,6 +18,8 @@ RewriteBase /
 RewriteCond %{QUERY_STRING} fb_xd_fragment=
 RewriteRule (.*) $1? [R=301]
 
+Redirect 301 /blog https://blog.davesmapper.com
+
 RewriteRule ^beta/(.*) /$1 [R=301,QSA]
 RewriteRule ^v2/(.*) /$1 [R=301,QSA]
 RewriteRule ^about/? /help [R=301,QSA]

@@ -1,5 +1,7 @@
 <?php
-  define('PATH', dirname(__FILE__) . '/..');
+  if(!defined('PATH')) {
+    define('PATH', dirname(dirname(__FILE__) ));
+  }
 
   include PATH . "/cgi-bin/db_start.php";
 

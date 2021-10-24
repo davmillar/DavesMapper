@@ -10,8 +10,8 @@ tiles/
 tiles/**/*
 google*.html
 *.sql
-.vagrant/bootstrap.sh
-.vagrant/machines/
+cgi-bin/db_start.php
+.vagrant/
 .well-known/brave-payment-verification.txt
 9A4F12FD1854F031824A5EE0E710E4F0.txt
 

@@ -1,1 +1,2 @@
-<?php $pdo = null; ?>
+<?php
+$pdo = null;

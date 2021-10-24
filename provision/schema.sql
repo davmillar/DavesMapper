@@ -1,0 +1,1 @@
+-- TODO: Commit schema-only table structure to this file for first-run setup.

@@ -1,6 +1,5 @@
 <?php
-  $user="---your-db-username-here";
-  $password="---your-pass-here---";
-  $database="---your-db-name-here---";
-  $pdo = new PDO("mysql:host=localhost;dbname=$database", $user, $password);
-?>
+$user = 'vagrant';
+$password = 'vagrant';
+$database = 'daves_mapper';
+$pdo = new PDO("mysql:host=localhost;dbname=$database", $user, $password);

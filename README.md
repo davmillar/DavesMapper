@@ -25,6 +25,20 @@ The included `provision/boostrap.sh` script defines all other system-level depen
 
 Database credentials will be automatically configured in `cgi-bin/db_start.php` to work with Vagrant. This file is gitignore'd to prevent it from being committed back to the repo with sensitive credentials.
 
+### Building Assets
+
+The source files for CSS, Javascript and images mostly live in `assets-src/`.
+
+After editing these files, you must compile them into the published files hosted in `assets/` using `./build.sh`.
+
+The associated vagrant VM provides all of the necessary depedencies to build assets.
+
+```shell
+$ vagrant ssh -c build.sh
+$ git add assets/*
+$ git commit -m 'Build fresh assets.'
+```
+
 ## License
 
 

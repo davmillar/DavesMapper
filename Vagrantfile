@@ -66,6 +66,16 @@ Vagrant.configure('2') do |config|
         echo 'cd #{conf[:PROJECT_ROOT]}' >> ~/.profile
       fi
 
+      echo '## Installing development dependencies.'
+      curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+      sudo apt-get -yqq install \
+        yui-compressor \
+        inkscape \
+        nodejs
+
+      sudo npm install -g less less-plugin-clean-css
+
+
     VAGRANTONLYSCRIPT
 
   # TODO: Define a safety trigger to export MySQL data before destroying the VM.

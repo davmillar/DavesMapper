@@ -54,7 +54,11 @@ Vagrant.configure('2') do |config|
       TABLE_COUNT=$(mysql --batch --skip-column-names -e 'SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = "daves_mapper";')
       if [ $TABLE_COUNT -eq 0 ]; then
         echo '## Importing MySQL schema.'
-        mysql daves_mapper < provision/schema.sql  #TODO this sql file needs to get populated.
+        mysql daves_mapper < provision/schema.sql
+        echo '## Importing scrubbed artist data.'
+        mysql daves_mapper < provision/artists.sql
+        echo '## Importing randomized dump containing 100 tiles.'
+        mysql daves_mapper < provision/tiles.sql
       fi
 
       echo '## Setting convenience login dir.'

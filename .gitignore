@@ -1,6 +1,7 @@
 *.sublime*
 *.ftpquota
 scripts/datacache/
+datacache/
 blog/
 bucket/
 error_log

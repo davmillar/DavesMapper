@@ -10,7 +10,7 @@
 
       include PATH . "/cgi-bin/db_start.php";
 
-      $navdata = $pdo->query("SELECT url_slug, name FROM dmillar_cartography.artists ORDER BY name ASC");
+      $navdata = $pdo->query("SELECT url_slug, name FROM artists ORDER BY name ASC");
       if ($navdata->rowCount() > 0) {
         while ($nextguy = $navdata->fetch(PDO::FETCH_ASSOC)) {
           ?><a href="/supporters/<?php echo $nextguy['url_slug']?>"><?php echo $nextguy['name']?></a><?php

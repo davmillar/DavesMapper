@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#YUI=java -jar bin/yuicompressor-2.4.8.jar
+YUI=yui-compressor
+
 echo "Checking for folders and clearing them..."
 
 rm -r ./assets/css/
@@ -29,7 +32,7 @@ cat \
   assets-src/css/style.less \
   | sed "s/dc=0/dc=${spritedc}/" \
   | lessc --clean-css - \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
+  | $YUI --type=css \
   > ./assets/css/compiled.css
 
 echo "Converting print LESS and compressing output CSS..."
@@ -37,7 +40,7 @@ echo "Converting print LESS and compressing output CSS..."
 cat \
   assets-src/css/print.less \
   | lessc --clean-css - \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=css \
+  | $YUI --type=css \
   > ./assets/css/compiled_print.css
 
 echo "Combining and compressing global JS..."
@@ -46,7 +49,7 @@ cat \
   assets-src/js/jquery-3.2.1.min.js \
   assets-src/js/jquery-migrate-3.0.1.min.js \
   assets-src/js/global.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  | $YUI --type=js \
   > ./assets/js/global.js
 
 echo "Combining and compressing app JS..."
@@ -58,14 +61,14 @@ cat \
   assets-src/js/Mapper.js \
   assets-src/js/GUI.js \
   assets-src/js/mapping.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  | $YUI --type=js \
   > ./assets/js/compiled_app.js
 
 echo "Combining and compressing keyboard shortcut JS..."
 
 cat \
   assets-src/js/keyboard.js \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  | $YUI --type=js \
   > ./assets/js/keyboard.js
 
 echo "Updating and compressing service worker JS..."
@@ -77,7 +80,7 @@ indexsum="$(md5sum index.php | cut -c -5)"
 cat \
   assets-src/js/service-worker.js \
   | sed "s/my-site-cache-v1/${contentsum}-${assetssum}-${indexsum}/" \
-  | java -jar bin/yuicompressor-2.4.8.jar --type=js \
+  | $YUI --type=js \
   > ./assets/js/service-worker.js
 
 echo "Build complete!"

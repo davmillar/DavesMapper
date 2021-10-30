@@ -91,8 +91,10 @@ apt-get -yqq install \
   php$PHP_VERSION \
   $EXT_LIST
 
-cat <<PHPINI > /etc/php/7.4/fpm/conf.d/99-logging.ini
-error_log /var/log/php_error.log
+touch /var/log/php_error.log
+chown $PROJECT_USER:$PROJECT_GROUP /var/log/php_error.log
+cat <<PHPINI > /etc/php/$PHP_VERSION/fpm/conf.d/99-logging.ini
+error_log = /var/log/php_error.log
 
 PHPINI
 
@@ -125,7 +127,7 @@ FPMCONF
 systemctl enable php$PHP_VERSION-fpm
 systemctl restart php$PHP_VERSION-fpm
 
-a2enconf php7.4-fpm
+a2enconf php$PHP_VERSION-fpm
 a2enmod \
   actions \
   alias \
@@ -187,6 +189,24 @@ fi
 
 apt-get -yqq install mysql-server
 mysqld --initialize
+
+# Supplement the default MySQL daemon configs with some overrides.
+touch /var/log/mysql/slow_queries.log
+chown mysql:adm /var/log/mysql/slow_queries.log
+
+cat <<MYSQLCONF > "/etc/mysql/mysql.conf.d/zzz_${PROJECT_NAME}.cnf"
+[mysqld]
+
+bind_address = *
+character-set-server = UTF8MB4
+collation-server = utf8mb4_0900_ai_ci
+slow-query-log = 1
+slow_query_log_file = /var/log/mysql/slow_queries.log
+long_query_time = 1
+; log-queries-not-using-indexes
+
+MYSQLCONF
+
 systemctl enable mysql
 systemctl restart mysql
 

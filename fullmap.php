@@ -9,7 +9,7 @@
   $edges = $_REQUEST['e'];
   $corners = $_REQUEST['c'];
   $gridtype = intval($_REQUEST['g']);
-  $side = intval($_REQUEST['side']);
+  $side = isset($_REQUEST['side']) ? intval($_REQUEST['side']) : 0;
 
   $topHeight = $edges ? ($side ? 300 : 150) : 0;
 
@@ -43,7 +43,11 @@
       $dataObj['tiles'][] = $tile_id;
     }
 
-    $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode($dataObj['tiles'], ",") . ")";
+    if (sizeof($dataObj['tiles']) > 0) {
+      $tileQuery = "SELECT image, id FROM tiles WHERE id IN (" . implode(",", $dataObj['tiles']) . ")";
+    } else {
+      die("Unable to generate map at this time. Try using your browser's Print option to save to a PDF instead.");
+    }
   } else {
     die("Invalid map export type.");
   }

@@ -1,0 +1,13 @@
+{
+  "name": "DavesMapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/davmillar/DavesMapper.git",
+  "author": "David Millar <dave@davegoesthedistance.com>",
+  "license": "MIT",
+  "dependencies": {
+    "clean-css-cli": "^4.3.0",
+    "less": "^3.12.2",
+    "terser": "^5.3.4"
+  }
+}

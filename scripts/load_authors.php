@@ -22,6 +22,8 @@
     }
   }
   $data->closeCursor();
+
+  header('Content-Type: application/json; charset=utf-8');
   echo json_encode($authorData);
 
   include PATH . "/cgi-bin/db_end.php";

@@ -29,6 +29,8 @@
     }
 
   	include PATH . "/../cgi-bin/db_end.php";
+
+    header('Content-Type: application/json; charset=utf-8');
 	  echo $our_json;
   }
 ?>

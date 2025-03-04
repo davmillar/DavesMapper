@@ -28,7 +28,7 @@
     $.post('scripts/load_morphs.php', {
       'map_kind': themeCode
     }, function (data) {
-      var fulldata = $.parseJSON(data);
+      var fulldata = Array.isArray(data) ? data : JSON.parse(data);
       library.tile.stock(fulldata[1]);
       library.edge.stock(fulldata[2]);
       library.corner.stock(fulldata[3]);

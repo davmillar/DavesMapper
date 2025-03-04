@@ -59,9 +59,10 @@ var createCookie = function (name, value, days) {
   onRosterDataLoaded = function (responseString) {
     var settings = MAPPER.settings,
         displayHTML = '',
-        data = $.parseJSON(responseString),
-        artistsPresent = data.length,
         newLineup = {};
+
+    var data = Array.isArray(responseString) ? responseString : JSON.parse(responseString);
+    var artistsPresent = data.length;
 
     // The roster is the list of all artists available for the current map theme.
     settings.roster = data;

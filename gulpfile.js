@@ -61,9 +61,15 @@ function compileGlobalJs() {
 function compileAppJs() {
   return pipeline(
     src([
-      './assets-src/js/service-worker.js'
+      './assets-src/js/Constants.js',
+      './assets-src/js/TileDeck.js',
+      './assets-src/js/TileLibrary.js',
+      './assets-src/js/Mapper.js',
+      './assets-src/js/GUI.js',
+      './assets-src/js/mapping.js'
     ]),
     sourcemaps.init(),
+    concat('compiled_app.js'),
     babel({
 			presets: ['@babel/preset-env']
 		}),
@@ -88,7 +94,7 @@ function compileKeyboardShortcutJs() {
 
 function compileServiceWorkerJs () {
   return pipeline(
-    src('./assets-src/js/keyboard.js'),
+    src('./assets-src/js/service-worker.js'),
     sourcemaps.init(),
     babel({
 			presets: ['@babel/preset-env']
@@ -97,7 +103,6 @@ function compileServiceWorkerJs () {
     sourcemaps.write('./maps'),
     dest('./assets/js')
   );
-
 }
 
 exports.default = parallel(

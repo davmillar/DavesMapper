@@ -414,7 +414,7 @@ var createCookie = function (name, value, days) {
     GUI.init();
 
     // Initialize click handler for mobile button.
-    $('#mapTypeMenuBtn').click(toggleMobileMenu);
+    $('#mapTypeMenuBtn').on('click tap', toggleMobileMenu);
 
     // Close side panel when clicking off of the main content area.
     $('#sideBar').on('click tap', function (e) {
@@ -458,15 +458,15 @@ var createCookie = function (name, value, days) {
       ga('send', 'event', 'New User Overlay');
     }
 
-    $('#newWindowB').click(exportMap);
-    $('#newBtn').click(MAPPER.newMap);
+    $('#newWindowB').on('click tap', exportMap);
+    $('#newBtn').on('click tap', MAPPER.newMap);
 
     // Set mapViewControls to pass their input value into appleGridOverlay
     $('#mapViewControls').on('click tap', 'input', function () {
       MAPPER.applyGridOverlay($(this).val());
     });
 
-    $('#rotateTile').click(function () {
+    $('#rotateTile').on('click tap', function () {
       if (jQuery.inArray(MAPPER.selectedTile.data('type'), ['tile','top','btm']) < 0) {
         return false;
       }
@@ -476,7 +476,7 @@ var createCookie = function (name, value, days) {
       ga('send', 'event', 'Rotate', 'Click');
       return false;
     });
-    $('#removeTile').click(function () {
+    $('#removeTile').on('click tap', function () {
       replaceTile(MAPPER.selectedTile);
       return false;
     });
@@ -522,7 +522,7 @@ var createCookie = function (name, value, days) {
       .on('dblclick', 'img.tco', onTopCornerDoubleClick)
       .on('dblclick', 'img.btm', onBottomDoubleClick)
       .on('dblclick', 'img.bco', onBottomCornerDoubleClick)
-      .on('click', onTileBoardClick);
+      .on('click tap', onTileBoardClick);
 
     // Handle the remove/replace with exit button
     $('#removeTileExit').on('click tap', function () {

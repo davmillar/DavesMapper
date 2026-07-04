@@ -4,13 +4,13 @@
   gui.init = function () {
     gui.notificationHolder = $('#notification');
     gui.notificationTextHolder = gui.notificationHolder.find('span');
-    gui.notificationHolder.on('click', '#clearNotificationButton', gui.hideNotification);
+    gui.notificationHolder.on('click tap', '#clearNotificationButton', gui.hideNotification);
 
     gui.modalContainer = $('#popup');
     gui.modalContentContainer = gui.modalContainer.find('div');
 
     // Initialize click handler for overlay.
-    gui.modalContainer.click(gui.hideModal);
+    gui.modalContainer.on('click tap', gui.hideModal);
   };
 
   gui.showNotification = function (notificationText) {

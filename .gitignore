@@ -232,3 +232,5 @@ pip-log.txt
 .mr.developer.cfg
 
 *.code-workspace
+
+node_modules

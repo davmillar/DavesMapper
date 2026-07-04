@@ -43,8 +43,8 @@ function compilePrintCss() {
 function compileGlobalJs() {
   return pipeline(
     src([
-      './assets-src/js/jquery-3.2.1.min.js',
-      './assets-src/js/jquery-migrate-3.0.1.min.js',
+      './node_modules/jquery/dist/jquery.js',
+      './node_modules/jquery-migrate/dist/jquery-migrate.js',
       './assets-src/js/global.js'
     ]),
     sourcemaps.init(),

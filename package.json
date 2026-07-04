@@ -1,7 +1,25 @@
 {
   "name": "@davegoesthedistance/davesmapper",
-  "version": "1.0.0",
+  "author": "David Millar",
   "description": "A web app that uses community art to generate randomized maps for RPGs.",
+  "version": "1.0.0",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/davmillar/DavesMapper/issues"
+  },
+  "homepage": "https://github.com/davmillar/DavesMapper#readme",
+  "keywords": [
+    "rpg",
+    "webapp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davmillar/DavesMapper.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp && bash build.sh"
+  },
   "devDependencies": {
     "@babel/preset-env": "^8.0.2",
     "gulp": "^5.0.1",
@@ -14,22 +32,10 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp && bash build.sh"
+  "overrides": {
+    "postcss": "^8.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/davmillar/DavesMapper.git"
-  },
-  "keywords": [
-    "rpg",
-    "webapp"
-  ],
-  "author": "David Millar",
-  "license": "GPL-3.0-only",
-  "bugs": {
-    "url": "https://github.com/davmillar/DavesMapper/issues"
-  },
-  "homepage": "https://github.com/davmillar/DavesMapper#readme"
+  "allowScripts": {
+    "es5-ext@0.10.64": true
+  }
 }

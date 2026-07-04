@@ -1,22 +1,21 @@
-// jshint esversion:6
-var CACHE_NAME = 'my-site-cache-v1',
-    now = Date.now(),
-    urlsToCache = [
-      '/',
-      '/assets/css/compiled.css',
-      '/assets/css/compiled_print.css',
-      '/assets/icons/sprites.png',
-      '/assets/icons/sprites.svg',
-      '/assets/js/compiled_app.js',
-      '/assets/js/global.js',
-      '/assets/js/keyboard.js',
-      '/content/keyboard.html',
-      '/grid_15.png',
-      '/grid_30.png',
-      '/images/hex.png'
-    ].map(function (resourceURL) {
-      return resourceURL + '?cache-bust=' + now;
-    });
+var now = Date.now();
+var CACHE_NAME = 'daves-mapper-' + now;
+var urlsToCache = [
+  '/',
+  '/assets/css/compiled.css',
+  '/assets/css/compiled_print.css',
+  '/assets/icons/sprites.png',
+  '/assets/icons/sprites.svg',
+  '/assets/js/compiled_app.js',
+  '/assets/js/global.js',
+  '/assets/js/keyboard.js',
+  '/content/keyboard.html',
+  '/grid_15.png',
+  '/grid_30.png',
+  '/images/hex.png'
+].map(function (resourceURL) {
+  return resourceURL + '?cache-bust=' + now;
+});
 
 self.addEventListener('install', function(event) {
   // Perform install steps

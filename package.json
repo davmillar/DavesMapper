@@ -1,0 +1,35 @@
+{
+  "name": "@davegoesthedistance/davesmapper",
+  "version": "1.0.0",
+  "description": "A web app that uses community art to generate randomized maps for RPGs.",
+  "devDependencies": {
+    "@babel/preset-env": "^8.0.2",
+    "gulp": "^5.0.1",
+    "gulp-babel": "^8.1.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-css-img-cachebust": "^1.0.0",
+    "gulp-less": "^5.0.0",
+    "gulp-rename": "^2.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp && bash build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davmillar/DavesMapper.git"
+  },
+  "keywords": [
+    "rpg",
+    "webapp"
+  ],
+  "author": "David Millar",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/davmillar/DavesMapper/issues"
+  },
+  "homepage": "https://github.com/davmillar/DavesMapper#readme"
+}

@@ -1,4 +1,4 @@
-<footer id="site-foot">Support hosting costs and continued development with stickers and pins at the <a href="https://store.davegoesthedistance.com">Dave Goes the Distance store</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GSNQ8LXZF9946">with a donation</a>.
+<footer id="site-foot">Support hosting costs and continued development with stickers and pins at the <a href="https://store.davegoesthedistance.com">Dave Goes the Distance store</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=GSNQ8LXZF9946">with a donation</a>.
 <script type="text/javascript"><!--
   google_ad_client = "ca-pub-4905539882779515";
   /* Mapper One Line */

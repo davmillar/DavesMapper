@@ -1,16 +1,12 @@
 var createCookie = function (name, value, days) {
-    var date,
-        expires;
+    let expires = '';
 
     if (days) {
-      date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = '; expires=' + date.toGMTString();
-    } else {
-      expires = '';
+      let maxAge = days * 24 * 60 * 60 * 1000;
+      expires = '; max-age=' + maxAge;
     }
 
-    document.cookie = name + '=' + value + expires + '; path=/';
+    document.cookie = name + '=' + value + expires + '; path=/; secure; samesite=lax';
   },
 
   readCookie = function (name) {

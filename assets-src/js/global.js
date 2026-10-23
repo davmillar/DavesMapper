@@ -18,7 +18,8 @@ var $appmode = window.navigator.standalone,
 
       if (promptResponse) {
         console.log('New ServiceWorker skipping waiting.');
-        worker.postMessage({action: 'skipWaiting'});
+        let message = {action: 'skipWaiting'};
+        worker.postMessage(message, { transfer: [ message ]});
       }
     },
 

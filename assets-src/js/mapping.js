@@ -233,7 +233,11 @@ var createCookie = function (name, value, days) {
         if (settings.theme === DM_THEMES.side) {
           fullMapURL += '&side=1';
         }
-        window.open(fullMapURL, 'MapWindow', 'width=800,height=600,scrollbars=yes');
+        window.open(
+          fullMapURL,
+          'MapWindow',
+          'width=800,height=600,scrollbars=yes,noopener=yes,noreferrer=yes'
+        );
       }
       ga('send', 'event', 'Export', 'PHP');
     }

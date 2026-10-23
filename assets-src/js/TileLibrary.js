@@ -79,7 +79,7 @@
     var deck = library[deckName];
 
     if (!deck || !(deck instanceof DM_TileDeck)) {
-      throw 'DM_TileLibrary.draw(): Requested deckName does not exist.';
+      throw new TypeError('DM_TileLibrary.draw(): Requested deckName does not exist.');
     }
 
     return deck;
